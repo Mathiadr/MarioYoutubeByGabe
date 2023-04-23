@@ -45,13 +45,13 @@ public class SceneHierarchyWindow {
         ImGui.popID();
 
         if (ImGui.beginDragDropSource()) {
-            ImGui.setDragDropPayloadObject(payloadDragDropType, obj);
+            ImGui.setDragDropPayload(payloadDragDropType, obj);
             ImGui.text(obj.name);
             ImGui.endDragDropSource();
         }
 
         if (ImGui.beginDragDropTarget()) {
-            Object payloadObj = ImGui.acceptDragDropPayloadObject(payloadDragDropType);
+            Object payloadObj = ImGui.acceptDragDropPayload(payloadDragDropType);
             if (payloadObj != null) {
                 if (payloadObj.getClass().isAssignableFrom(GameObject.class)) {
                     GameObject playerGameObj = (GameObject)payloadObj;
