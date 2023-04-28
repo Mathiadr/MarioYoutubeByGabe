@@ -24,7 +24,7 @@ public class Rigidbody2D extends Component {
     private transient Body rawBody = null;
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (rawBody != null) {
             if (this.bodyType == BodyType.Dynamic || this.bodyType == BodyType.Kinematic) {
                 this.gameObject.transform.position.set(

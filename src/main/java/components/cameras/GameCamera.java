@@ -1,5 +1,7 @@
-package components;
+package components.cameras;
 
+import components.Component;
+import components.PlayerController;
 import jade.Camera;
 import jade.GameObject;
 import jade.Window;
@@ -21,7 +23,7 @@ public class GameCamera extends Component {
     }
 
     @Override
-    public void start() {
+    public void onStart() {
         this.player = Window.getScene().getGameObjectWith(PlayerController.class);
         this.gameCamera.clearColor.set(skyColor);
         this.undergroundYLevel = this.gameCamera.position.y -
@@ -29,17 +31,15 @@ public class GameCamera extends Component {
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (player != null && !player.getComponent(PlayerController.class).hasWon()) {
             gameCamera.position.x = Math.max(player.transform.position.x - 2.5f, highestX);
             highestX = Math.max(highestX, gameCamera.position.x);
 
             if (player.transform.position.y < -playerBuffer) {
                 this.gameCamera.position.y = undergroundYLevel;
-                this.gameCamera.clearColor.set(undergroundColor);
             } else if (player.transform.position.y >= 0.0f) {
                 this.gameCamera.position.y = 0.0f;
-                this.gameCamera.clearColor.set(skyColor);
             }
         }
     }

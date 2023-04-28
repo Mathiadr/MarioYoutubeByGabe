@@ -1,13 +1,14 @@
 package jade;
 
 import components.*;
+import components.templates.*;
 import org.joml.Vector2f;
 import physics2d.components.Box2DCollider;
 import physics2d.components.CircleCollider;
 import physics2d.components.PillboxCollider;
 import physics2d.components.Rigidbody2D;
 import physics2d.enums.BodyType;
-import util.AssetPool;
+import util.ResourcePool;
 
 public class Prefabs {
 
@@ -22,9 +23,146 @@ public class Prefabs {
         return block;
     }
 
+    public static GameObject generateRatgirl() {
+        Spritesheet playerSprites = ResourcePool.getSpritesheet("assets/images/RatGirlSpritesheet.png");
+        Spritesheet bigPlayerSprites = ResourcePool.getSpritesheet("assets/images/RatGirlSpritesheet.png");
+        GameObject ratgirl = generateSpriteObject(playerSprites.getSprite(0), 0.25f, 0.25f);
+
+        // Little mario animations
+        AnimationState run = new AnimationState();
+        run.title = "Run";
+        float defaultFrameTime = 0.2f;
+        run.addFrame(playerSprites.getSprite(2), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(3), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(4), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(5), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(6), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(7), defaultFrameTime);
+        run.setLoop(true);
+
+        AnimationState switchDirection = new AnimationState();
+        switchDirection.title = "Switch Direction";
+        switchDirection.addFrame(playerSprites.getSprite(3), 0.1f);
+        switchDirection.setLoop(false);
+
+        AnimationState idle = new AnimationState();
+        idle.title = "Idle";
+        idle.addFrame(playerSprites.getSprite(0), 2f);
+        idle.addFrame(playerSprites.getSprite(1), 0.1f);
+        idle.setLoop(true);
+
+        AnimationState jump = new AnimationState();
+        jump.title = "Jump";
+        jump.addFrame(playerSprites.getSprite(5), 0.1f);
+        jump.setLoop(false);
+
+        // Big mario animations
+        AnimationState bigRun = new AnimationState();
+        bigRun.title = "BigRun";
+        run.addFrame(playerSprites.getSprite(2), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(3), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(4), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(5), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(6), defaultFrameTime);
+        run.addFrame(playerSprites.getSprite(7), defaultFrameTime);
+        bigRun.setLoop(true);
+
+        AnimationState bigSwitchDirection = new AnimationState();
+        bigSwitchDirection.title = "Big Switch Direction";
+        bigSwitchDirection.addFrame(bigPlayerSprites.getSprite(2), 0.1f);
+        bigSwitchDirection.setLoop(false);
+
+        AnimationState bigIdle = new AnimationState();
+        bigIdle.title = "BigIdle";
+        bigIdle.addFrame(bigPlayerSprites.getSprite(0), 0.1f);
+        bigIdle.setLoop(false);
+
+        AnimationState bigJump = new AnimationState();
+        bigJump.title = "BigJump";
+        bigJump.addFrame(bigPlayerSprites.getSprite(6), 0.1f);
+        bigJump.setLoop(false);
+
+
+        AnimationState die = new AnimationState();
+        die.title = "Die";
+        die.addFrame(playerSprites.getSprite(6), 0.1f);
+        die.setLoop(false);
+
+        StateMachine stateMachine = new StateMachine();
+        stateMachine.addState(run);
+        stateMachine.addState(idle);
+        stateMachine.addState(switchDirection);
+        stateMachine.addState(jump);
+        stateMachine.addState(die);
+
+        stateMachine.addState(bigRun);
+        stateMachine.addState(bigIdle);
+        stateMachine.addState(bigSwitchDirection);
+        stateMachine.addState(bigJump);
+
+        stateMachine.setDefaultState(idle.title);
+        stateMachine.addState(run.title, switchDirection.title, "switchDirection");
+        stateMachine.addState(run.title, idle.title, "stopRunning");
+        stateMachine.addState(run.title, jump.title, "jump");
+        stateMachine.addState(switchDirection.title, idle.title, "stopRunning");
+        stateMachine.addState(switchDirection.title, run.title, "startRunning");
+        stateMachine.addState(switchDirection.title, jump.title, "jump");
+        stateMachine.addState(idle.title, run.title, "startRunning");
+        stateMachine.addState(idle.title, jump.title, "jump");
+        stateMachine.addState(jump.title, idle.title, "stopJumping");
+
+        stateMachine.addState(bigRun.title, bigSwitchDirection.title, "switchDirection");
+        stateMachine.addState(bigRun.title, bigIdle.title, "stopRunning");
+        stateMachine.addState(bigRun.title, bigJump.title, "jump");
+        stateMachine.addState(bigSwitchDirection.title, bigIdle.title, "stopRunning");
+        stateMachine.addState(bigSwitchDirection.title, bigRun.title, "startRunning");
+        stateMachine.addState(bigSwitchDirection.title, bigJump.title, "jump");
+        stateMachine.addState(bigIdle.title, bigRun.title, "startRunning");
+        stateMachine.addState(bigIdle.title, bigJump.title, "jump");
+        stateMachine.addState(bigJump.title, bigIdle.title, "stopJumping");
+
+        stateMachine.addState(run.title, bigRun.title, "powerup");
+        stateMachine.addState(idle.title, bigIdle.title, "powerup");
+        stateMachine.addState(switchDirection.title, bigSwitchDirection.title, "powerup");
+        stateMachine.addState(jump.title, bigJump.title, "powerup");
+
+        stateMachine.addState(bigRun.title, run.title, "damage");
+        stateMachine.addState(bigIdle.title, idle.title, "damage");
+        stateMachine.addState(bigSwitchDirection.title, switchDirection.title, "damage");
+        stateMachine.addState(bigJump.title, jump.title, "damage");
+
+        stateMachine.addState(run.title, die.title, "die");
+        stateMachine.addState(switchDirection.title, die.title, "die");
+        stateMachine.addState(idle.title, die.title, "die");
+        stateMachine.addState(jump.title, die.title, "die");
+        stateMachine.addState(bigRun.title, run.title, "die");
+        stateMachine.addState(bigSwitchDirection.title, switchDirection.title, "die");
+        stateMachine.addState(bigIdle.title, idle.title, "die");
+        stateMachine.addState(bigJump.title, jump.title, "die");
+        ratgirl.addComponent(stateMachine);
+
+        PillboxCollider pb = new PillboxCollider();
+        pb.width = 0.21f;
+        pb.height = 0.25f;
+        ratgirl.addComponent(pb);
+
+        Rigidbody2D rb = new Rigidbody2D();
+        rb.setBodyType(BodyType.Dynamic);
+        rb.setContinuousCollision(false);
+        rb.setFixedRotation(true);
+        rb.setMass(25.0f);
+        ratgirl.addComponent(rb);
+
+        ratgirl.addComponent(new PlayerController());
+
+        ratgirl.transform.zIndex = 10;
+
+        return ratgirl;
+    }
+
     public static GameObject generateMario() {
-        Spritesheet playerSprites = AssetPool.getSpritesheet("assets/images/spritesheet.png");
-        Spritesheet bigPlayerSprites = AssetPool.getSpritesheet("assets/images/bigSpritesheet.png");
+        Spritesheet playerSprites = ResourcePool.getSpritesheet("assets/images/spritesheet.png");
+        Spritesheet bigPlayerSprites = ResourcePool.getSpritesheet("assets/images/bigSpritesheet.png");
         GameObject mario = generateSpriteObject(playerSprites.getSprite(0), 0.25f, 0.25f);
 
         // Little mario animations
@@ -209,7 +347,7 @@ public class Prefabs {
     }
 
     public static GameObject generateQuestionBlock() {
-        Spritesheet playerSprites = AssetPool.getSpritesheet("assets/images/items.png");
+        Spritesheet playerSprites = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject questionBlock = generateSpriteObject(playerSprites.getSprite(0), 0.25f, 0.25f);
 
         AnimationState flicker = new AnimationState();
@@ -245,7 +383,7 @@ public class Prefabs {
     }
 
     public static GameObject generateBlockCoin() {
-        Spritesheet items = AssetPool.getSpritesheet("assets/images/items.png");
+        Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject coin = generateSpriteObject(items.getSprite(7), 0.25f, 0.25f);
 
         AnimationState coinFlip = new AnimationState();
@@ -268,7 +406,7 @@ public class Prefabs {
     }
 
     public static GameObject generateCoin() {
-        Spritesheet items = AssetPool.getSpritesheet("assets/images/items.png");
+        Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject coin = generateSpriteObject(items.getSprite(7), 0.25f, 0.25f);
 
         AnimationState coinFlip = new AnimationState();
@@ -296,7 +434,7 @@ public class Prefabs {
     }
 
     public static GameObject generateGoomba() {
-        Spritesheet sprites = AssetPool.getSpritesheet("assets/images/spritesheet.png");
+        Spritesheet sprites = ResourcePool.getSpritesheet("assets/images/spritesheet.png");
         GameObject goomba = generateSpriteObject(sprites.getSprite(14), 0.25f, 0.25f);
 
         AnimationState walk = new AnimationState();
@@ -333,7 +471,7 @@ public class Prefabs {
     }
 
     public static GameObject generateTurtle() {
-        Spritesheet turtleSprites = AssetPool.getSpritesheet("assets/images/turtle.png");
+        Spritesheet turtleSprites = ResourcePool.getSpritesheet("assets/images/turtle.png");
         GameObject turtle = generateSpriteObject(turtleSprites.getSprite(0), 0.25f, 0.35f);
 
         AnimationState walk = new AnimationState();
@@ -371,7 +509,7 @@ public class Prefabs {
     }
 
     public static GameObject generateFireball(Vector2f position) {
-        Spritesheet items = AssetPool.getSpritesheet("assets/images/items.png");
+        Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject fireball = generateSpriteObject(items.getSprite(32), 0.18f, 0.18f);
         fireball.transform.position = position;
 
@@ -390,7 +528,7 @@ public class Prefabs {
     }
 
     public static GameObject generateFlagtop() {
-        Spritesheet items = AssetPool.getSpritesheet("assets/images/items.png");
+        Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject flagtop = generateSpriteObject(items.getSprite(6), 0.25f, 0.25f);
 
         Rigidbody2D rb = new Rigidbody2D();
@@ -409,7 +547,7 @@ public class Prefabs {
     }
 
     public static GameObject generateFlagPole() {
-        Spritesheet items = AssetPool.getSpritesheet("assets/images/items.png");
+        Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject flagtop = generateSpriteObject(items.getSprite(33), 0.25f, 0.25f);
 
         Rigidbody2D rb = new Rigidbody2D();
@@ -428,7 +566,7 @@ public class Prefabs {
     }
 
     public static GameObject generateMushroom() {
-        Spritesheet items = AssetPool.getSpritesheet("assets/images/items.png");
+        Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject mushroom = generateSpriteObject(items.getSprite(10), 0.25f, 0.25f);
 
         Rigidbody2D rb = new Rigidbody2D();
@@ -446,7 +584,7 @@ public class Prefabs {
     }
 
     public static GameObject generateFlower() {
-        Spritesheet items = AssetPool.getSpritesheet("assets/images/items.png");
+        Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject flower = generateSpriteObject(items.getSprite(20), 0.25f, 0.25f);
 
         Rigidbody2D rb = new Rigidbody2D();
@@ -464,7 +602,7 @@ public class Prefabs {
     }
 
     public static GameObject generatePipe(Direction direction) {
-        Spritesheet pipes = AssetPool.getSpritesheet("assets/images/pipes.png");
+        Spritesheet pipes = ResourcePool.getSpritesheet("assets/images/pipes.png");
         int index = direction == Direction.Down ? 0 :
                     direction == Direction.Up ? 1 :
                     direction == Direction.Right ? 2 :

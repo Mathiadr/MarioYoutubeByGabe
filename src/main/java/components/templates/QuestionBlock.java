@@ -1,5 +1,7 @@
-package components;
+package components.templates;
 
+import components.PlayerController;
+import components.StateMachine;
 import jade.GameObject;
 import jade.Prefabs;
 import jade.Window;
@@ -38,11 +40,7 @@ public class QuestionBlock extends Block {
     }
 
     private void doPowerup(PlayerController playerController) {
-        if (playerController.isSmall()) {
-            spawnMushroom();
-        } else {
-            spawnFlower();
-        }
+        spawnFlower();
     }
 
     private void doCoin(PlayerController playerController) {

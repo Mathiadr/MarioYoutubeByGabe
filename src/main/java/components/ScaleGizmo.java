@@ -1,5 +1,6 @@
 package components;
 
+import components.editorTools.Gizmo;
 import editor.PropertiesWindow;
 import jade.MouseListener;
 

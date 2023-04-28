@@ -1,12 +1,11 @@
 package components;
 
 import editor.JImGui;
-import imgui.ImGui;
 import jade.Transform;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import renderer.Texture;
-import util.AssetPool;
+import util.ResourcePool;
 
 public class SpriteRenderer extends Component {
 
@@ -17,15 +16,15 @@ public class SpriteRenderer extends Component {
     private transient boolean isDirty = true;
 
     @Override
-    public void start() {
+    public void onStart() {
         if (this.sprite.getTexture() != null) {
-            this.sprite.setTexture(AssetPool.getTexture(this.sprite.getTexture().getFilepath()));
+            this.sprite.setTexture(ResourcePool.getTexture(this.sprite.getTexture().getFilepath()));
         }
         this.lastTransform = gameObject.transform.copy();
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (!this.lastTransform.equals(this.gameObject.transform)) {
             this.gameObject.transform.copy(this.lastTransform);
             isDirty = true;

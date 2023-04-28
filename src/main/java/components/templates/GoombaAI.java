@@ -1,5 +1,8 @@
-package components;
+package components.templates;
 
+import components.Component;
+import components.PlayerController;
+import components.StateMachine;
 import jade.Camera;
 import jade.GameObject;
 import jade.Window;
@@ -7,7 +10,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
 import physics2d.components.Rigidbody2D;
-import util.AssetPool;
+import util.ResourcePool;
 
 public class GoombaAI extends Component {
 
@@ -23,14 +26,14 @@ public class GoombaAI extends Component {
     private transient StateMachine stateMachine;
 
     @Override
-    public void start() {
+    public void onStart() {
         this.stateMachine = gameObject.getComponent(StateMachine.class);
         this.rb = gameObject.getComponent(Rigidbody2D.class);
         this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         Camera camera = Window.getScene().camera();
         if (this.gameObject.transform.position.x >
                 camera.position.x + camera.getProjectionSize().x * camera.getZoom()) {
@@ -86,13 +89,6 @@ public class GoombaAI extends Component {
                     contactNormal.y > 0.58f) {
                 playerController.enemyBounce();
                 stomp();
-            } else if (!playerController.isDead() && !playerController.isInvincible()) {
-                playerController.die();
-                if (!playerController.isDead()) {
-                    contact.setEnabled(false);
-                }
-            } else if (!playerController.isDead() && playerController.isInvincible()) {
-                contact.setEnabled(false);
             }
         } else if (Math.abs(contactNormal.y) < 0.1f) {
             goingRight = contactNormal.x < 0;
@@ -117,7 +113,7 @@ public class GoombaAI extends Component {
         this.stateMachine.trigger("squashMe");
         this.rb.setIsSensor();
         if (playSound) {
-            AssetPool.getSound("assets/sounds/bump.ogg").play();
+            ResourcePool.getSound("assets/sounds/bump.ogg").play();
         }
     }
 }

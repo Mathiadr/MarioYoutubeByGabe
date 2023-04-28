@@ -1,5 +1,8 @@
-package components;
+package components.templates;
 
+import components.Component;
+import components.PlayerController;
+import components.StateMachine;
 import jade.Camera;
 import jade.GameObject;
 import jade.Window;
@@ -7,7 +10,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
 import physics2d.components.Rigidbody2D;
-import util.AssetPool;
+import util.ResourcePool;
 
 public class TurtleAI extends Component {
     private transient boolean goingRight = false;
@@ -23,14 +26,14 @@ public class TurtleAI extends Component {
     private float movingDebounce = 0.32f;
 
     @Override
-    public void start() {
+    public void onStart() {
         this.stateMachine = this.gameObject.getComponent(StateMachine.class);
         this.rb = gameObject.getComponent(Rigidbody2D.class);
         this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         movingDebounce -= dt;
         Camera camera = Window.getScene().camera();
         if (this.gameObject.transform.position.x >
@@ -84,7 +87,7 @@ public class TurtleAI extends Component {
         this.rb.setAngularVelocity(0.0f);
         this.rb.setGravityScale(0.0f);
         this.stateMachine.trigger("squashMe");
-        AssetPool.getSound("assets/sounds/bump.ogg").play();
+        ResourcePool.getSound("assets/sounds/bump.ogg").play();
     }
 
     @Override
@@ -93,7 +96,7 @@ public class TurtleAI extends Component {
         if (isDead && isMoving && goomba != null) {
             goomba.stomp();
             contact.setEnabled(false);
-            AssetPool.getSound("assets/sounds/kick.ogg").play();
+            ResourcePool.getSound("assets/sounds/kick.ogg").play();
         }
 
         PlayerController playerController = obj.getComponent(PlayerController.class);
@@ -127,7 +130,7 @@ public class TurtleAI extends Component {
         } else if (Math.abs(contactNormal.y) < 0.1f && !obj.isDead() && obj.getComponent(MushroomAI.class) == null) {
             goingRight = contactNormal.x < 0;
             if (isMoving && isDead) {
-                AssetPool.getSound("assets/sounds/bump.ogg").play();
+                ResourcePool.getSound("assets/sounds/bump.ogg").play();
             }
         }
 

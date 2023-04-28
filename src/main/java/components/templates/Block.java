@@ -1,9 +1,11 @@
-package components;
+package components.templates;
 
+import components.Component;
+import components.PlayerController;
 import jade.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import util.AssetPool;
+import util.ResourcePool;
 
 public abstract class Block extends Component {
     private transient boolean bopGoingUp = true;
@@ -15,13 +17,13 @@ public abstract class Block extends Component {
     public float bopSpeed = 0.4f;
 
     @Override
-    public void start() {
+    public void onStart() {
         this.bopStart = new Vector2f(this.gameObject.transform.position);
         this.topBopLocation = new Vector2f(bopStart).add(0.0f, 0.02f);
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (doBopAnimation) {
             if (bopGoingUp) {
                 if (this.gameObject.transform.position.y < topBopLocation.y) {
@@ -46,7 +48,7 @@ public abstract class Block extends Component {
         PlayerController playerController = obj.getComponent(PlayerController.class);
         if (active && playerController != null && contactNormal.y < -0.8f) {
             doBopAnimation = true;
-            AssetPool.getSound("assets/sounds/bump.ogg").play();
+            ResourcePool.getSound("assets/sounds/bump.ogg").play();
             playerHit(playerController);
         }
     }

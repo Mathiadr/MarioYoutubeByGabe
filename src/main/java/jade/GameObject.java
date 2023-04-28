@@ -6,7 +6,7 @@ import components.Component;
 import components.ComponentDeserializer;
 import components.SpriteRenderer;
 import imgui.ImGui;
-import util.AssetPool;
+import util.ResourcePool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +59,9 @@ public class GameObject {
         c.gameObject = this;
     }
 
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         for (int i=0; i < components.size(); i++) {
-            components.get(i).update(dt);
+            components.get(i).onUpdate(dt);
         }
     }
 
@@ -71,9 +71,9 @@ public class GameObject {
         }
     }
 
-    public void start() {
+    public void onStart() {
         for (int i=0; i < components.size(); i++) {
-            components.get(i).start();
+            components.get(i).onStart();
         }
     }
 
@@ -108,7 +108,7 @@ public class GameObject {
 
         SpriteRenderer sprite = obj.getComponent(SpriteRenderer.class);
         if (sprite != null && sprite.getTexture() != null) {
-            sprite.setTexture(AssetPool.getTexture(sprite.getTexture().getFilepath()));
+            sprite.setTexture(ResourcePool.getTexture(sprite.getTexture().getFilepath()));
         }
 
         return obj;

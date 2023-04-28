@@ -93,7 +93,7 @@ public class StateMachine extends Component {
     }
 
     @Override
-    public void start() {
+    public void onStart() {
         for (AnimationState state : states) {
             if (state.title.equals(defaultStateTitle)) {
                 currentState = state;
@@ -103,7 +103,7 @@ public class StateMachine extends Component {
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (currentState != null) {
             currentState.update(dt);
             SpriteRenderer sprite = gameObject.getComponent(SpriteRenderer.class);

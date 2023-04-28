@@ -1,10 +1,8 @@
 package jade;
 
-import editor.GameViewWindow;
 import observers.EventSystem;
 import observers.Observer;
 import observers.events.Event;
-import observers.events.EventType;
 import org.joml.Vector4f;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -15,11 +13,13 @@ import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
 import physics2d.Physics2D;
 import renderer.*;
-import scenes.LevelEditorSceneInitializer;
-import scenes.LevelSceneInitializer;
+import scenes.LevelEditorSceneBuilder;
+import scenes.LevelSceneBuilder;
 import scenes.Scene;
-import scenes.SceneInitializer;
-import util.AssetPool;
+import scenes.SceneBuilder;
+import util.ResourcePool;
+
+import java.awt.*;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -34,7 +34,7 @@ public class Window implements Observer {
     private ImGuiLayer imguiLayer;
     private Framebuffer framebuffer;
     private PickingTexture pickingTexture;
-    private boolean runtimePlaying = false;
+    private boolean runtimePlaying = true;
 
     private static Window window = null;
 
@@ -42,24 +42,27 @@ public class Window implements Observer {
     private long audioDevice;
 
     private static Scene currentScene;
+    private static SceneBuilder currentSceneBuilder;
 
     private Window() {
-        this.width = 1920;
-        this.height = 1080;
-        this.title = "Jade";
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        this.width = gd.getDisplayMode().getWidth();
+        this.height = gd.getDisplayMode().getHeight();
+        this.title = "Brunost Engine";
         EventSystem.addObserver(this);
     }
-
-    public static void changeScene(SceneInitializer sceneInitializer) {
+ 
+    public static void changeScene(SceneBuilder sceneBuilder) {
         if (currentScene != null) {
             currentScene.destroy();
         }
 
+        currentSceneBuilder = sceneBuilder;
         getImguiLayer().getPropertiesWindow().setActiveGameObject(null);
-        currentScene = new Scene(sceneInitializer);
-        currentScene.load();
+        currentScene = new Scene(sceneBuilder);
         currentScene.init();
-        currentScene.start();
+        currentScene.load();
+        currentScene.onStart();
     }
 
     public static Window get() {
@@ -79,7 +82,6 @@ public class Window implements Observer {
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
-        init();
         loop();
 
         // Destroy the audio context
@@ -158,14 +160,12 @@ public class Window implements Observer {
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-        this.framebuffer = new Framebuffer(3840, 2160);
-        this.pickingTexture = new PickingTexture(3840, 2160);
-        glViewport(0, 0, 3840, 2160);
+        this.framebuffer = new Framebuffer(Window.getWidth(), Window.getHeight());
+        this.pickingTexture = new PickingTexture(Window.getWidth(), Window.getHeight()); // TODO: CHANGE THESE
+        glViewport(0, 0, Window.getWidth(), Window.getHeight());
 
         this.imguiLayer = new ImGuiLayer(glfwWindow, pickingTexture);
         this.imguiLayer.initImGui();
-
-        Window.changeScene(new LevelEditorSceneInitializer());
     }
 
     public void loop() {
@@ -173,8 +173,8 @@ public class Window implements Observer {
         float endTime;
         float dt = -1.0f;
 
-        Shader defaultShader = AssetPool.getShader("assets/shaders/default.glsl");
-        Shader pickingShader = AssetPool.getShader("assets/shaders/pickingShader.glsl");
+        Shader defaultShader = ResourcePool.getShader("assets/shaders/default.glsl");
+        Shader pickingShader = ResourcePool.getShader("assets/shaders/pickingShader.glsl");
 
         while (!glfwWindowShouldClose(glfwWindow)) {
             // Poll events
@@ -184,7 +184,7 @@ public class Window implements Observer {
             glDisable(GL_BLEND);
             pickingTexture.enableWriting();
 
-            glViewport(0, 0, 3840, 2160);
+            glViewport(0, 0, Window.getWidth(), Window.getHeight());  // TODO: CHANGE THESE
             glClearColor(0, 0, 0, 0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -205,7 +205,7 @@ public class Window implements Observer {
             if (dt >= 0) {
                 Renderer.bindShader(defaultShader);
                 if (runtimePlaying) {
-                    currentScene.update(dt);
+                    currentScene.onUpdate(dt);
                 } else {
                     currentScene.editorUpdate(dt);
                 }
@@ -227,11 +227,11 @@ public class Window implements Observer {
     }
 
     public static int getWidth() {
-        return 3840;//get().width;
+        return get().width;
     }
 
     public static int getHeight() {
-        return 2160;//get().height;
+        return get().height;
     }
 
     public static void setWidth(int newWidth) {
@@ -254,20 +254,28 @@ public class Window implements Observer {
         return get().imguiLayer;
     }
 
+    public static SceneBuilder getCurrentSceneBuilder() {
+        return currentSceneBuilder;
+    }
+
+    public static void setCurrentSceneBuilder(SceneBuilder currentSceneBuilder) {
+        Window.currentSceneBuilder = currentSceneBuilder;
+    }
+
     @Override
     public void onNotify(GameObject object, Event event) {
         switch (event.type) {
             case GameEngineStartPlay:
                 this.runtimePlaying = true;
                 currentScene.save();
-                Window.changeScene(new LevelSceneInitializer());
+                Window.changeScene(currentSceneBuilder);
                 break;
             case GameEngineStopPlay:
                 this.runtimePlaying = false;
-                Window.changeScene(new LevelEditorSceneInitializer());
+                Window.changeScene(currentSceneBuilder);
                 break;
             case LoadLevel:
-                Window.changeScene(new LevelEditorSceneInitializer());
+                Window.changeScene(currentSceneBuilder);
                 break;
             case SaveLevel:
                 currentScene.save();

@@ -1,5 +1,6 @@
-package components;
+package components.editorTools;
 
+import components.Sprite;
 import editor.PropertiesWindow;
 import jade.MouseListener;
 

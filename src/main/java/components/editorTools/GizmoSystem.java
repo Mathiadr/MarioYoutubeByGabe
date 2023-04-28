@@ -1,5 +1,8 @@
-package components;
+package components.editorTools;
 
+import components.Component;
+import components.ScaleGizmo;
+import components.Spritesheet;
 import jade.KeyListener;
 import jade.Window;
 
@@ -15,7 +18,7 @@ public class GizmoSystem extends Component {
     }
 
     @Override
-    public void start() {
+    public void onStart() {
         gameObject.addComponent(new TranslateGizmo(gizmos.getSprite(1),
                 Window.getImguiLayer().getPropertiesWindow()));
         gameObject.addComponent(new ScaleGizmo(gizmos.getSprite(2),

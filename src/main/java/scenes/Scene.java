@@ -4,11 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import components.Component;
 import components.ComponentDeserializer;
-import imgui.ImGui;
-import jade.Camera;
-import jade.GameObject;
-import jade.GameObjectDeserializer;
-import jade.Transform;
+import jade.*;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
 import renderer.Renderer;
@@ -20,9 +16,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 public class Scene {
-
+    private String fileName;
     private Renderer renderer;
     private Camera camera;
     private boolean isRunning;
@@ -30,10 +27,12 @@ public class Scene {
     private List<GameObject> pendingObjects;
     private Physics2D physics2D;
 
-    private SceneInitializer sceneInitializer;
+    private SceneBuilder sceneBuilder;
 
-    public Scene(SceneInitializer sceneInitializer) {
-        this.sceneInitializer = sceneInitializer;
+    public GameObject lastAddedObject;
+
+    public Scene(SceneBuilder sceneBuilder) {
+        this.sceneBuilder = sceneBuilder;
         this.physics2D = new Physics2D();
         this.renderer = new Renderer();
         this.gameObjects = new ArrayList<>();
@@ -47,14 +46,15 @@ public class Scene {
 
     public void init() {
         this.camera = new Camera(new Vector2f(0, 0));
-        this.sceneInitializer.loadResources(this);
-        this.sceneInitializer.init(this);
+        this.sceneBuilder.loadResources(this);
+        this.sceneBuilder.init(this);
+        this.fileName = this.sceneBuilder.assignTitleToScene();
     }
 
-    public void start() {
+    public void onStart() {
         for (int i=0; i < gameObjects.size(); i++) {
             GameObject go = gameObjects.get(i);
-            go.start();
+            go.onStart();
             this.renderer.add(go);
             this.physics2D.add(go);
         }
@@ -63,9 +63,44 @@ public class Scene {
 
     public void addGameObjectToScene(GameObject go) {
         if (!isRunning) {
+            lastAddedObject = go;
             gameObjects.add(go);
         } else {
             pendingObjects.add(go);
+        }
+    }
+
+    /**
+     *
+     * @author Mathias Ratdal
+     * @param gameObject
+     */
+    public void placeGameObjectRelativeToLastPlacement(GameObject gameObject, Direction direction) {
+        if (lastAddedObject != null) {
+            switch (direction){
+                case Up -> {
+                    gameObject.transform.position.x = lastAddedObject.transform.position.x;
+                    gameObject.transform.position.y = lastAddedObject.transform.position.y + 0.25f;
+                    addGameObjectToScene(gameObject);
+                }
+                case Down -> {
+                    gameObject.transform.position.x = lastAddedObject.transform.position.x;
+                    gameObject.transform.position.y = lastAddedObject.transform.position.y - 0.25f;
+                    addGameObjectToScene(gameObject);
+                }
+                case Left -> {
+                    gameObject.transform.position.x = lastAddedObject.transform.position.x - 0.25f;
+                    gameObject.transform.position.y = lastAddedObject.transform.position.y;
+                    addGameObjectToScene(gameObject);
+                }
+                case Right -> {
+                    gameObject.transform.position.x = lastAddedObject.transform.position.x + 0.25f;
+                    gameObject.transform.position.y = lastAddedObject.transform.position.y;
+                    addGameObjectToScene(gameObject);
+                }
+            }
+        } else {
+            System.err.println("[Error] Could not place relative to last object place because it is null!");
         }
     }
 
@@ -113,7 +148,7 @@ public class Scene {
 
         for (GameObject go : pendingObjects) {
             gameObjects.add(go);
-            go.start();
+            go.onStart();
             this.renderer.add(go);
             this.physics2D.add(go);
         }
@@ -127,13 +162,13 @@ public class Scene {
         return result.orElse(null);
     }
 
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         this.camera.adjustProjection();
         this.physics2D.update(dt);
 
         for (int i=0; i < gameObjects.size(); i++) {
             GameObject go = gameObjects.get(i);
-            go.update(dt);
+            go.onUpdate(dt);
 
             if (go.isDead()) {
                 gameObjects.remove(i);
@@ -145,7 +180,7 @@ public class Scene {
 
         for (GameObject go : pendingObjects) {
             gameObjects.add(go);
-            go.start();
+            go.onStart();
             this.renderer.add(go);
             this.physics2D.add(go);
         }
@@ -161,7 +196,7 @@ public class Scene {
     }
 
     public void imgui() {
-        this.sceneInitializer.imgui();
+        this.sceneBuilder.imgui();
     }
 
     public GameObject createGameObject(String name) {
@@ -180,7 +215,9 @@ public class Scene {
                 .create();
 
         try {
-            FileWriter writer = new FileWriter("level.txt");
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(fileName).append(".txt");
+            FileWriter writer = new FileWriter(stringBuilder.toString());
             List<GameObject> objsToSerialize = new ArrayList<>();
             for (GameObject obj : this.gameObjects) {
                 if (obj.doSerialization()) {
@@ -204,7 +241,11 @@ public class Scene {
 
         String inFile = "";
         try {
-            inFile = new String(Files.readAllBytes(Paths.get("level.txt")));
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(fileName);
+            stringBuilder.append(".txt");
+            System.out.println(stringBuilder.toString());
+            inFile = new String(Files.readAllBytes(Paths.get(stringBuilder.toString())));
         } catch (IOException e) {
             e.printStackTrace();
         }

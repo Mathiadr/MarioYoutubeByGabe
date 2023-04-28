@@ -1,6 +1,10 @@
 package scenes;
 
 import components.*;
+import components.cameras.EditorCamera;
+import components.editorTools.GizmoSystem;
+import components.editorTools.GridLines;
+import components.templates.BreakableBrick;
 import imgui.ImGui;
 import imgui.ImVec2;
 import jade.*;
@@ -8,24 +12,33 @@ import org.joml.Vector2f;
 import physics2d.components.Box2DCollider;
 import physics2d.components.Rigidbody2D;
 import physics2d.enums.BodyType;
-import util.AssetPool;
+import util.ResourcePool;
 
 import java.io.File;
 import java.util.Collection;
 
-public class LevelEditorSceneInitializer extends SceneInitializer {
+public class LevelEditorSceneBuilder extends SceneBuilder {
 
     private Spritesheet sprites;
+    private Spritesheet defaultTilesSpritesheet;
+    private Spritesheet spritesSpritesheet;
     private GameObject levelEditorStuff;
 
-    public LevelEditorSceneInitializer() {
+    public LevelEditorSceneBuilder() {
 
     }
 
     @Override
+    public String assignTitleToScene() {
+        return "level";
+    }
+
+    @Override
     public void init(Scene scene) {
-        sprites = AssetPool.getSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png");
-        Spritesheet gizmos = AssetPool.getSpritesheet("assets/images/gizmos.png");
+        sprites = ResourcePool.getSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png");
+        Spritesheet gizmos = ResourcePool.getSpritesheet("assets/images/gizmos.png");
+        spritesSpritesheet = ResourcePool.getSpritesheet("assets/images/RatGirlSpritesheet.png");
+        defaultTilesSpritesheet = ResourcePool.getSpritesheet("assets/images/defaultTiles.png");
 
         levelEditorStuff = scene.createGameObject("LevelEditor");
         levelEditorStuff.setNoSerialize();
@@ -39,54 +52,60 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
 
     @Override
     public void loadResources(Scene scene) {
-        AssetPool.getShader("assets/shaders/default.glsl");
+        ResourcePool.getShader("assets/shaders/default.glsl");
 
-        AssetPool.addSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png",
-                new Spritesheet(AssetPool.getTexture("assets/images/spritesheets/decorationsAndBlocks.png"),
+        ResourcePool.addSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png",
+                new Spritesheet(ResourcePool.getTexture("assets/images/spritesheets/decorationsAndBlocks.png"),
                         16, 16, 81, 0));
-        AssetPool.addSpritesheet("assets/images/spritesheet.png",
-                new Spritesheet(AssetPool.getTexture("assets/images/spritesheet.png"),
+        ResourcePool.addSpritesheet("assets/images/spritesheet.png",
+                new Spritesheet(ResourcePool.getTexture("assets/images/spritesheet.png"),
                         16, 16, 26, 0));
-        AssetPool.addSpritesheet("assets/images/turtle.png",
-                new Spritesheet(AssetPool.getTexture("assets/images/turtle.png"),
+        ResourcePool.addSpritesheet("assets/images/turtle.png",
+                new Spritesheet(ResourcePool.getTexture("assets/images/turtle.png"),
                         16, 24, 4, 0));
-        AssetPool.addSpritesheet("assets/images/bigSpritesheet.png",
-                new Spritesheet(AssetPool.getTexture("assets/images/bigSpritesheet.png"),
+        ResourcePool.addSpritesheet("assets/images/bigSpritesheet.png",
+                new Spritesheet(ResourcePool.getTexture("assets/images/bigSpritesheet.png"),
                         16, 32, 42, 0));
-        AssetPool.addSpritesheet("assets/images/pipes.png",
-                new Spritesheet(AssetPool.getTexture("assets/images/pipes.png"),
+        ResourcePool.addSpritesheet("assets/images/pipes.png",
+                new Spritesheet(ResourcePool.getTexture("assets/images/pipes.png"),
                         32, 32, 4, 0));
-        AssetPool.addSpritesheet("assets/images/items.png",
-                new Spritesheet(AssetPool.getTexture("assets/images/items.png"),
+        ResourcePool.addSpritesheet("assets/images/items.png",
+                new Spritesheet(ResourcePool.getTexture("assets/images/items.png"),
                         16, 16, 43, 0));
-        AssetPool.addSpritesheet("assets/images/gizmos.png",
-                new Spritesheet(AssetPool.getTexture("assets/images/gizmos.png"),
+        ResourcePool.addSpritesheet("assets/images/gizmos.png",
+                new Spritesheet(ResourcePool.getTexture("assets/images/gizmos.png"),
                         24, 48, 3, 0));
-        AssetPool.getTexture("assets/images/blendImage2.png");
+        ResourcePool.getTexture("assets/images/blendImage2.png");
+        ResourcePool.addSpritesheet("assets/images/RatGirlSpritesheet.png",
+                new Spritesheet(ResourcePool.getTexture("assets/images/RatGirlSpritesheet.png"),
+                        70, 75, 8, 0));
+        ResourcePool.addSpritesheet("assets/images/defaultTiles.png",
+                new Spritesheet(ResourcePool.getTexture("assets/images/defaultTiles.png"),
+                        64, 64, 4, 1));
 
-        AssetPool.addSound("assets/sounds/main-theme-overworld.ogg", true);
-        AssetPool.addSound("assets/sounds/flagpole.ogg", false);
-        AssetPool.addSound("assets/sounds/break_block.ogg", false);
-        AssetPool.addSound("assets/sounds/bump.ogg", false);
-        AssetPool.addSound("assets/sounds/coin.ogg", false);
-        AssetPool.addSound("assets/sounds/gameover.ogg", false);
-        AssetPool.addSound("assets/sounds/jump-small.ogg", false);
-        AssetPool.addSound("assets/sounds/mario_die.ogg", false);
-        AssetPool.addSound("assets/sounds/pipe.ogg", false);
-        AssetPool.addSound("assets/sounds/powerup.ogg", false);
-        AssetPool.addSound("assets/sounds/powerup_appears.ogg", false);
-        AssetPool.addSound("assets/sounds/stage_clear.ogg", false);
-        AssetPool.addSound("assets/sounds/stomp.ogg", false);
-        AssetPool.addSound("assets/sounds/kick.ogg", false);
-        AssetPool.addSound("assets/sounds/invincible.ogg", false);
+        ResourcePool.addSound("assets/sounds/main-theme-overworld.ogg", true);
+        ResourcePool.addSound("assets/sounds/flagpole.ogg", false);
+        ResourcePool.addSound("assets/sounds/break_block.ogg", false);
+        ResourcePool.addSound("assets/sounds/bump.ogg", false);
+        ResourcePool.addSound("assets/sounds/coin.ogg", false);
+        ResourcePool.addSound("assets/sounds/gameover.ogg", false);
+        ResourcePool.addSound("assets/sounds/jump-small.ogg", false);
+        ResourcePool.addSound("assets/sounds/mario_die.ogg", false);
+        ResourcePool.addSound("assets/sounds/pipe.ogg", false);
+        ResourcePool.addSound("assets/sounds/powerup.ogg", false);
+        ResourcePool.addSound("assets/sounds/powerup_appears.ogg", false);
+        ResourcePool.addSound("assets/sounds/stage_clear.ogg", false);
+        ResourcePool.addSound("assets/sounds/stomp.ogg", false);
+        ResourcePool.addSound("assets/sounds/kick.ogg", false);
+        ResourcePool.addSound("assets/sounds/invincible.ogg", false);
 
-        AssetPool.getSound(("assets/sounds/main-theme-overworld.ogg")).stop();
+        ResourcePool.getSound(("assets/sounds/main-theme-overworld.ogg")).stop();
 
         for (GameObject g : scene.getGameObjects()) {
             if (g.getComponent(SpriteRenderer.class) != null) {
                 SpriteRenderer spr = g.getComponent(SpriteRenderer.class);
                 if (spr.getTexture() != null) {
-                    spr.setTexture(AssetPool.getTexture(spr.getTexture().getFilepath()));
+                    spr.setTexture(ResourcePool.getTexture(spr.getTexture().getFilepath()));
                 }
             }
 
@@ -195,7 +214,7 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
 
             if (ImGui.beginTabItem("Prefabs")) {
                 int uid = 0;
-                Spritesheet playerSprites = AssetPool.getSpritesheet("assets/images/spritesheet.png");
+                Spritesheet playerSprites = ResourcePool.getSpritesheet("assets/images/spritesheet.png");
                 Sprite sprite = playerSprites.getSprite(0);
                 float spriteWidth = sprite.getWidth() * 4;
                 float spriteHeight = sprite.getHeight() * 4;
@@ -210,7 +229,20 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
                 ImGui.popID();
                 ImGui.sameLine();
 
-                Spritesheet items = AssetPool.getSpritesheet("assets/images/items.png");
+                Spritesheet ratgirlSprites = ResourcePool.getSpritesheet("assets/images/RatGirlSpritesheet.png");
+                sprite = ratgirlSprites.getSprite(0);
+                id = sprite.getTexId();
+                texCoords = sprite.getTexCoords();
+
+                ImGui.pushID(uid++);
+                if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
+                    GameObject object = Prefabs.generateRatgirl();
+                    levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
+                }
+                ImGui.popID();
+                ImGui.sameLine();
+
+                Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
                 sprite = items.getSprite(0);
                 id = sprite.getTexId();
                 texCoords = sprite.getTexCoords();
@@ -244,7 +276,7 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
                 ImGui.popID();
                 ImGui.sameLine();
 
-                Spritesheet turtle = AssetPool.getSpritesheet("assets/images/turtle.png");
+                Spritesheet turtle = ResourcePool.getSpritesheet("assets/images/turtle.png");
                 sprite = turtle.getSprite(0);
                 id = sprite.getTexId();
                 texCoords = sprite.getTexCoords();
@@ -278,7 +310,7 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
                 ImGui.popID();
                 ImGui.sameLine();
 
-                Spritesheet pipes = AssetPool.getSpritesheet("assets/images/pipes.png");
+                Spritesheet pipes = ResourcePool.getSpritesheet("assets/images/pipes.png");
                 sprite = pipes.getSprite(0);
                 id = sprite.getTexId();
                 texCoords = sprite.getTexCoords();
@@ -326,7 +358,7 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
             }
 
             if (ImGui.beginTabItem("Sounds")) {
-                Collection<Sound> sounds = AssetPool.getAllSounds();
+                Collection<Sound> sounds = ResourcePool.getAllSounds();
                 for (Sound sound : sounds) {
                     File tmp = new File(sound.getFilepath());
                     if (ImGui.button(tmp.getName())) {

@@ -1,12 +1,14 @@
-package components;
+package components.templates;
 
+import components.Component;
+import components.PlayerController;
 import jade.Direction;
 import jade.GameObject;
 import jade.KeyListener;
 import jade.Window;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import util.AssetPool;
+import util.ResourcePool;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -23,12 +25,12 @@ public class Pipe extends Component {
     }
 
     @Override
-    public void start() {
+    public void onStart() {
         connectingPipe = Window.getScene().getGameObject(connectingPipeName);
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (connectingPipe == null) {
             return;
         }
@@ -74,7 +76,7 @@ public class Pipe extends Component {
                 collidingPlayer.setPosition(
                         getPlayerPosition(connectingPipe)
                 );
-                AssetPool.getSound("assets/sounds/pipe.ogg").play();
+                ResourcePool.getSound("assets/sounds/pipe.ogg").play();
             }
         }
     }

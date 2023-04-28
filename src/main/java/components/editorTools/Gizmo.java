@@ -1,5 +1,9 @@
-package components;
+package components.editorTools;
 
+import components.Component;
+import components.NonPickable;
+import components.Sprite;
+import components.SpriteRenderer;
 import editor.PropertiesWindow;
 import jade.*;
 import org.joml.Vector2f;
@@ -47,7 +51,7 @@ public class Gizmo extends Component {
     }
 
     @Override
-    public void start() {
+    public void onStart() {
         this.xAxisObject.transform.rotation = 90;
         this.yAxisObject.transform.rotation = 180;
         this.xAxisObject.transform.zIndex = 100;
@@ -57,7 +61,7 @@ public class Gizmo extends Component {
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (using) {
             this.setInactive();
         }

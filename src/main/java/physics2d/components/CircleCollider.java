@@ -37,7 +37,7 @@ public class CircleCollider extends Component {
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (resetFixtureNextFrame) {
             resetFixture();
         }

@@ -1,6 +1,6 @@
 package components;
 
-import util.AssetPool;
+import util.ResourcePool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class AnimationState {
 
     public void refreshTextures() {
         for (Frame frame : animationFrames) {
-            frame.sprite.setTexture(AssetPool.getTexture(frame.sprite.getTexture().getFilepath()));
+            frame.sprite.setTexture(ResourcePool.getTexture(frame.sprite.getTexture().getFilepath()));
         }
     }
 

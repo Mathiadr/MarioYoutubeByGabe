@@ -18,11 +18,11 @@ public abstract class Component {
 
     public transient GameObject gameObject = null;
 
-    public void start() {
+    public void onStart() {
 
     }
 
-    public void update(float dt) {
+    public void onUpdate(float dt) {
 
     }
 

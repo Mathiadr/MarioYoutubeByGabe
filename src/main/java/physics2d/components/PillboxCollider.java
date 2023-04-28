@@ -17,7 +17,7 @@ public class PillboxCollider extends Component {
     public Vector2f offset = new Vector2f();
 
     @Override
-    public void start() {
+    public void onStart() {
         this.bottomCircle.gameObject = this.gameObject;
         this.box.gameObject = this.gameObject;
         recalculateColliders();
@@ -35,7 +35,7 @@ public class PillboxCollider extends Component {
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (resetFixtureNextFrame) {
             resetFixture();
         }

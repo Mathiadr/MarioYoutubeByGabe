@@ -1,6 +1,7 @@
-package components;
+package components.templates;
 
-import jade.Camera;
+import components.Component;
+import components.PlayerController;
 import jade.GameObject;
 import jade.Window;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -25,14 +26,14 @@ public class Fireball extends Component {
     }
 
     @Override
-    public void start() {
+    public void onStart() {
         this.rb = this.gameObject.getComponent(Rigidbody2D.class);
         this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
         fireballCount++;
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         lifetime -= dt;
         if (lifetime <= 0) {
             disappear();

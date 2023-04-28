@@ -1,10 +1,13 @@
-package components;
+package components.templates;
 
+import components.Component;
+import components.Ground;
+import components.PlayerController;
 import jade.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.components.Rigidbody2D;
-import util.AssetPool;
+import util.ResourcePool;
 
 public class MushroomAI extends Component {
     private transient boolean goingRight = true;
@@ -14,13 +17,13 @@ public class MushroomAI extends Component {
     private transient boolean hitPlayer = false;
 
     @Override
-    public void start() {
+    public void onStart() {
         this.rb = gameObject.getComponent(Rigidbody2D.class);
-        AssetPool.getSound("assets/sounds/powerup_appears.ogg").play();
+        ResourcePool.getSound("assets/sounds/powerup_appears.ogg").play();
     }
 
     @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (goingRight && Math.abs(rb.getVelocity().x) < maxSpeed) {
             rb.addVelocity(speed);
         } else if (!goingRight && Math.abs(rb.getVelocity().x) < maxSpeed) {
@@ -34,11 +37,7 @@ public class MushroomAI extends Component {
         if (playerController != null) {
             contact.setEnabled(false);
             if (!hitPlayer) {
-                if (playerController.isSmall()) {
-                    playerController.powerup();
-                } else {
-                    AssetPool.getSound("assets/sounds/coin.ogg").play();
-                }
+                ResourcePool.getSound("assets/sounds/coin.ogg").play();
                 this.gameObject.destroy();
                 hitPlayer = true;
             }

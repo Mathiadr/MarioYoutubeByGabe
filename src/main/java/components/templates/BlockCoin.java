@@ -1,20 +1,21 @@
-package components;
+package components.templates;
 
+import components.Component;
 import org.joml.Vector2f;
-import util.AssetPool;
+import util.ResourcePool;
 
 public class BlockCoin extends Component {
     private Vector2f topY;
     private float coinSpeed = 1.4f;
 
      @Override
-    public void start() {
+    public void onStart() {
          topY = new Vector2f(this.gameObject.transform.position.y).add(0, 0.5f);
-         AssetPool.getSound("assets/sounds/coin.ogg").play();
+         ResourcePool.getSound("assets/sounds/coin.ogg").play();
      }
 
      @Override
-    public void update(float dt) {
+    public void onUpdate(float dt) {
          if (this.gameObject.transform.position.y < topY.y) {
              this.gameObject.transform.position.y += dt * coinSpeed;
              this.gameObject.transform.scale.x -= (0.5f * dt) % -1.0f;
