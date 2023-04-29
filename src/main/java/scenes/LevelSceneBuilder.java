@@ -2,7 +2,7 @@ package scenes;
 
 import components.*;
 import components.cameras.GameCamera;
-import jade.*;
+import brunostEngine.*;
 import util.ResourcePool;
 
 public class LevelSceneBuilder extends SceneBuilder {

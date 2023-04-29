@@ -1,10 +1,10 @@
 package components.templates;
 
-import components.PlayerController;
+import components.DefaultPlayerController;
 import components.StateMachine;
-import jade.GameObject;
-import jade.Prefabs;
-import jade.Window;
+import brunostEngine.GameObject;
+import brunostEngine.Prefabs;
+import brunostEngine.Window;
 
 public class QuestionBlock extends Block {
     private enum BlockType {
@@ -16,16 +16,16 @@ public class QuestionBlock extends Block {
     public BlockType blockType = BlockType.Coin;
 
     @Override
-    void playerHit(PlayerController playerController) {
+    void playerHit(DefaultPlayerController defaultPlayerController) {
         switch(blockType) {
             case Coin:
-                doCoin(playerController);
+                doCoin(defaultPlayerController);
                 break;
             case Powerup:
-                doPowerup(playerController);
+                doPowerup(defaultPlayerController);
                 break;
             case Invincibility:
-                doInvincibility(playerController);
+                doInvincibility(defaultPlayerController);
                 break;
         }
 
@@ -36,14 +36,14 @@ public class QuestionBlock extends Block {
         }
     }
 
-    private void doInvincibility(PlayerController playerController) {
+    private void doInvincibility(DefaultPlayerController defaultPlayerController) {
     }
 
-    private void doPowerup(PlayerController playerController) {
+    private void doPowerup(DefaultPlayerController defaultPlayerController) {
         spawnFlower();
     }
 
-    private void doCoin(PlayerController playerController) {
+    private void doCoin(DefaultPlayerController defaultPlayerController) {
         GameObject coin = Prefabs.generateBlockCoin();
         coin.transform.position.set(this.gameObject.transform.position);
         coin.transform.position.y += 0.25f;

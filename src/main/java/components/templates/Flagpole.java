@@ -1,8 +1,7 @@
 package components.templates;
 
 import components.Component;
-import components.PlayerController;
-import jade.GameObject;
+import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 
@@ -15,7 +14,7 @@ public class Flagpole extends Component {
 
     @Override
     public void beginCollision(GameObject obj, Contact contact, Vector2f contactNormal) {
-        PlayerController playerController = obj.getComponent(PlayerController.class);
+        MarioController playerController = obj.getComponent(MarioController.class);
         if (playerController != null) {
             playerController.playWinAnimation(this.gameObject);
         }

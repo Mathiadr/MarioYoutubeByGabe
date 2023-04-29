@@ -2,8 +2,8 @@ package components.templates;
 
 import components.Component;
 import components.Ground;
-import components.PlayerController;
-import jade.GameObject;
+import components.DefaultPlayerController;
+import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.components.Rigidbody2D;
@@ -33,8 +33,8 @@ public class MushroomAI extends Component {
     
     @Override 
     public void preSolve(GameObject obj, Contact contact, Vector2f contactNormal) {
-        PlayerController playerController = obj.getComponent(PlayerController.class);
-        if (playerController != null) {
+        DefaultPlayerController defaultPlayerController = obj.getComponent(DefaultPlayerController.class);
+        if (defaultPlayerController != null) {
             contact.setEnabled(false);
             if (!hitPlayer) {
                 ResourcePool.getSound("assets/sounds/coin.ogg").play();

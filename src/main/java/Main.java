@@ -1,10 +1,7 @@
+import brunostEngine.*;
 import components.*;
 import components.cameras.FollowTargetCamera;
 import components.editorTools.GridLines;
-import jade.Direction;
-import jade.GameObject;
-import jade.Prefabs;
-import jade.Window;
 import org.joml.Vector2f;
 import scenes.Scene;
 import scenes.SceneBuilder;
@@ -82,17 +79,18 @@ public class Main {
 
                 ArrayList<GameObject> gameObjects = new ArrayList<>();
                 GameObject ratgirl = Prefabs.generateRatgirl();
-                ratgirl.transform.position = new Vector2f(250, 2);
+                ratgirl.transform.position = new Vector2f(2, 10);
                 gameObjects.add(ratgirl);
                 scene.addGameObjectToScene(ratgirl);
 
                 GameObject block = Prefabs.generateQuestionBlock();
-                block.transform.position.x = 250f;
-                block.transform.position.y = 1f;
+                block.transform.position.x = 0f;
+                block.transform.position.y = 0f;
                 gameObjects.add(block);
                 scene.addGameObjectToScene(block);
 
-                for (int i=0; i < 3; i++){
+                /*
+                for (int i=0; i < 10; i++){
                     GameObject newBlock = Prefabs.generateQuestionBlock();
                     scene.placeGameObjectRelativeToLastPlacement(newBlock, Direction.Right);
                 }
@@ -105,13 +103,13 @@ public class Main {
                     scene.placeGameObjectRelativeToLastPlacement(newBlock, Direction.Left);
                 }
 
-                GameObject cameraObject = scene.createGameObject("GameCamera");
-                //cameraObject.addComponent(new GameCamera(scene.camera()));
-                //cameraObject.onStart();
-                //scene.addGameObjectToScene(cameraObject);
-
-
-
+                 */
+                Tilemap tilemap = new Tilemap(10, 10);
+                for (int i = 0; i < tilemap.tiles.length; i++){
+                    for (int j = 0; j < tilemap.tiles[i].length; j++){
+                        scene.addGameObjectToScene(tilemap.tiles[i][j]);
+                    }
+                }
 
             }
 

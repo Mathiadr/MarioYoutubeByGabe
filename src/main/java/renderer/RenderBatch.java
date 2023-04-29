@@ -1,8 +1,8 @@
 package renderer;
 
 import components.SpriteRenderer;
-import jade.GameObject;
-import jade.Window;
+import brunostEngine.GameObject;
+import brunostEngine.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;

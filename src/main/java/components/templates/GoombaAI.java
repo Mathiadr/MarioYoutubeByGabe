@@ -1,11 +1,11 @@
 package components.templates;
 
 import components.Component;
-import components.PlayerController;
+import components.DefaultPlayerController;
 import components.StateMachine;
-import jade.Camera;
-import jade.GameObject;
-import jade.Window;
+import brunostEngine.Camera;
+import brunostEngine.GameObject;
+import brunostEngine.Window;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
@@ -83,14 +83,8 @@ public class GoombaAI extends Component {
             return;
         }
 
-        PlayerController playerController = obj.getComponent(PlayerController.class);
-        if (playerController != null) {
-            if (!playerController.isDead() && !playerController.isHurtInvincible() &&
-                    contactNormal.y > 0.58f) {
-                playerController.enemyBounce();
-                stomp();
-            }
-        } else if (Math.abs(contactNormal.y) < 0.1f) {
+        DefaultPlayerController defaultPlayerController = obj.getComponent(DefaultPlayerController.class);
+         if (Math.abs(contactNormal.y) < 0.1f) {
             goingRight = contactNormal.x < 0;
         }
 

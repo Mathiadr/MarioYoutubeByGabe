@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import components.Component;
 import components.ComponentDeserializer;
-import jade.*;
+import brunostEngine.*;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
 import renderer.Renderer;
@@ -12,11 +12,11 @@ import renderer.Renderer;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.StringJoiner;
 
 public class Scene {
     private String fileName;
@@ -245,7 +245,11 @@ public class Scene {
             stringBuilder.append(fileName);
             stringBuilder.append(".txt");
             System.out.println(stringBuilder.toString());
-            inFile = new String(Files.readAllBytes(Paths.get(stringBuilder.toString())));
+            try {
+                inFile = new String(Files.readAllBytes(Paths.get(stringBuilder.toString())));
+            }catch (NoSuchFileException e){
+                save();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

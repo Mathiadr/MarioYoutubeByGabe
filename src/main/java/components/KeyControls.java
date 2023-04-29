@@ -1,9 +1,9 @@
 package components;
 
 import editor.PropertiesWindow;
-import jade.GameObject;
-import jade.KeyListener;
-import jade.Window;
+import brunostEngine.GameObject;
+import brunostEngine.KeyListener;
+import brunostEngine.Window;
 import util.Settings;
 
 import java.util.ArrayList;

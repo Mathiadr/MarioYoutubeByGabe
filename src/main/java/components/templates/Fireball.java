@@ -1,9 +1,9 @@
 package components.templates;
 
 import components.Component;
-import components.PlayerController;
-import jade.GameObject;
-import jade.Window;
+import components.DefaultPlayerController;
+import brunostEngine.GameObject;
+import brunostEngine.Window;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
@@ -74,7 +74,7 @@ public class Fireball extends Component {
 
     @Override
     public void preSolve(GameObject obj, Contact contact, Vector2f contactNormal) {
-        if (obj.getComponent(PlayerController.class) != null ||
+        if (obj.getComponent(DefaultPlayerController.class) != null ||
             obj.getComponent(Fireball.class) != null) {
             contact.setEnabled(false);
         }

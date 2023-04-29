@@ -1,11 +1,11 @@
 package components.templates;
 
 import components.Component;
-import components.PlayerController;
-import jade.Direction;
-import jade.GameObject;
-import jade.KeyListener;
-import jade.Window;
+import components.DefaultPlayerController;
+import brunostEngine.Direction;
+import brunostEngine.GameObject;
+import brunostEngine.KeyListener;
+import brunostEngine.Window;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import util.ResourcePool;
@@ -18,7 +18,7 @@ public class Pipe extends Component {
     private boolean isEntrance = false;
     private transient GameObject connectingPipe = null;
     private transient float entranceVectorTolerance = 0.6f;
-    private transient PlayerController collidingPlayer = null;
+    private transient DefaultPlayerController collidingPlayer = null;
 
     public Pipe(Direction direction) {
         this.direction = direction;
@@ -120,16 +120,16 @@ public class Pipe extends Component {
 
     @Override
     public void beginCollision(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
-        PlayerController playerController = collidingObject.getComponent(PlayerController.class);
-        if (playerController != null) {
-            collidingPlayer = playerController;
+        DefaultPlayerController defaultPlayerController = collidingObject.getComponent(DefaultPlayerController.class);
+        if (defaultPlayerController != null) {
+            collidingPlayer = defaultPlayerController;
         }
     }
 
     @Override
     public void endCollision(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
-        PlayerController playerController = collidingObject.getComponent(PlayerController.class);
-        if (playerController != null) {
+        DefaultPlayerController defaultPlayerController = collidingObject.getComponent(DefaultPlayerController.class);
+        if (defaultPlayerController != null) {
             collidingPlayer = null;
         }
     }

@@ -1,8 +1,8 @@
 package components.templates;
 
 import components.Component;
-import components.PlayerController;
-import jade.GameObject;
+import components.DefaultPlayerController;
+import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.components.Rigidbody2D;
@@ -20,8 +20,8 @@ public class Flower extends Component {
 
     @Override
     public void beginCollision(GameObject obj, Contact contact, Vector2f contactNormal) {
-        PlayerController playerController = obj.getComponent(PlayerController.class);
-        if (playerController != null) {
+        DefaultPlayerController defaultPlayerController = obj.getComponent(DefaultPlayerController.class);
+        if (defaultPlayerController != null) {
             this.gameObject.destroy();
         }
     }

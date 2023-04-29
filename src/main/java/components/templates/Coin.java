@@ -1,9 +1,7 @@
 package components.templates;
 
 import components.Component;
-import components.MarioController;
-import components.PlayerController;
-import jade.GameObject;
+import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import util.ResourcePool;

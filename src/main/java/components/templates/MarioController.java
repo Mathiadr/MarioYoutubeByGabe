@@ -1,10 +1,13 @@
-package components;
+package components.templates;
 
-import components.templates.Fireball;
-import jade.GameObject;
-import jade.KeyListener;
-import jade.Prefabs;
-import jade.Window;
+import components.Component;
+import components.Ground;
+import components.SpriteRenderer;
+import components.StateMachine;
+import brunostEngine.GameObject;
+import brunostEngine.KeyListener;
+import brunostEngine.Prefabs;
+import brunostEngine.Window;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -19,7 +22,7 @@ import util.ResourcePool;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
-public class MarioController extends Component{
+public class MarioController extends Component {
     private enum PlayerState {
         Small,
         Big,

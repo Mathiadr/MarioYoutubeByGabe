@@ -1,11 +1,10 @@
 package components.templates;
 
 import components.Component;
-import components.PlayerController;
 import components.StateMachine;
-import jade.Camera;
-import jade.GameObject;
-import jade.Window;
+import brunostEngine.Camera;
+import brunostEngine.GameObject;
+import brunostEngine.Window;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
@@ -99,7 +98,7 @@ public class TurtleAI extends Component {
             ResourcePool.getSound("assets/sounds/kick.ogg").play();
         }
 
-        PlayerController playerController = obj.getComponent(PlayerController.class);
+        MarioController playerController = obj.getComponent(MarioController.class);
         if (playerController != null) {
             if (!isDead && !playerController.isDead() &&
                     !playerController.isHurtInvincible() &&

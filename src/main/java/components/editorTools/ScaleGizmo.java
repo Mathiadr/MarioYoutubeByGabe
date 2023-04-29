@@ -1,8 +1,9 @@
-package components;
+package components.editorTools;
 
+import components.Sprite;
 import components.editorTools.Gizmo;
 import editor.PropertiesWindow;
-import jade.MouseListener;
+import brunostEngine.MouseListener;
 
 public class ScaleGizmo extends Gizmo {
     public ScaleGizmo(Sprite scaleSprite, PropertiesWindow propertiesWindow) {

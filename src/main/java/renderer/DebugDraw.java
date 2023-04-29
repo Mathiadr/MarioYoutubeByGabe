@@ -1,7 +1,7 @@
 package renderer;
 
-import jade.Camera;
-import jade.Window;
+import brunostEngine.Camera;
+import brunostEngine.Window;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import util.ResourcePool;

@@ -1,8 +1,8 @@
 package components.templates;
 
 import components.Component;
-import components.PlayerController;
-import jade.GameObject;
+import components.DefaultPlayerController;
+import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import util.ResourcePool;
@@ -45,15 +45,15 @@ public abstract class Block extends Component {
 
     @Override
     public void beginCollision(GameObject obj, Contact contact, Vector2f contactNormal) {
-        PlayerController playerController = obj.getComponent(PlayerController.class);
-        if (active && playerController != null && contactNormal.y < -0.8f) {
+        DefaultPlayerController defaultPlayerController = obj.getComponent(DefaultPlayerController.class);
+        if (active && defaultPlayerController != null && contactNormal.y < -0.8f) {
             doBopAnimation = true;
             ResourcePool.getSound("assets/sounds/bump.ogg").play();
-            playerHit(playerController);
+            playerHit(defaultPlayerController);
         }
     }
 
     public void setInactive() { this.active = false; }
 
-    abstract void playerHit(PlayerController playerController);
+    abstract void playerHit(DefaultPlayerController defaultPlayerController);
 }

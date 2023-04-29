@@ -1,7 +1,7 @@
 package util;
 
 import components.Spritesheet;
-import jade.Sound;
+import brunostEngine.Sound;
 import renderer.Shader;
 import renderer.Texture;
 

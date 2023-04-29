@@ -1,10 +1,9 @@
 package components.editorTools;
 
 import components.Component;
-import components.ScaleGizmo;
 import components.Spritesheet;
-import jade.KeyListener;
-import jade.Window;
+import brunostEngine.KeyListener;
+import brunostEngine.Window;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;

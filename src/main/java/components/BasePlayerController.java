@@ -1,12 +1,10 @@
 package components;
 
-import jade.GameObject;
+import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
 import physics2d.components.Rigidbody2D;
-import physics2d.enums.BodyType;
-import util.ResourcePool;
 
 public abstract class BasePlayerController extends Component{
 
@@ -14,7 +12,6 @@ public abstract class BasePlayerController extends Component{
     public float jumpBoost = 1.0f;
     public float jumpImpulse = 3.0f;
     public float slowDownForce = 0.05f;
-    public Vector2f terminalVelocity = new Vector2f(2.1f, 3.1f);
 
     public transient boolean isGrounded = false;
     protected transient boolean isDead = false;

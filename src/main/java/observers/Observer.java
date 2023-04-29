@@ -1,6 +1,6 @@
 package observers;
 
-import jade.GameObject;
+import brunostEngine.GameObject;
 import observers.events.Event;
 
 public interface Observer {

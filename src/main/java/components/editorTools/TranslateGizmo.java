@@ -2,7 +2,7 @@ package components.editorTools;
 
 import components.Sprite;
 import editor.PropertiesWindow;
-import jade.MouseListener;
+import brunostEngine.MouseListener;
 
 public class TranslateGizmo extends Gizmo {
 

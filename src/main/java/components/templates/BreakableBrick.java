@@ -1,13 +1,12 @@
 package components.templates;
 
-import components.MarioController;
-import components.PlayerController;
+import components.DefaultPlayerController;
 import util.ResourcePool;
 
 public class BreakableBrick extends Block {
 
     @Override
-    void playerHit(PlayerController playerController) {
+    void playerHit(DefaultPlayerController defaultPlayerController) {
         ResourcePool.getSound("assets/sounds/break_block.ogg").play();
         gameObject.destroy();
     }
