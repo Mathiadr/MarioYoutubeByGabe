@@ -5,9 +5,12 @@ import com.google.gson.GsonBuilder;
 import components.Component;
 import components.ComponentDeserializer;
 import brunostEngine.*;
+import components.SpriteRenderer;
+import components.StateMachine;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
 import renderer.Renderer;
+import util.ResourcePool;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -47,6 +50,19 @@ public class Scene {
     public void init() {
         this.camera = new Camera(new Vector2f(0, 0));
         this.sceneBuilder.loadResources(this);
+        for (GameObject g : getGameObjects()) {
+            if (g.getComponent(SpriteRenderer.class) != null) {
+                SpriteRenderer spr = g.getComponent(SpriteRenderer.class);
+                if (spr.getTexture() != null) {
+                    spr.setTexture(ResourcePool.getTexture(spr.getTexture().getFilepath()));
+                }
+            }
+
+            if (g.getComponent(StateMachine.class) != null) {
+                StateMachine stateMachine = g.getComponent(StateMachine.class);
+                stateMachine.refreshTextures();
+            }
+        }
         this.sceneBuilder.init(this);
         this.fileName = this.sceneBuilder.assignTitleToScene();
     }
@@ -73,9 +89,41 @@ public class Scene {
     /**
      *
      * @author Mathias Ratdal
+     * @param gameObjectToBePlaced
+     */
+    public void placeRelativeToGameObject(GameObject gameObjectToBePlaced, GameObject relativeToGameObject, Direction direction) {
+        if (relativeToGameObject != null) {
+            switch (direction){
+                case Up -> {
+                    gameObjectToBePlaced.transform.position.x = relativeToGameObject.transform.position.x;
+                    gameObjectToBePlaced.transform.position.y = relativeToGameObject.transform.position.y + 0.25f;
+                    addGameObjectToScene(gameObjectToBePlaced);
+                }
+                case Down -> {
+                    gameObjectToBePlaced.transform.position.x = relativeToGameObject.transform.position.x;
+                    gameObjectToBePlaced.transform.position.y = relativeToGameObject.transform.position.y - 0.25f;
+                    addGameObjectToScene(gameObjectToBePlaced);
+                }
+                case Left -> {
+                    gameObjectToBePlaced.transform.position.x = relativeToGameObject.transform.position.x - 0.25f;
+                    gameObjectToBePlaced.transform.position.y = relativeToGameObject.transform.position.y;
+                    addGameObjectToScene(gameObjectToBePlaced);
+                }
+                case Right -> {
+                    gameObjectToBePlaced.transform.position.x = relativeToGameObject.transform.position.x + 0.25f;
+                    gameObjectToBePlaced.transform.position.y = relativeToGameObject.transform.position.y;
+                    addGameObjectToScene(gameObjectToBePlaced);
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * @author Mathias Ratdal
      * @param gameObject
      */
-    public void placeGameObjectRelativeToLastPlacement(GameObject gameObject, Direction direction) {
+    public void placeRelativeToLastPlacement(GameObject gameObject, Direction direction) {
         if (lastAddedObject != null) {
             switch (direction){
                 case Up -> {

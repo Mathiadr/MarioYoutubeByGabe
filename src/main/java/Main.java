@@ -1,8 +1,12 @@
 import brunostEngine.*;
 import components.*;
 import components.cameras.FollowTargetCamera;
+import components.editorTools.DebugTools;
 import components.editorTools.GridLines;
 import org.joml.Vector2f;
+import physics2d.components.Box2DCollider;
+import physics2d.components.Rigidbody2D;
+import physics2d.enums.BodyType;
 import scenes.Scene;
 import scenes.SceneBuilder;
 import util.ResourcePool;
@@ -12,7 +16,7 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         Window window = Window.get();
-        window.init();
+        window.init("Hello World!");
         Window.changeScene(new SceneBuilder() {
 
 
@@ -52,26 +56,13 @@ public class Main {
                 ResourcePool.addSound("assets/sounds/kick.ogg", false);
                 ResourcePool.addSound("assets/sounds/invincible.ogg", false);
 
-                for (GameObject g : scene.getGameObjects()) {
-                    if (g.getComponent(SpriteRenderer.class) != null) {
-                        SpriteRenderer spr = g.getComponent(SpriteRenderer.class);
-                        if (spr.getTexture() != null) {
-                            spr.setTexture(ResourcePool.getTexture(spr.getTexture().getFilepath()));
-                        }
-                    }
-
-                    if (g.getComponent(StateMachine.class) != null) {
-                        StateMachine stateMachine = g.getComponent(StateMachine.class);
-                        stateMachine.refreshTextures();
-                    }
-                }
             }
 
             @Override
             public void init(Scene scene) {
                 GameObject levelEditorStuff = scene.createGameObject("LevelEditor");
 
-                levelEditorStuff.addComponent(new MouseControls());
+                levelEditorStuff.addComponent(new DebugTools());
                 levelEditorStuff.addComponent(new KeyControls());
                 levelEditorStuff.addComponent(new GridLines());
                 levelEditorStuff.addComponent(new FollowTargetCamera(scene.camera()));
@@ -104,12 +95,25 @@ public class Main {
                 }
 
                  */
-                Tilemap tilemap = new Tilemap(10, 10);
-                for (int i = 0; i < tilemap.tiles.length; i++){
-                    for (int j = 0; j < tilemap.tiles[i].length; j++){
-                        scene.addGameObjectToScene(tilemap.tiles[i][j]);
-                    }
-                }
+
+                Spritesheet tileSprites = ResourcePool.getSpritesheet("assets/images/defaultTiles.png");
+                GameObject tile = Prefabs.generateSpriteObject(tileSprites.getSprite(0), 0.25f, 0.25f);
+                Rigidbody2D rb = new Rigidbody2D();
+                rb.setBodyType(BodyType.Static);
+                tile.addComponent(rb);
+                Box2DCollider b2d = new Box2DCollider();
+                b2d.setHalfSize(new Vector2f(0.25f, 0.25f));
+                tile.addComponent(b2d);
+                tile.addComponent(new Ground());
+
+                Tilemap tilemap = Tilemap.generateTilemap(100, 100);
+                tilemap.fillBorder(tile);
+                tilemap.addTilemapToScene();
+
+                tilemap.setTilemapBackground(ResourcePool.getSpritesheet("assets/images/defaultTiles.png").getSprite(2));
+
+                levelEditorStuff.getComponent(DebugTools.class).gameObjectToPlace = Prefabs.generateQuestionBlock();
+
 
             }
 

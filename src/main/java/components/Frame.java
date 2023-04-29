@@ -8,6 +8,11 @@ class Frame {
 
     }
 
+    public Frame(Sprite sprite) {
+        this.sprite = sprite;
+        this.frameTime = 0.1f;
+    }
+
     public Frame(Sprite sprite, float frameTime) {
         this.sprite = sprite;
         this.frameTime = frameTime;

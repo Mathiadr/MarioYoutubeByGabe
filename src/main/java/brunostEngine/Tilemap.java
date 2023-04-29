@@ -1,11 +1,18 @@
 package brunostEngine;
 
+import components.Sprite;
+import components.SpriteRenderer;
+import components.StateMachine;
+import org.joml.Vector2f;
+
 public class Tilemap {
+    private static Tilemap tilemap = null;
     public int column;
     public int row;
+    public GameObject tilemapBackground;
     public GameObject[][] tiles;
 
-    public Tilemap(int column, int row){
+    private Tilemap(int column, int row){
         this.column = column;
         this.row = row;
         this.tiles = new GameObject[column][row];
@@ -13,7 +20,7 @@ public class Tilemap {
         float offsetY = 0.125f;
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
-                GameObject newTile = Prefabs.generateQuestionBlock();
+                GameObject newTile = Window.getScene().createGameObject("Tile("+i+", "+j+")");
                 newTile.transform.position.x = offsetX;
                 newTile.transform.position.y = offsetY;
                 tiles[i][j] = newTile;
@@ -24,7 +31,106 @@ public class Tilemap {
         }
     }
 
-    public void addToScene(){
+    public static Tilemap generateTilemap(int column, int row){
+        if (tilemap == null){
+            tilemap = new Tilemap(column, row);
+        } else System.err.println("Tilemap instance already exists!");
+        return get();
     }
 
+    public void setTilemapBackground(Sprite sprite){
+        tilemapBackground = Prefabs.generateSpriteObject(sprite, 0.25f * row, 0.25f * column);
+        tilemapBackground.transform.zIndex = -10;
+        tilemapBackground.transform.position.x = 0.125f;
+        tilemapBackground.transform.position.y = 0.125f;
+        tilemapBackground.transform.position.mul( row, column);
+
+        Window.getScene().addGameObjectToScene(tilemapBackground);
+    }
+
+    public static Tilemap get(){
+        return tilemap;
+    }
+
+    public void addTilemapToScene(){
+        for (int i = 0; i < get().tiles.length; i++){
+            for (int j = 0; j < get().tiles[i].length; j++){
+                Window.getScene().addGameObjectToScene(get().tiles[i][j]);
+            }
+        }
+    }
+
+    public void fill(GameObject gameObject){
+        for (int i = 0; i < tiles.length; i++){
+            for (int j = 0; j < tiles[i].length; j++){
+                Vector2f position = tiles[i][j].transform.position;
+                tiles[i][j] = gameObject.copy();
+                tiles[i][j].transform.position = position;
+                if (tiles[i][j].getComponent(StateMachine.class) != null) {
+                    tiles[i][j].getComponent(StateMachine.class).refreshTextures();
+                }
+            }
+        }
+    }
+
+    public void fillBorder(GameObject gameObject){
+        for (int i = 0; i < tiles.length; i++){
+            for (int j = 0; j < tiles[i].length; j++){
+                boolean tileIsBorder = false;
+                if (i == 0 || i == tiles.length-1){
+                    tileIsBorder = true;
+                }
+                if (j == 0 || j == tiles[i].length-1){
+                    tileIsBorder = true;
+                }
+                if (tileIsBorder) {
+                    Vector2f position = tiles[i][j].transform.position;
+                    tiles[i][j] = gameObject.copy();
+                    tiles[i][j].transform.position = position;
+                    if (tiles[i][j].getComponent(StateMachine.class) != null) {
+                        tiles[i][j].getComponent(StateMachine.class).refreshTextures();
+                    }
+                }
+            }
+        }
+    }
+
+    public void fillRandom(){
+
+    }
+
+    public GameObject getTileAtPosition(float x, float y){
+        Vector2f position = new Vector2f(x, y);
+        for (int i = 0; i < tiles.length; i++){
+            for (int j = 0; j < tiles[i].length; j++){
+                if (tiles[i][j].transform.position.x == position.x && tiles[i][j].transform.position.y == position.y ){
+                    System.out.println("Got tile["+i+"]["+j+"]");
+                    // is "return Window.getScene().getGameObject("Tile("+i+", "+j+")");" a more optimal way??
+                    return tiles[i][j];
+                }
+            }
+        }
+        System.err.println("Could not find Tile in x: " + x + ",\ty: " + y);
+        return null;
+    }
+
+    public void replaceTile(float x, float y, GameObject tile){
+        Vector2f position = new Vector2f(x, y);
+        for (int i = 0; i < tiles.length; i++){
+            for (int j = 0; j < tiles[i].length; j++){
+                if (tiles[i][j].transform.position.x == position.x && tiles[i][j].transform.position.y == position.y ){
+                    System.out.println("Got tile["+i+"]["+j+"]");
+                    // is "return Window.getScene().getGameObject("Tile("+i+", "+j+")");" a more optimal way??
+                    GameObject replacement = tile.copy();
+                    replacement.transform.position = position;
+                    tiles[i][j].destroy();
+                    tiles[i][j] = replacement;
+                    if (replacement.getComponent(StateMachine.class) != null) {
+                        replacement.getComponent(StateMachine.class).refreshTextures();
+                    }
+                    Window.getScene().addGameObjectToScene(tiles[i][j]);
+                }
+            }
+        }
+    }
 }

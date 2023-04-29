@@ -56,7 +56,7 @@ public class Window implements Observer {
         }
 
         currentSceneBuilder = sceneBuilder;
-        getImguiLayer().getPropertiesWindow().setActiveGameObject(null);
+        //getImguiLayer().getPropertiesWindow().setActiveGameObject(null);
         currentScene = new Scene(sceneBuilder);
         currentScene.init();
         currentScene.load();
@@ -95,9 +95,11 @@ public class Window implements Observer {
         glfwSetErrorCallback(null).free();
     }
 
-    public void init() {
+    public void init(String title) {
         // Setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
+
+        this.title = title;
 
         // Initialize GLFW
         if (!glfwInit()) {
@@ -212,7 +214,7 @@ public class Window implements Observer {
             }
             this.framebuffer.unbind();
 
-            this.imguiLayer.update(dt, currentScene);
+            this.imguiLayer.onUpdate(dt, currentScene);
 
             KeyListener.endFrame();
             MouseListener.endFrame();

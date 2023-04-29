@@ -31,7 +31,7 @@ public class Prefabs {
         // Little mario animations
         AnimationState run = new AnimationState();
         run.title = "Run";
-        float defaultFrameTime = 0.2f;
+        float defaultFrameTime = 0.1f;
         run.addFrame(playerSprites.getSprite(2), defaultFrameTime);
         run.addFrame(playerSprites.getSprite(3), defaultFrameTime);
         run.addFrame(playerSprites.getSprite(4), defaultFrameTime);

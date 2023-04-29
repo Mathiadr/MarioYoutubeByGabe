@@ -37,9 +37,6 @@ public class ImGuiLayer {
     public ImGuiLayer(long glfwWindow, PickingTexture pickingTexture) {
         this.glfwWindow = glfwWindow;
         this.gameViewWindow = new GameViewWindow();
-        this.propertiesWindow = new PropertiesWindow(pickingTexture);
-        this.menuBar = new MenuBar();
-        this.sceneHeirarchyWindow = new SceneHierarchyWindow();
     }
 
     public GameViewWindow getGameViewWindow() {
@@ -58,7 +55,7 @@ public class ImGuiLayer {
 
         io.setIniFilename("imgui.ini"); // We don't want to save .ini file
         io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
-        io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
+        //io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
         io.setBackendPlatformName("imgui_java_impl_glfw");
 
         // ------------------------------------------------------------
@@ -175,16 +172,15 @@ public class ImGuiLayer {
         imGuiGl3.init("#version 330 core");
     }
 
-    public void update(float dt, Scene currentScene) {
+    public void onUpdate(float dt, Scene currentScene) {
         startFrame(dt);
 
         // Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
         setupDockspace();
         currentScene.imgui();
-        //ImGui.showDemoWindow();
         gameViewWindow.imgui();
-        propertiesWindow.imgui();
-        sceneHeirarchyWindow.imgui();
+        //ImGui.showDemoWindow();
+
 
         endFrame();
     }
@@ -218,7 +214,7 @@ public class ImGuiLayer {
     }
 
     private void setupDockspace() {
-        int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
+        int windowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoDecoration;
 
         ImGuiViewport mainViewport = ImGui.getMainViewport();
         ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
@@ -238,7 +234,8 @@ public class ImGuiLayer {
         // Dockspace
         ImGui.dockSpace(ImGui.getID("Dockspace"));
 
-        menuBar.imgui();
+
+        //menuBar.imgui();
 
         ImGui.end();
     }
