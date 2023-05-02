@@ -62,6 +62,7 @@ public class Main {
             public void init(Scene scene) {
                 GameObject levelEditorStuff = scene.createGameObject("LevelEditor");
 
+                levelEditorStuff.setNoSerialize();
                 levelEditorStuff.addComponent(new DebugTools());
                 levelEditorStuff.addComponent(new KeyControls());
                 levelEditorStuff.addComponent(new GridLines());
@@ -93,11 +94,10 @@ public class Main {
                     GameObject newBlock = Prefabs.generateQuestionBlock();
                     scene.placeGameObjectRelativeToLastPlacement(newBlock, Direction.Left);
                 }
-
-                 */
+                */
 
                 Spritesheet tileSprites = ResourcePool.getSpritesheet("assets/images/defaultTiles.png");
-                GameObject tile = Prefabs.generateSpriteObject(tileSprites.getSprite(0), 0.25f, 0.25f);
+                GameObject tile = Prefabs.generateSpriteObject(tileSprites.getSprite(3), 0.25f, 0.25f);
                 Rigidbody2D rb = new Rigidbody2D();
                 rb.setBodyType(BodyType.Static);
                 tile.addComponent(rb);
@@ -106,11 +106,12 @@ public class Main {
                 tile.addComponent(b2d);
                 tile.addComponent(new Ground());
 
-                Tilemap tilemap = Tilemap.generateTilemap(100, 100);
+                Tilemap tilemap = Tilemap.generateTilemap(30, 30);
                 tilemap.fillBorder(tile);
                 tilemap.addTilemapToScene();
+                //tilemap.addTilemapToScene();
 
-                tilemap.setTilemapBackground(ResourcePool.getSpritesheet("assets/images/defaultTiles.png").getSprite(2));
+                tilemap.setTilemapBackground(ResourcePool.getSpritesheet("assets/images/defaultTiles.png").getSprite(3));
 
                 levelEditorStuff.getComponent(DebugTools.class).gameObjectToPlace = Prefabs.generateQuestionBlock();
 

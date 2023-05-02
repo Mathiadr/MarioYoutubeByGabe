@@ -1,4 +1,6 @@
 package brunostEngine;
 
-public class Tile {
+import components.Component;
+
+public class Tile extends Component {
 }

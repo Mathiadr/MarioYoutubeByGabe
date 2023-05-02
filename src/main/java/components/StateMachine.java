@@ -105,7 +105,7 @@ public class StateMachine extends Component {
     @Override
     public void onUpdate(float dt) {
         if (currentState != null) {
-            currentState.update(dt);
+            currentState.onUpdate(dt);
             SpriteRenderer sprite = gameObject.getComponent(SpriteRenderer.class);
             if (sprite != null) {
                 sprite.setSprite(currentState.getCurrentSprite());
@@ -117,7 +117,7 @@ public class StateMachine extends Component {
     @Override
     public void editorUpdate(float dt) {
         if (currentState != null) {
-            currentState.update(dt);
+            currentState.onUpdate(dt);
             SpriteRenderer sprite = gameObject.getComponent(SpriteRenderer.class);
             if (sprite != null) {
                 sprite.setSprite(currentState.getCurrentSprite());

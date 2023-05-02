@@ -35,7 +35,7 @@ public class AnimationState {
         this.doesLoop = doesLoop;
     }
 
-    public void update(float dt) {
+    public void onUpdate(float dt) {
         if (currentSprite < animationFrames.size()) {
             time -= dt;
             if (time <= 0) {

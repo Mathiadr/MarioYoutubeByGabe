@@ -41,6 +41,7 @@ public class Scene {
         this.gameObjects = new ArrayList<>();
         this.pendingObjects = new ArrayList<>();
         this.isRunning = false;
+        this.fileName = this.sceneBuilder.assignTitleToScene();
     }
 
     public Physics2D getPhysics() {
@@ -64,7 +65,6 @@ public class Scene {
             }
         }
         this.sceneBuilder.init(this);
-        this.fileName = this.sceneBuilder.assignTitleToScene();
     }
 
     public void onStart() {
@@ -176,6 +176,9 @@ public class Scene {
         Optional<GameObject> result = this.gameObjects.stream()
                 .filter(gameObject -> gameObject.getUid() == gameObjectId)
                 .findFirst();
+        if (result.orElse(null) == null)
+            System.err.println("Could not find GameObject with ID " + gameObjectId);
+        System.out.println("Got GameObject("+gameObjectId+"): " + result.orElse(null));
         return result.orElse(null);
     }
 
@@ -265,6 +268,7 @@ public class Scene {
         try {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(fileName).append(".txt");
+            System.out.println("Saving to " + stringBuilder.toString());
             FileWriter writer = new FileWriter(stringBuilder.toString());
             List<GameObject> objsToSerialize = new ArrayList<>();
             for (GameObject obj : this.gameObjects) {
@@ -290,9 +294,8 @@ public class Scene {
         String inFile = "";
         try {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(fileName);
-            stringBuilder.append(".txt");
-            System.out.println(stringBuilder.toString());
+            stringBuilder.append(fileName).append(".txt");
+            System.out.println("loading from " + stringBuilder.toString());
             try {
                 inFile = new String(Files.readAllBytes(Paths.get(stringBuilder.toString())));
             }catch (NoSuchFileException e){

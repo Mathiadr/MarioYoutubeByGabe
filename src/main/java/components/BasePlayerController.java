@@ -10,7 +10,7 @@ public abstract class BasePlayerController extends Component{
 
     public float walkSpeed = 1.9f;
     public float jumpBoost = 1.0f;
-    public float jumpImpulse = 3.0f;
+    public float jumpImpulse = 2.0f;
     public float slowDownForce = 0.05f;
 
     public transient boolean isGrounded = false;

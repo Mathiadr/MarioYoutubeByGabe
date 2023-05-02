@@ -16,6 +16,16 @@ public class KeyControls extends Component {
     private float debounce = 0.0f;
 
     @Override
+    public void onUpdate(float dt) {
+        debounce -= dt;
+
+        if (KeyListener.isKeyPressed(GLFW_KEY_LEFT_CONTROL) &&
+                KeyListener.keyBeginPress(GLFW_KEY_S)) {
+            Window.getScene().save();
+        }
+    }
+
+    @Override
     public void editorUpdate(float dt) {
         debounce -= dt;
 

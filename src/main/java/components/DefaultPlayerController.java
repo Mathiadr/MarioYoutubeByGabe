@@ -59,7 +59,7 @@ public class DefaultPlayerController extends BasePlayerController {
         checkIfPlayerIsGrounded();
         if (KeyListener.isKeyPressed(GLFW_KEY_SPACE) && (jumpTime > 0 || isGrounded || groundDebounce > 0)) {
             if ((isGrounded || groundDebounce > 0) && jumpTime == 0) {
-                jumpTime = 28;
+                jumpTime = 60;
                 this.velocity.y = jumpImpulse;
             } else if (jumpTime > 0) {
                 jumpTime--;

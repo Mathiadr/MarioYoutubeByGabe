@@ -1,15 +1,13 @@
 package brunostEngine;
 
-import components.Sprite;
-import components.SpriteRenderer;
-import components.StateMachine;
+import components.*;
 import org.joml.Vector2f;
 
 public class Tilemap {
     private static Tilemap tilemap = null;
     public int column;
     public int row;
-    public GameObject tilemapBackground;
+    public transient GameObject tilemapBackground;
     public GameObject[][] tiles;
 
     private Tilemap(int column, int row){
@@ -21,6 +19,7 @@ public class Tilemap {
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
                 GameObject newTile = Window.getScene().createGameObject("Tile("+i+", "+j+")");
+                newTile.addComponent(new Tile());
                 newTile.transform.position.x = offsetX;
                 newTile.transform.position.y = offsetY;
                 tiles[i][j] = newTile;
@@ -31,6 +30,7 @@ public class Tilemap {
         }
     }
 
+
     public static Tilemap generateTilemap(int column, int row){
         if (tilemap == null){
             tilemap = new Tilemap(column, row);
@@ -39,11 +39,12 @@ public class Tilemap {
     }
 
     public void setTilemapBackground(Sprite sprite){
-        tilemapBackground = Prefabs.generateSpriteObject(sprite, 0.25f * row, 0.25f * column);
+        tilemapBackground = Prefabs.generateSpriteObject(sprite, 0.25f * column, 0.25f * row);
+        tilemapBackground.addComponent(new NonPickable());
         tilemapBackground.transform.zIndex = -10;
         tilemapBackground.transform.position.x = 0.125f;
         tilemapBackground.transform.position.y = 0.125f;
-        tilemapBackground.transform.position.mul( row, column);
+        tilemapBackground.transform.position.mul( column, row);
 
         Window.getScene().addGameObjectToScene(tilemapBackground);
     }
@@ -74,6 +75,7 @@ public class Tilemap {
     }
 
     public void fillBorder(GameObject gameObject){
+        gameObject.addComponent(new Tile());
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
                 boolean tileIsBorder = false;
@@ -104,7 +106,6 @@ public class Tilemap {
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
                 if (tiles[i][j].transform.position.x == position.x && tiles[i][j].transform.position.y == position.y ){
-                    System.out.println("Got tile["+i+"]["+j+"]");
                     // is "return Window.getScene().getGameObject("Tile("+i+", "+j+")");" a more optimal way??
                     return tiles[i][j];
                 }
@@ -115,11 +116,11 @@ public class Tilemap {
     }
 
     public void replaceTile(float x, float y, GameObject tile){
+        tile.addComponent(new Tile());
         Vector2f position = new Vector2f(x, y);
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
                 if (tiles[i][j].transform.position.x == position.x && tiles[i][j].transform.position.y == position.y ){
-                    System.out.println("Got tile["+i+"]["+j+"]");
                     // is "return Window.getScene().getGameObject("Tile("+i+", "+j+")");" a more optimal way??
                     GameObject replacement = tile.copy();
                     replacement.transform.position = position;

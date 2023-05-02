@@ -58,8 +58,8 @@ public class Window implements Observer {
         currentSceneBuilder = sceneBuilder;
         //getImguiLayer().getPropertiesWindow().setActiveGameObject(null);
         currentScene = new Scene(sceneBuilder);
-        currentScene.init();
         currentScene.load();
+        currentScene.init();
         currentScene.onStart();
     }
 
@@ -161,10 +161,10 @@ public class Window implements Observer {
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
         this.framebuffer = new Framebuffer(Window.getWidth(), Window.getHeight());
-        this.pickingTexture = new PickingTexture(Window.getWidth(), Window.getHeight()); // TODO: CHANGE THESE
+        this.pickingTexture = new PickingTexture(Window.getWidth(), Window.getHeight());
         glViewport(0, 0, Window.getWidth(), Window.getHeight());
 
-        this.imguiLayer = new ImGuiLayer(glfwWindow, pickingTexture);
+        this.imguiLayer = new ImGuiLayer(glfwWindow);
         this.imguiLayer.initImGui();
     }
 
@@ -184,7 +184,7 @@ public class Window implements Observer {
             glDisable(GL_BLEND);
             pickingTexture.enableWriting();
 
-            glViewport(0, 0, Window.getWidth(), Window.getHeight());  // TODO: CHANGE THESE
+            glViewport(0, 0, Window.getWidth(), Window.getHeight());
             glClearColor(0, 0, 0, 0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -260,6 +260,10 @@ public class Window implements Observer {
 
     public static void setCurrentSceneBuilder(SceneBuilder currentSceneBuilder) {
         Window.currentSceneBuilder = currentSceneBuilder;
+    }
+
+    public static PickingTexture getPickingTexture() {
+        return get().pickingTexture;
     }
 
     @Override
