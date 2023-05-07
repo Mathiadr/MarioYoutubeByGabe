@@ -1,7 +1,7 @@
 package components.templates;
 
 import components.Component;
-import components.DefaultPlayerController;
+import components.DefaultTopDownPlayerController;
 import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
@@ -20,8 +20,8 @@ public class Flower extends Component {
 
     @Override
     public void beginCollision(GameObject obj, Contact contact, Vector2f contactNormal) {
-        DefaultPlayerController defaultPlayerController = obj.getComponent(DefaultPlayerController.class);
-        if (defaultPlayerController != null) {
+        DefaultTopDownPlayerController defaultTopDownPlayerController = obj.getComponent(DefaultTopDownPlayerController.class);
+        if (defaultTopDownPlayerController != null) {
             this.gameObject.destroy();
         }
     }

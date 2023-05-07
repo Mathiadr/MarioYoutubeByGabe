@@ -1,11 +1,11 @@
 package components.templates;
 
 import components.Component;
-import components.DefaultPlayerController;
-import components.StateMachine;
+import components.DefaultTopDownPlayerController;
+import components.Animator;
 import brunostEngine.Camera;
 import brunostEngine.GameObject;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
@@ -23,18 +23,18 @@ public class GoombaAI extends Component {
     private transient boolean onGround = false;
     private transient boolean isDead = false;
     private transient float timeToKill = 0.5f;
-    private transient StateMachine stateMachine;
+    private transient Animator animator;
 
     @Override
     public void onStart() {
-        this.stateMachine = gameObject.getComponent(StateMachine.class);
+        this.animator = gameObject.getComponent(Animator.class);
         this.rb = gameObject.getComponent(Rigidbody2D.class);
-        this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
+        this.acceleration.y = Game.getPhysics().getGravity().y * 0.7f;
     }
 
     @Override
     public void onUpdate(float dt) {
-        Camera camera = Window.getScene().camera();
+        Camera camera = Game.getScene().camera();
         if (this.gameObject.transform.position.x >
                 camera.position.x + camera.getProjectionSize().x * camera.getZoom()) {
             return;
@@ -60,13 +60,13 @@ public class GoombaAI extends Component {
             this.acceleration.y = 0;
             this.velocity.y = 0;
         } else {
-            this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
+            this.acceleration.y = Game.getPhysics().getGravity().y * 0.7f;
         }
 
         this.velocity.y += this.acceleration.y * dt;
         this.velocity.y = Math.max(Math.min(this.velocity.y, this.terminalVelocity.y), -terminalVelocity.y);
         this.rb.setVelocity(velocity);
-        if (this.gameObject.transform.position.x < Window.getScene().camera().position.x - 0.5f) {
+        if (this.gameObject.transform.position.x < Game.getScene().camera().position.x - 0.5f) {
             this.gameObject.destroy();
         }
     }
@@ -83,7 +83,7 @@ public class GoombaAI extends Component {
             return;
         }
 
-        DefaultPlayerController defaultPlayerController = obj.getComponent(DefaultPlayerController.class);
+        DefaultTopDownPlayerController defaultTopDownPlayerController = obj.getComponent(DefaultTopDownPlayerController.class);
          if (Math.abs(contactNormal.y) < 0.1f) {
             goingRight = contactNormal.x < 0;
         }
@@ -104,7 +104,7 @@ public class GoombaAI extends Component {
         this.rb.setVelocity(new Vector2f());
         this.rb.setAngularVelocity(0.0f);
         this.rb.setGravityScale(0.0f);
-        this.stateMachine.trigger("squashMe");
+        this.animator.trigger("squashMe");
         this.rb.setIsSensor();
         if (playSound) {
             ResourcePool.getSound("assets/sounds/bump.ogg").play();

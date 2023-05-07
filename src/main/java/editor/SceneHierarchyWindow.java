@@ -3,7 +3,7 @@ package editor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 import brunostEngine.GameObject;
-import brunostEngine.Window;
+import brunostEngine.Game;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class SceneHierarchyWindow {
     public void imgui() {
         ImGui.begin("Scene Hierarchy");
 
-        List<GameObject> gameObjects = Window.getScene().getGameObjects();
+        List<GameObject> gameObjects = Game.getScene().getGameObjects();
         int index = 0;
         for (GameObject obj : gameObjects) {
             if (!obj.doSerialization()) {

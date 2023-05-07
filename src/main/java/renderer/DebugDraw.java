@@ -1,7 +1,7 @@
 package renderer;
 
 import brunostEngine.Camera;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import util.ResourcePool;
@@ -91,8 +91,8 @@ public class DebugDraw {
 
         // Use our shader
         shader.use();
-        shader.uploadMat4f("uProjection", Window.getScene().camera().getProjectionMatrix());
-        shader.uploadMat4f("uView", Window.getScene().camera().getViewMatrix());
+        shader.uploadMat4f("uProjection", Game.getScene().camera().getProjectionMatrix());
+        shader.uploadMat4f("uView", Game.getScene().camera().getViewMatrix());
 
         // Bind the vao
         glBindVertexArray(vaoID);
@@ -124,7 +124,7 @@ public class DebugDraw {
     }
 
     public static void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifetime) {
-        Camera camera = Window.getScene().camera();
+        Camera camera = Game.getScene().camera();
         Vector2f cameraLeft = new Vector2f(camera.position).add(new Vector2f(-2.0f, -2.0f));
         Vector2f cameraRight = new Vector2f(camera.position).
                 add(new Vector2f(camera.getProjectionSize()).mul(camera.getZoom())).

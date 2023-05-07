@@ -1,9 +1,9 @@
 package components.templates;
 
 import components.Component;
-import components.DefaultPlayerController;
+import components.DefaultTopDownPlayerController;
 import brunostEngine.GameObject;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
@@ -28,7 +28,7 @@ public class Fireball extends Component {
     @Override
     public void onStart() {
         this.rb = this.gameObject.getComponent(Rigidbody2D.class);
-        this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
+        this.acceleration.y = Game.getPhysics().getGravity().y * 0.7f;
         fireballCount++;
     }
 
@@ -51,7 +51,7 @@ public class Fireball extends Component {
             this.acceleration.y = 1.5f;
             this.velocity.y = 2.5f;
         } else {
-            this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
+            this.acceleration.y = Game.getPhysics().getGravity().y * 0.7f;
         }
 
         this.velocity.y += this.acceleration.y * dt;
@@ -74,7 +74,7 @@ public class Fireball extends Component {
 
     @Override
     public void preSolve(GameObject obj, Contact contact, Vector2f contactNormal) {
-        if (obj.getComponent(DefaultPlayerController.class) != null ||
+        if (obj.getComponent(DefaultTopDownPlayerController.class) != null ||
             obj.getComponent(Fireball.class) != null) {
             contact.setEnabled(false);
         }

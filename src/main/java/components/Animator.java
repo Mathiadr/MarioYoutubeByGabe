@@ -1,14 +1,11 @@
 package components;
 
-import imgui.ImGui;
-import imgui.type.ImString;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class StateMachine extends Component {
+public class Animator extends Component {
     private class StateTrigger {
         public String state;
         public String trigger;
@@ -34,18 +31,18 @@ public class StateMachine extends Component {
     }
 
     public HashMap<StateTrigger, String> stateTransfers = new HashMap<>();
-    private List<AnimationState> states = new ArrayList<>();
-    private transient AnimationState currentState = null;
+    private List<Animation> states = new ArrayList<>();
+    private transient Animation currentState = null;
     private String defaultStateTitle = "";
 
     public void refreshTextures() {
-        for (AnimationState state : states) {
+        for (Animation state : states) {
             state.refreshTextures();
         }
     }
 
     public void setDefaultState(String animationTitle) {
-        for (AnimationState state : states) {
+        for (Animation state : states) {
             if (state.title.equals(animationTitle)) {
                 defaultStateTitle = animationTitle;
                 if (currentState == null) {
@@ -62,7 +59,7 @@ public class StateMachine extends Component {
         this.stateTransfers.put(new StateTrigger(from, onTrigger), to);
     }
 
-    public void addState(AnimationState state) {
+    public void addState(Animation state) {
         this.states.add(state);
     }
 
@@ -82,7 +79,7 @@ public class StateMachine extends Component {
 
     private int stateIndexOf(String stateTitle) {
         int index = 0;
-        for (AnimationState state : states) {
+        for (Animation state : states) {
             if (state.title.equals(stateTitle)) {
                 return index;
             }
@@ -94,7 +91,7 @@ public class StateMachine extends Component {
 
     @Override
     public void onStart() {
-        for (AnimationState state : states) {
+        for (Animation state : states) {
             if (state.title.equals(defaultStateTitle)) {
                 currentState = state;
                 break;
@@ -110,36 +107,6 @@ public class StateMachine extends Component {
             if (sprite != null) {
                 sprite.setSprite(currentState.getCurrentSprite());
                 sprite.setTexture(currentState.getCurrentSprite().getTexture());
-            }
-        }
-    }
-
-    @Override
-    public void editorUpdate(float dt) {
-        if (currentState != null) {
-            currentState.onUpdate(dt);
-            SpriteRenderer sprite = gameObject.getComponent(SpriteRenderer.class);
-            if (sprite != null) {
-                sprite.setSprite(currentState.getCurrentSprite());
-                sprite.setTexture(currentState.getCurrentSprite().getTexture());
-            }
-        }
-    }
-
-    @Override
-    public void imgui() {
-        for (AnimationState state : states) {
-            ImString title = new ImString(state.title);
-            ImGui.inputText("State: ", title);
-            state.title = title.get();
-
-            int index = 0;
-            for (Frame frame : state.animationFrames) {
-                float[] tmp = new float[1];
-                tmp[0] = frame.frameTime;
-                ImGui.dragFloat("Frame(" + index + ") Time: ", tmp, 0.01f);
-                frame.frameTime = tmp[0];
-                index++;
             }
         }
     }

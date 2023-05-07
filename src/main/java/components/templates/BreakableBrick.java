@@ -1,12 +1,12 @@
 package components.templates;
 
-import components.DefaultPlayerController;
+import components.DefaultTopDownPlayerController;
 import util.ResourcePool;
 
 public class BreakableBrick extends Block {
 
     @Override
-    void playerHit(DefaultPlayerController defaultPlayerController) {
+    void playerHit(DefaultTopDownPlayerController defaultTopDownPlayerController) {
         ResourcePool.getSound("assets/sounds/break_block.ogg").play();
         gameObject.destroy();
     }

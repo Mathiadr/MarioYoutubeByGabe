@@ -5,7 +5,7 @@ import util.ResourcePool;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimationState {
+public class Animation {
 
     public String title;
     public List<Frame> animationFrames = new ArrayList<>();

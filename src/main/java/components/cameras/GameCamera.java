@@ -1,11 +1,10 @@
 package components.cameras;
 
 import components.Component;
-import components.templates.MarioController;
-import components.DefaultPlayerController;
+import components.DefaultTopDownPlayerController;
 import brunostEngine.Camera;
 import brunostEngine.GameObject;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.joml.Vector4f;
 
 public class GameCamera extends Component {
@@ -22,7 +21,7 @@ public class GameCamera extends Component {
 
     @Override
     public void onStart() {
-        this.player = Window.getScene().getGameObjectWith(DefaultPlayerController.class);
+        this.player = Game.getScene().getGameObjectWith(DefaultTopDownPlayerController.class);
         this.gameCamera.clearColor.set(skyColor);
     }
 

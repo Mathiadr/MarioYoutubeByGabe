@@ -1,10 +1,10 @@
 package components.templates;
 
+import components.Animator;
 import components.Component;
-import components.StateMachine;
 import brunostEngine.Camera;
 import brunostEngine.GameObject;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
@@ -21,20 +21,20 @@ public class TurtleAI extends Component {
     private transient boolean onGround = false;
     private transient boolean isDead = false;
     private transient boolean isMoving = false;
-    private transient StateMachine stateMachine;
+    private transient Animator animator;
     private float movingDebounce = 0.32f;
 
     @Override
     public void onStart() {
-        this.stateMachine = this.gameObject.getComponent(StateMachine.class);
+        this.animator = this.gameObject.getComponent(Animator.class);
         this.rb = gameObject.getComponent(Rigidbody2D.class);
-        this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
+        this.acceleration.y = Game.getPhysics().getGravity().y * 0.7f;
     }
 
     @Override
     public void onUpdate(float dt) {
         movingDebounce -= dt;
-        Camera camera = Window.getScene().camera();
+        Camera camera = Game.getScene().camera();
         if (this.gameObject.transform.position.x >
                 camera.position.x + camera.getProjectionSize().x * camera.getZoom()) {
             return;
@@ -59,14 +59,14 @@ public class TurtleAI extends Component {
             this.acceleration.y = 0;
             this.velocity.y = 0;
         } else {
-            this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
+            this.acceleration.y = Game.getPhysics().getGravity().y * 0.7f;
         }
         this.velocity.y += this.acceleration.y * dt;
         this.velocity.y = Math.max(Math.min(this.velocity.y, this.terminalVelocity.y), -terminalVelocity.y);
         this.rb.setVelocity(velocity);
 
         if (this.gameObject.transform.position.x <
-                Window.getScene().camera().position.x - 0.5f) {// ||
+                Game.getScene().camera().position.x - 0.5f) {// ||
                 //this.gameObject.transform.position.y < 0.0f) {
             this.gameObject.destroy();
         }
@@ -85,7 +85,7 @@ public class TurtleAI extends Component {
         this.rb.setVelocity(this.velocity);
         this.rb.setAngularVelocity(0.0f);
         this.rb.setGravityScale(0.0f);
-        this.stateMachine.trigger("squashMe");
+        this.animator.trigger("squashMe");
         ResourcePool.getSound("assets/sounds/bump.ogg").play();
     }
 

@@ -1,12 +1,12 @@
 package components;
 
 import brunostEngine.KeyListener;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class DefaultPlayerController extends BasePlayerController {
+public class DefaultTopDownPlayerController extends BasePlayerController {
 
 
     public Vector2f terminalVelocity = new Vector2f(2.1f, 3.1f);
@@ -19,7 +19,7 @@ public class DefaultPlayerController extends BasePlayerController {
     @Override
     public void onUpdate(float dt) {
         if (isDead) {
-            Window.changeScene(Window.getCurrentSceneBuilder());
+            Game.changeScene(Game.getCurrentSceneBuilder());
             return;
         }
 
@@ -28,20 +28,20 @@ public class DefaultPlayerController extends BasePlayerController {
             this.acceleration.x = walkSpeed;
 
             if (this.velocity.x < 0) {
-                this.stateMachine.trigger("switchDirection");
+                this.animator.trigger("switchDirection");
                 this.velocity.x += slowDownForce;
             } else {
-                this.stateMachine.trigger("startRunning");
+                this.animator.trigger("startRunning");
             }
         } else if (KeyListener.isKeyPressed(GLFW_KEY_LEFT) || KeyListener.isKeyPressed(GLFW_KEY_A)) {
             this.gameObject.transform.scale.x = playerWidth;
             this.acceleration.x = -walkSpeed;
 
             if (this.velocity.x > 0) {
-                this.stateMachine.trigger("switchDirection");
+                this.animator.trigger("switchDirection");
                 this.velocity.x -= slowDownForce;
             } else {
-                this.stateMachine.trigger("startRunning");
+                this.animator.trigger("startRunning");
             }
         } else {
             this.acceleration.x = 0;
@@ -52,7 +52,7 @@ public class DefaultPlayerController extends BasePlayerController {
             }
 
             if (this.velocity.x == 0) {
-                this.stateMachine.trigger("stopRunning");
+                this.animator.trigger("stopRunning");
             }
         }
 
@@ -74,7 +74,7 @@ public class DefaultPlayerController extends BasePlayerController {
                 this.jumpTime = 0;
             }
             groundDebounce -= dt;
-            this.acceleration.y = Window.getPhysics().getGravity().y * 0.7f;
+            this.acceleration.y = Game.getPhysics().getGravity().y * 0.7f;
         } else {
             this.velocity.y = 0;
             this.acceleration.y = 0;
@@ -89,9 +89,9 @@ public class DefaultPlayerController extends BasePlayerController {
         this.rb.setAngularVelocity(0);
 
         if (!isGrounded) {
-            stateMachine.trigger("jump");
+            animator.trigger("jump");
         } else {
-            stateMachine.trigger("stopJumping");
+            animator.trigger("stopJumping");
         }
     }
 

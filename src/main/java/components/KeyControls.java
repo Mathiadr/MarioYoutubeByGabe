@@ -3,7 +3,7 @@ package components;
 import editor.PropertiesWindow;
 import brunostEngine.GameObject;
 import brunostEngine.KeyListener;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import util.Settings;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class KeyControls extends Component {
 
         if (KeyListener.isKeyPressed(GLFW_KEY_LEFT_CONTROL) &&
                 KeyListener.keyBeginPress(GLFW_KEY_S)) {
-            Window.getScene().save();
+            Game.getScene().save();
         }
     }
 
@@ -29,7 +29,7 @@ public class KeyControls extends Component {
     public void editorUpdate(float dt) {
         debounce -= dt;
 
-        PropertiesWindow propertiesWindow = Window.getImguiLayer().getPropertiesWindow();
+        PropertiesWindow propertiesWindow = Game.getImguiLayer().getPropertiesWindow();
         GameObject activeGameObject = propertiesWindow.getActiveGameObject();
         List<GameObject> activeGameObjects = propertiesWindow.getActiveGameObjects();
         float multiplier = KeyListener.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 0.1f : 1.0f;
@@ -37,11 +37,11 @@ public class KeyControls extends Component {
         if (KeyListener.isKeyPressed(GLFW_KEY_LEFT_CONTROL) &&
                 KeyListener.keyBeginPress(GLFW_KEY_D) && activeGameObject != null) {
             GameObject newObj = activeGameObject.copy();
-            Window.getScene().addGameObjectToScene(newObj);
+            Game.getScene().addGameObjectToScene(newObj);
             newObj.transform.position.add(Settings.GRID_WIDTH, 0.0f);
             propertiesWindow.setActiveGameObject(newObj);
-            if (newObj.getComponent(StateMachine.class) != null) {
-                newObj.getComponent(StateMachine.class).refreshTextures();
+            if (newObj.getComponent(Animator.class) != null) {
+                newObj.getComponent(Animator.class).refreshTextures();
             }
         } else if (KeyListener.isKeyPressed(GLFW_KEY_LEFT_CONTROL) &&
                 KeyListener.keyBeginPress(GLFW_KEY_D) && activeGameObjects.size() > 1) {
@@ -49,10 +49,10 @@ public class KeyControls extends Component {
             propertiesWindow.clearSelected();
             for (GameObject go : gameObjects) {
                 GameObject copy = go.copy();
-                Window.getScene().addGameObjectToScene(copy);
+                Game.getScene().addGameObjectToScene(copy);
                 propertiesWindow.addActiveGameObject(copy);
-                if (copy.getComponent(StateMachine.class) != null) {
-                    copy.getComponent(StateMachine.class).refreshTextures();
+                if (copy.getComponent(Animator.class) != null) {
+                    copy.getComponent(Animator.class).refreshTextures();
                 }
             }
         } else if (KeyListener.keyBeginPress(GLFW_KEY_DELETE)) {

@@ -2,11 +2,11 @@ package scenes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import components.Animator;
 import components.Component;
 import components.ComponentDeserializer;
 import brunostEngine.*;
 import components.SpriteRenderer;
-import components.StateMachine;
 import org.joml.Vector2f;
 import physics2d.Physics2D;
 import renderer.Renderer;
@@ -59,15 +59,17 @@ public class Scene {
                 }
             }
 
-            if (g.getComponent(StateMachine.class) != null) {
-                StateMachine stateMachine = g.getComponent(StateMachine.class);
-                stateMachine.refreshTextures();
+            if (g.getComponent(Animator.class) != null) {
+                Animator animator = g.getComponent(Animator.class);
+                animator.refreshTextures();
             }
         }
         this.sceneBuilder.init(this);
     }
 
     public void onStart() {
+        if (Tilemap.get() != null)
+            Tilemap.get().onStart();
         for (int i=0; i < gameObjects.size(); i++) {
             GameObject go = gameObjects.get(i);
             go.onStart();
@@ -168,6 +170,17 @@ public class Scene {
         return null;
     }
 
+    public <T extends Component> ArrayList<GameObject> getAllGameObjectsWith(Class<T> clazz) {
+        ArrayList<GameObject> returnArray = new ArrayList<>();
+        for (GameObject go : gameObjects) {
+            if (go.getComponent(clazz) != null) {
+                returnArray.add(go);
+            }
+        }
+
+        return returnArray;
+    }
+
     public List<GameObject> getGameObjects() {
         return this.gameObjects;
     }
@@ -178,7 +191,7 @@ public class Scene {
                 .findFirst();
         if (result.orElse(null) == null)
             System.err.println("Could not find GameObject with ID " + gameObjectId);
-        System.out.println("Got GameObject("+gameObjectId+"): " + result.orElse(null));
+        else System.out.println("Got GameObject("+gameObjectId+"): " + result.orElse(null));
         return result.orElse(null);
     }
 

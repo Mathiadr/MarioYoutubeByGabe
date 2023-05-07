@@ -3,7 +3,7 @@ package components.editorTools;
 import components.Component;
 import components.Spritesheet;
 import brunostEngine.KeyListener;
-import brunostEngine.Window;
+import brunostEngine.Game;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -19,9 +19,9 @@ public class GizmoSystem extends Component {
     @Override
     public void onStart() {
         gameObject.addComponent(new TranslateGizmo(gizmos.getSprite(1),
-                Window.getImguiLayer().getPropertiesWindow()));
+                Game.getImguiLayer().getPropertiesWindow()));
         gameObject.addComponent(new ScaleGizmo(gizmos.getSprite(2),
-                Window.getImguiLayer().getPropertiesWindow()));
+                Game.getImguiLayer().getPropertiesWindow()));
     }
 
     @Override

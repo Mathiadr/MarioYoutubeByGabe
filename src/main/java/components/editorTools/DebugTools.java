@@ -3,7 +3,6 @@ package components.editorTools;
 import brunostEngine.*;
 import components.*;
 import org.joml.Vector2f;
-import org.joml.Vector4f;
 import renderer.PickingTexture;
 import util.Settings;
 
@@ -11,7 +10,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 public class DebugTools extends Component {
-    public PickingTexture pickingTexture = Window.getPickingTexture();
+    public PickingTexture pickingTexture = Game.getPickingTexture();
     public GameObject gameObjectToPlace = null;
     private float debounceTime = 0.2f;
     private float debounce = debounceTime;
@@ -56,19 +55,19 @@ public class DebugTools extends Component {
         int y = (int) MouseListener.getScreenY();
         Vector2f worldPos = getWorldPositionAtClick();
         int gameObjectId = pickingTexture.readPixel(x, y);
-        GameObject pickedObj = Window.getScene().getGameObject(gameObjectId);
+        GameObject pickedObj = Game.getScene().getGameObject(gameObjectId);
         if (pickedObj != null && pickedObj.getComponent(NonPickable.class) == null && debounce < 0) {
             if (pickedObj.getComponent(Tile.class) != null) {
                 Tilemap.get().replaceTile(worldPos.x, worldPos.y, gameObjectToPlace);
             } else {
-                pickedObj.destroy();
-                placeObjectAtPos(worldPos);
+                //pickedObj.destroy();
+                //placeObjectAtPos(worldPos);
             }
         } else if (pickedObj != null){
             if (pickedObj.getComponent(Tile.class) != null) {
                 Tilemap.get().replaceTile(worldPos.x, worldPos.y, gameObjectToPlace);
             } else {
-                placeObjectAtPos(worldPos);
+                //placeObjectAtPos(worldPos);
             }
         }
     }
@@ -78,15 +77,10 @@ public class DebugTools extends Component {
         int y = (int) MouseListener.getScreenY();
         Vector2f worldPos = getWorldPositionAtClick();
         int gameObjectId = pickingTexture.readPixel(x, y);
-        GameObject pickedObj = Window.getScene().getGameObject(gameObjectId);
+        GameObject pickedObj = Game.getScene().getGameObject(gameObjectId);
         if (pickedObj != null && pickedObj.getComponent(NonPickable.class) == null && debounce < 0) {
             if (pickedObj.getComponent(Tile.class) != null){
-                Tilemap.get().getTileAtPosition(worldPos.x, worldPos.y).destroy();
-                System.out.println("Removed object at X: " + worldPos.x + ",\tY: " + worldPos.y);
-            } else {
-                System.out.println(pickedObj.name);
-                pickedObj.destroy();
-                System.out.println("Removed object at X: " + worldPos.x + ",\tY: " + worldPos.y);
+                Tilemap.get().destroyTileAtPos(worldPos.x, worldPos.y);
             }
         }
     }
@@ -98,17 +92,17 @@ public class DebugTools extends Component {
     public void placeObjectAtPos(Vector2f position) {
         GameObject newObj = gameObjectToPlace.copy();
         newObj.transform.position = position;
-        if (newObj.getComponent(StateMachine.class) != null) {
-            newObj.getComponent(StateMachine.class).refreshTextures();
+        if (newObj.getComponent(Animator.class) != null) {
+            newObj.getComponent(Animator.class).refreshTextures();
         }
-        Window.getScene().addGameObjectToScene(newObj);
+        Game.getScene().addGameObjectToScene(newObj);
     }
 
     public void replaceObjectAtPos(Vector2f vector2f) {
         GameObject newObj = gameObjectToPlace.copy();
-        if (newObj.getComponent(StateMachine.class) != null) {
-            newObj.getComponent(StateMachine.class).refreshTextures();
+        if (newObj.getComponent(Animator.class) != null) {
+            newObj.getComponent(Animator.class).refreshTextures();
         }
-        Window.getScene().addGameObjectToScene(newObj);
+        Game.getScene().addGameObjectToScene(newObj);
     }
 }

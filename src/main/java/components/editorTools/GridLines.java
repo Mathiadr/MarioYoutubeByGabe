@@ -2,7 +2,7 @@ package components.editorTools;
 
 import components.Component;
 import brunostEngine.Camera;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import renderer.DebugDraw;
@@ -12,7 +12,7 @@ public class GridLines extends Component {
 
     @Override
     public void onUpdate(float dt) {
-        Camera camera = Window.getScene().camera();
+        Camera camera = Game.getScene().camera();
         Vector2f cameraPos = camera.position;
         Vector2f projectionSize = camera.getProjectionSize();
 
@@ -43,7 +43,7 @@ public class GridLines extends Component {
 
     @Override
     public void editorUpdate(float dt) {
-        Camera camera = Window.getScene().camera();
+        Camera camera = Game.getScene().camera();
         Vector2f cameraPos = camera.position;
         Vector2f projectionSize = camera.getProjectionSize();
 

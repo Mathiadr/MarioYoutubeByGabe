@@ -11,7 +11,6 @@ import imgui.flag.*;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.type.ImBoolean;
-import renderer.PickingTexture;
 import scenes.Scene;
 
 import java.io.File;
@@ -192,7 +191,7 @@ public class ImGuiLayer {
 
     private void endFrame() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glViewport(0, 0, Window.getWidth(), Window.getHeight());
+        glViewport(0, 0, Game.getWidth(), Game.getHeight());
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -221,7 +220,7 @@ public class ImGuiLayer {
         ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY());
         ImGui.setNextWindowViewport(mainViewport.getID());
         ImGui.setNextWindowPos(0.0f, 0.0f);
-        ImGui.setNextWindowSize(Window.getWidth(), Window.getHeight());
+        ImGui.setNextWindowSize(Game.getWidth(), Game.getHeight());
         ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
         ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
         windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse |

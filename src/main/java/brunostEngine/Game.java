@@ -25,7 +25,7 @@ import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class Window implements Observer {
+public class Game implements Observer {
     private int width, height;
     private String title;
     private long glfwWindow;
@@ -34,7 +34,7 @@ public class Window implements Observer {
     private PickingTexture pickingTexture;
     private boolean runtimePlaying = true;
 
-    private static Window window = null;
+    private static Game game = null;
 
     private long audioContext;
     private long audioDevice;
@@ -42,7 +42,7 @@ public class Window implements Observer {
     private static Scene currentScene;
     private static SceneBuilder currentSceneBuilder;
 
-    private Window() {
+    private Game() {
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.width = gd.getDisplayMode().getWidth();
         this.height = gd.getDisplayMode().getHeight();
@@ -63,12 +63,12 @@ public class Window implements Observer {
         currentScene.onStart();
     }
 
-    public static Window get() {
-        if (Window.window == null) {
-            Window.window = new Window();
+    public static Game get() {
+        if (Game.game == null) {
+            Game.game = new Game();
         }
 
-        return Window.window;
+        return Game.game;
     }
 
     public static Physics2D getPhysics() { return currentScene.getPhysics(); }
@@ -123,8 +123,8 @@ public class Window implements Observer {
         glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
         glfwSetWindowSizeCallback(glfwWindow, (w, newWidth, newHeight) -> {
-            Window.setWidth(newWidth);
-            Window.setHeight(newHeight);
+            Game.setWidth(newWidth);
+            Game.setHeight(newHeight);
         });
 
         // Make the OpenGL context current
@@ -160,9 +160,9 @@ public class Window implements Observer {
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-        this.framebuffer = new Framebuffer(Window.getWidth(), Window.getHeight());
-        this.pickingTexture = new PickingTexture(Window.getWidth(), Window.getHeight());
-        glViewport(0, 0, Window.getWidth(), Window.getHeight());
+        this.framebuffer = new Framebuffer(Game.getWidth(), Game.getHeight());
+        this.pickingTexture = new PickingTexture(Game.getWidth(), Game.getHeight());
+        glViewport(0, 0, Game.getWidth(), Game.getHeight());
 
         this.imguiLayer = new ImGuiLayer(glfwWindow);
         this.imguiLayer.initImGui();
@@ -184,7 +184,7 @@ public class Window implements Observer {
             glDisable(GL_BLEND);
             pickingTexture.enableWriting();
 
-            glViewport(0, 0, Window.getWidth(), Window.getHeight());
+            glViewport(0, 0, Game.getWidth(), Game.getHeight());
             glClearColor(0, 0, 0, 0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -259,7 +259,7 @@ public class Window implements Observer {
     }
 
     public static void setCurrentSceneBuilder(SceneBuilder currentSceneBuilder) {
-        Window.currentSceneBuilder = currentSceneBuilder;
+        Game.currentSceneBuilder = currentSceneBuilder;
     }
 
     public static PickingTexture getPickingTexture() {
@@ -271,15 +271,14 @@ public class Window implements Observer {
         switch (event.type) {
             case GameEngineStartPlay:
                 this.runtimePlaying = true;
-                currentScene.save();
-                Window.changeScene(currentSceneBuilder);
+                Game.changeScene(currentSceneBuilder);
                 break;
             case GameEngineStopPlay:
                 this.runtimePlaying = false;
-                Window.changeScene(currentSceneBuilder);
+                Game.changeScene(currentSceneBuilder);
                 break;
             case LoadLevel:
-                Window.changeScene(currentSceneBuilder);
+                Game.changeScene(currentSceneBuilder);
                 break;
             case SaveLevel:
                 currentScene.save();

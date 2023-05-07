@@ -1,8 +1,8 @@
 package components.templates;
 
 import components.Component;
+import components.DefaultTopDownPlayerController;
 import components.Ground;
-import components.DefaultPlayerController;
 import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
@@ -33,8 +33,8 @@ public class MushroomAI extends Component {
     
     @Override 
     public void preSolve(GameObject obj, Contact contact, Vector2f contactNormal) {
-        DefaultPlayerController defaultPlayerController = obj.getComponent(DefaultPlayerController.class);
-        if (defaultPlayerController != null) {
+        DefaultTopDownPlayerController defaultTopDownPlayerController = obj.getComponent(DefaultTopDownPlayerController.class);
+        if (defaultTopDownPlayerController != null) {
             contact.setEnabled(false);
             if (!hitPlayer) {
                 ResourcePool.getSound("assets/sounds/coin.ogg").play();

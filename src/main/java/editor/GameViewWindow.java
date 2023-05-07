@@ -4,10 +4,7 @@ import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
 import brunostEngine.MouseListener;
-import brunostEngine.Window;
-import observers.EventSystem;
-import observers.events.Event;
-import observers.events.EventType;
+import brunostEngine.Game;
 import org.joml.Vector2f;
 
 public class GameViewWindow {
@@ -25,7 +22,7 @@ public class GameViewWindow {
         ImVec2 windowPos = getCenteredPositionForViewport(windowSize);
         ImGui.setCursorPos(windowPos.x, windowPos.y);
 
-        int textureId = Window.getFramebuffer().getTextureId();
+        int textureId = Game.getFramebuffer().getTextureId();
         ImGui.imageButton(textureId, windowSize.x, windowSize.y, 0, 1, 1, 0);
         windowIsHovered = ImGui.isItemHovered();
 
@@ -44,11 +41,11 @@ public class GameViewWindow {
         ImGui.getContentRegionAvail(windowSize);
 
         float aspectWidth = windowSize.x;
-        float aspectHeight = aspectWidth / Window.getTargetAspectRatio();
+        float aspectHeight = aspectWidth / Game.getTargetAspectRatio();
         if (aspectHeight > windowSize.y) {
             // We must switch to pillarbox mode
             aspectHeight = windowSize.y;
-            aspectWidth = aspectHeight * Window.getTargetAspectRatio();
+            aspectWidth = aspectHeight * Game.getTargetAspectRatio();
         }
 
         return new ImVec2(aspectWidth, aspectHeight);

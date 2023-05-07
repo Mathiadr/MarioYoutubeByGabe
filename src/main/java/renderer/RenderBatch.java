@@ -2,7 +2,7 @@ package renderer;
 
 import components.SpriteRenderer;
 import brunostEngine.GameObject;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -146,8 +146,8 @@ public class RenderBatch implements Comparable<RenderBatch> {
 
         // Use shader
         Shader shader = Renderer.getBoundShader();
-        shader.uploadMat4f("uProjection", Window.getScene().camera().getProjectionMatrix());
-        shader.uploadMat4f("uView", Window.getScene().camera().getViewMatrix());
+        shader.uploadMat4f("uProjection", Game.getScene().camera().getProjectionMatrix());
+        shader.uploadMat4f("uView", Game.getScene().camera().getViewMatrix());
         for (int i=0; i < textures.size(); i++) {
             glActiveTexture(GL_TEXTURE0 + i + 1);
             textures.get(i).bind();

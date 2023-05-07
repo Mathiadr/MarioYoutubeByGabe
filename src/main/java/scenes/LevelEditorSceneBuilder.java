@@ -109,9 +109,9 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 }
             }
 
-            if (g.getComponent(StateMachine.class) != null) {
-                StateMachine stateMachine = g.getComponent(StateMachine.class);
-                stateMachine.refreshTextures();
+            if (g.getComponent(Animator.class) != null) {
+                Animator animator = g.getComponent(Animator.class);
+                animator.refreshTextures();
             }
         }
     }

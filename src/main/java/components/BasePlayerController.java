@@ -22,14 +22,14 @@ public abstract class BasePlayerController extends Component{
 
     protected transient SpriteRenderer spr;
     protected transient Rigidbody2D rb;
-    protected transient StateMachine stateMachine;
+    protected transient Animator animator;
 
 
     @Override
     public void onStart() {
         this.spr = gameObject.getComponent(SpriteRenderer.class);
         this.rb = gameObject.getComponent(Rigidbody2D.class);
-        this.stateMachine = gameObject.getComponent(StateMachine.class);
+        this.animator = gameObject.getComponent(Animator.class);
     }
 
     @Override

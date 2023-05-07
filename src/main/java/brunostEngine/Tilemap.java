@@ -2,13 +2,16 @@ package brunostEngine;
 
 import components.*;
 import org.joml.Vector2f;
+import scenes.Scene;
 
-public class Tilemap {
+import java.util.ArrayList;
+
+public class Tilemap{
     private static Tilemap tilemap = null;
     public int column;
     public int row;
-    public transient GameObject tilemapBackground;
-    public GameObject[][] tiles;
+    public GameObject tilemapBackground;
+    public transient GameObject[][] tiles;
 
     private Tilemap(int column, int row){
         this.column = column;
@@ -18,8 +21,12 @@ public class Tilemap {
         float offsetY = 0.125f;
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
-                GameObject newTile = Window.getScene().createGameObject("Tile("+i+", "+j+")");
-                newTile.addComponent(new Tile());
+                GameObject newTile = Game.getScene().createGameObject("Tile("+i+", "+j+")");
+                Tile tile = new Tile();
+                tile.parentTilemap = this;
+                tile.column = i;
+                tile.row = j;
+                newTile.addComponent(tile);
                 newTile.transform.position.x = offsetX;
                 newTile.transform.position.y = offsetY;
                 tiles[i][j] = newTile;
@@ -30,6 +37,20 @@ public class Tilemap {
         }
     }
 
+    public void onStart() {
+        Scene scene = Game.getScene();
+        ArrayList<GameObject> tilesFromScene = scene.getAllGameObjectsWith(Tile.class);
+        if (!tilesFromScene.isEmpty()){
+            System.out.println("Loading tiles from file...");
+            for (GameObject tile : tilesFromScene){
+                if (tile.getComponent(NonPickable.class) == null) {
+                    replaceTile(tile.transform.position.x, tile.transform.position.y, tile);
+                    tile.destroy();
+                } else tilemapBackground = tile;
+            }
+            System.out.println("Finished loading tiles from file");
+        }
+    }
 
     public static Tilemap generateTilemap(int column, int row){
         if (tilemap == null){
@@ -41,12 +62,13 @@ public class Tilemap {
     public void setTilemapBackground(Sprite sprite){
         tilemapBackground = Prefabs.generateSpriteObject(sprite, 0.25f * column, 0.25f * row);
         tilemapBackground.addComponent(new NonPickable());
+        tilemapBackground.addComponent(new Tile());
         tilemapBackground.transform.zIndex = -10;
         tilemapBackground.transform.position.x = 0.125f;
         tilemapBackground.transform.position.y = 0.125f;
         tilemapBackground.transform.position.mul( column, row);
 
-        Window.getScene().addGameObjectToScene(tilemapBackground);
+        Game.getScene().addGameObjectToScene(tilemapBackground);
     }
 
     public static Tilemap get(){
@@ -56,26 +78,29 @@ public class Tilemap {
     public void addTilemapToScene(){
         for (int i = 0; i < get().tiles.length; i++){
             for (int j = 0; j < get().tiles[i].length; j++){
-                Window.getScene().addGameObjectToScene(get().tiles[i][j]);
+                Game.getScene().addGameObjectToScene(get().tiles[i][j]);
             }
         }
     }
 
     public void fill(GameObject gameObject){
-        for (int i = 0; i < tiles.length; i++){
-            for (int j = 0; j < tiles[i].length; j++){
-                Vector2f position = tiles[i][j].transform.position;
+        for (int i = 0; i < get().tiles.length; i++){
+            for (int j = 0; j < get().tiles[i].length; j++){
+                Vector2f position = get().tiles[i][j].transform.position;
+                if (gameObject.getComponent(Tile.class) != null)
+                    gameObject.removeComponent(Tile.class);
+                gameObject.addComponent(tiles[i][j].getComponent(Tile.class));
                 tiles[i][j] = gameObject.copy();
                 tiles[i][j].transform.position = position;
-                if (tiles[i][j].getComponent(StateMachine.class) != null) {
-                    tiles[i][j].getComponent(StateMachine.class).refreshTextures();
+                if (tiles[i][j].getComponent(Animator.class) != null) {
+                    tiles[i][j].getComponent(Animator.class).refreshTextures();
                 }
             }
         }
     }
 
     public void fillBorder(GameObject gameObject){
-        gameObject.addComponent(new Tile());
+        System.out.println("Commencing filling Tilemap borders...");
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
                 boolean tileIsBorder = false;
@@ -86,15 +111,11 @@ public class Tilemap {
                     tileIsBorder = true;
                 }
                 if (tileIsBorder) {
-                    Vector2f position = tiles[i][j].transform.position;
-                    tiles[i][j] = gameObject.copy();
-                    tiles[i][j].transform.position = position;
-                    if (tiles[i][j].getComponent(StateMachine.class) != null) {
-                        tiles[i][j].getComponent(StateMachine.class).refreshTextures();
-                    }
+                    replaceTile(tiles[i][j].transform.position.x, tiles[i][j].transform.position.y, gameObject);
                 }
             }
         }
+        System.out.println("Finished filling Tilemap borders");
     }
 
     public void fillRandom(){
@@ -116,22 +137,45 @@ public class Tilemap {
     }
 
     public void replaceTile(float x, float y, GameObject tile){
-        tile.addComponent(new Tile());
         Vector2f position = new Vector2f(x, y);
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
                 if (tiles[i][j].transform.position.x == position.x && tiles[i][j].transform.position.y == position.y ){
                     // is "return Window.getScene().getGameObject("Tile("+i+", "+j+")");" a more optimal way??
                     GameObject replacement = tile.copy();
+                    if (replacement.getComponent(Tile.class) != null)
+                        replacement.removeComponent(Tile.class);
+                    replacement.addComponent(tiles[i][j].getComponent(Tile.class));
                     replacement.transform.position = position;
-                    tiles[i][j].destroy();
+                    if (tiles[i][j].getComponent(NonPickable.class) == null)
+                        tiles[i][j].destroy();
                     tiles[i][j] = replacement;
-                    if (replacement.getComponent(StateMachine.class) != null) {
-                        replacement.getComponent(StateMachine.class).refreshTextures();
+                    if (replacement.getComponent(Animator.class) != null) {
+                        replacement.getComponent(Animator.class).refreshTextures();
                     }
-                    Window.getScene().addGameObjectToScene(tiles[i][j]);
+                    Game.getScene().addGameObjectToScene(tiles[i][j]);
                 }
             }
         }
+    }
+
+    public void destroyTileAtPos(float x, float y){
+        Vector2f position = new Vector2f(x, y);
+        for (int i = 0; i < tiles.length; i++){
+            for (int j = 0; j < tiles[i].length; j++){
+                if (tiles[i][j].transform.position.x == position.x && tiles[i][j].transform.position.y == position.y ){
+                    // is "return Window.getScene().getGameObject("Tile("+i+", "+j+")");" a more optimal way??
+                    GameObject replacement = Game.getScene().createGameObject("Tile("+i+", "+j+")");
+                    replacement.addComponent(tiles[i][j].getComponent(Tile.class));
+                    replacement.transform.position = position;
+                    tiles[i][j].destroy();
+                    tiles[i][j] = replacement;
+                    Game.getScene().addGameObjectToScene(tiles[i][j]);
+                    System.out.println("Removed " + tiles[i][j].name);
+                    return;
+                }
+            }
+        }
+        System.err.println("Could not find tile in specified location("+x+", "+y+")");
     }
 }

@@ -56,7 +56,7 @@ public class MouseListener {
     }
 
     public static void mousePosCallback(long window, double xpos, double ypos) {
-        if (!Window.getImguiLayer().getGameViewWindow().getWantCaptureMouse()) {
+        if (!Game.getImguiLayer().getGameViewWindow().getWantCaptureMouse()) {
             clear();
         }
         if (get().mouseButtonDown > 0) {
@@ -139,7 +139,7 @@ public class MouseListener {
         float currentY = (getY() - get().gameViewportPos.y);
         currentY = (2.0f * (1.0f - (currentY / get().gameViewportSize.y))) - 1;
 
-        Camera camera = Window.getScene().camera();
+        Camera camera = Game.getScene().camera();
         Vector4f tmp = new Vector4f(currentX, currentY, 0, 1);
         Matrix4f inverseView = new Matrix4f(camera.getInverseView());
         Matrix4f inverseProjection = new Matrix4f(camera.getInverseProjection());
@@ -149,11 +149,11 @@ public class MouseListener {
 
     public static Vector2f screenToWorld(Vector2f screenCoords) {
         Vector2f normalizedScreenCords = new Vector2f(
-                screenCoords.x / Window.getWidth(),
-                screenCoords.y / Window.getHeight()
+                screenCoords.x / Game.getWidth(),
+                screenCoords.y / Game.getHeight()
         );
         normalizedScreenCords.mul(2.0f).sub(new Vector2f(1.0f, 1.0f));
-        Camera camera = Window.getScene().camera();
+        Camera camera = Game.getScene().camera();
         Vector4f tmp = new Vector4f(normalizedScreenCords.x, normalizedScreenCords.y,
                 0, 1);
         Matrix4f inverseView = new Matrix4f(camera.getInverseView());
@@ -163,14 +163,14 @@ public class MouseListener {
     }
 
     public static Vector2f worldToScreen(Vector2f worldCoords) {
-        Camera camera = Window.getScene().camera();
+        Camera camera = Game.getScene().camera();
         Vector4f ndcSpacePos = new Vector4f(worldCoords.x, worldCoords.y, 0, 1);
         Matrix4f view = new Matrix4f(camera.getViewMatrix());
         Matrix4f projection = new Matrix4f(camera.getProjectionMatrix());
         ndcSpacePos.mul(projection.mul(view));
         Vector2f windowSpace = new Vector2f(ndcSpacePos.x, ndcSpacePos.y).mul(1.0f / ndcSpacePos.w);
         windowSpace.add(new Vector2f(1.0f, 1.0f)).mul(0.5f);
-        windowSpace.mul(new Vector2f(Window.getWidth(), Window.getHeight()));
+        windowSpace.mul(new Vector2f(Game.getWidth(), Game.getHeight()));
 
         return windowSpace;
     }
@@ -185,9 +185,9 @@ public class MouseListener {
 
     public static Vector2f getScreen() {
         float currentX = getX() - get().gameViewportPos.x;
-        currentX = (currentX / get().gameViewportSize.x) * Window.getWidth();
+        currentX = (currentX / get().gameViewportSize.x) * Game.getWidth();
         float currentY = (getY() - get().gameViewportPos.y);
-        currentY = (1.0f - (currentY / get().gameViewportSize.y)) * Window.getHeight();
+        currentY = (1.0f - (currentY / get().gameViewportSize.y)) * Game.getHeight();
         return new Vector2f(currentX, currentY);
     }
 

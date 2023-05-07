@@ -1,10 +1,10 @@
 package components.cameras;
 
+import components.BasePlayerController;
 import components.Component;
-import components.DefaultPlayerController;
 import brunostEngine.Camera;
 import brunostEngine.GameObject;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.joml.Vector4f;
 
 
@@ -24,7 +24,7 @@ public class FollowTargetCamera extends Component {
 
     @Override
     public void onStart() {
-        this.player = Window.getScene().getGameObjectWith(DefaultPlayerController.class);
+        this.player = Game.getScene().getGameObjectWith(BasePlayerController.class);
         this.gameCamera.clearColor.set(skyColor);
     }
 

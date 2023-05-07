@@ -1,7 +1,7 @@
 package physics2d.components;
 
 import components.Component;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.joml.Vector2f;
 
 public class PillboxCollider extends Component {
@@ -51,7 +51,7 @@ public class PillboxCollider extends Component {
     }
 
     public void resetFixture() {
-        if (Window.getPhysics().isLocked()) {
+        if (Game.getPhysics().isLocked()) {
             resetFixtureNextFrame = true;
             return;
         }
@@ -60,7 +60,7 @@ public class PillboxCollider extends Component {
         if (gameObject != null) {
             Rigidbody2D rb = gameObject.getComponent(Rigidbody2D.class);
             if (rb != null) {
-                Window.getPhysics().resetPillboxCollider(rb, this);
+                Game.getPhysics().resetPillboxCollider(rb, this);
             }
         }
     }

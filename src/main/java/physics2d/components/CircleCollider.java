@@ -1,7 +1,7 @@
 package physics2d.components;
 
 import components.Component;
-import brunostEngine.Window;
+import brunostEngine.Game;
 import org.joml.Vector2f;
 import renderer.DebugDraw;
 
@@ -43,7 +43,7 @@ public class CircleCollider extends Component {
     }
 
     public void resetFixture() {
-        if (Window.getPhysics().isLocked()) {
+        if (Game.getPhysics().isLocked()) {
             resetFixtureNextFrame = true;
             return;
         }
@@ -52,7 +52,7 @@ public class CircleCollider extends Component {
         if (gameObject != null) {
             Rigidbody2D rb = gameObject.getComponent(Rigidbody2D.class);
             if (rb != null) {
-                Window.getPhysics().resetCircleCollider(rb, this);
+                Game.getPhysics().resetCircleCollider(rb, this);
             }
         }
     }

@@ -1,10 +1,10 @@
 package components.templates;
 
-import components.DefaultPlayerController;
-import components.StateMachine;
+import components.Animator;
+import components.DefaultTopDownPlayerController;
 import brunostEngine.GameObject;
 import brunostEngine.Prefabs;
-import brunostEngine.Window;
+import brunostEngine.Game;
 
 public class QuestionBlock extends Block {
     private enum BlockType {
@@ -16,51 +16,51 @@ public class QuestionBlock extends Block {
     public BlockType blockType = BlockType.Coin;
 
     @Override
-    void playerHit(DefaultPlayerController defaultPlayerController) {
+    void playerHit(DefaultTopDownPlayerController defaultTopDownPlayerController) {
         switch(blockType) {
             case Coin:
-                doCoin(defaultPlayerController);
+                doCoin(defaultTopDownPlayerController);
                 break;
             case Powerup:
-                doPowerup(defaultPlayerController);
+                doPowerup(defaultTopDownPlayerController);
                 break;
             case Invincibility:
-                doInvincibility(defaultPlayerController);
+                doInvincibility(defaultTopDownPlayerController);
                 break;
         }
 
-        StateMachine stateMachine = gameObject.getComponent(StateMachine.class);
-        if (stateMachine != null) {
-            stateMachine.trigger("setInactive");
+        Animator animator = gameObject.getComponent(Animator.class);
+        if (animator != null) {
+            animator.trigger("setInactive");
             this.setInactive();
         }
     }
 
-    private void doInvincibility(DefaultPlayerController defaultPlayerController) {
+    private void doInvincibility(DefaultTopDownPlayerController defaultTopDownPlayerController) {
     }
 
-    private void doPowerup(DefaultPlayerController defaultPlayerController) {
+    private void doPowerup(DefaultTopDownPlayerController defaultTopDownPlayerController) {
         spawnFlower();
     }
 
-    private void doCoin(DefaultPlayerController defaultPlayerController) {
+    private void doCoin(DefaultTopDownPlayerController defaultTopDownPlayerController) {
         GameObject coin = Prefabs.generateBlockCoin();
         coin.transform.position.set(this.gameObject.transform.position);
         coin.transform.position.y += 0.25f;
-        Window.getScene().addGameObjectToScene(coin);
+        Game.getScene().addGameObjectToScene(coin);
     }
 
     private void spawnMushroom() {
         GameObject mushroom = Prefabs.generateMushroom();
         mushroom.transform.position.set(gameObject.transform.position);
         mushroom.transform.position.y += 0.25f;
-        Window.getScene().addGameObjectToScene(mushroom);
+        Game.getScene().addGameObjectToScene(mushroom);
     }
 
     private void spawnFlower() {
         GameObject flower = Prefabs.generateFlower();
         flower.transform.position.set(gameObject.transform.position);
         flower.transform.position.y += 0.25f;
-        Window.getScene().addGameObjectToScene(flower);
+        Game.getScene().addGameObjectToScene(flower);
     }
 }
