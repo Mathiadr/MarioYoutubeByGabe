@@ -1,9 +1,6 @@
 package brunostEngine;
 
 import editor.GameViewWindow;
-import editor.MenuBar;
-import editor.PropertiesWindow;
-import editor.SceneHierarchyWindow;
 import imgui.*;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
@@ -29,9 +26,6 @@ public class ImGuiLayer {
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
 
     private GameViewWindow gameViewWindow;
-    private PropertiesWindow propertiesWindow;
-    private MenuBar menuBar;
-    private SceneHierarchyWindow sceneHeirarchyWindow;
 
     public ImGuiLayer(long glfwWindow) {
         this.glfwWindow = glfwWindow;
@@ -176,7 +170,6 @@ public class ImGuiLayer {
 
         // Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
         setupDockspace();
-        currentScene.imgui();
         gameViewWindow.imgui();
         //ImGui.showDemoWindow();
 
@@ -237,9 +230,5 @@ public class ImGuiLayer {
         //menuBar.imgui();
 
         ImGui.end();
-    }
-
-    public PropertiesWindow getPropertiesWindow() {
-        return this.propertiesWindow;
     }
 }

@@ -28,20 +28,20 @@ public class DefaultTopDownPlayerController extends BasePlayerController {
             this.acceleration.x = walkSpeed;
 
             if (this.velocity.x < 0) {
-                this.animator.trigger("switchDirection");
+                this.animator.play("switchDirection");
                 this.velocity.x += slowDownForce;
             } else {
-                this.animator.trigger("startRunning");
+                this.animator.play("startRunning");
             }
         } else if (KeyListener.isKeyPressed(GLFW_KEY_LEFT) || KeyListener.isKeyPressed(GLFW_KEY_A)) {
             this.gameObject.transform.scale.x = playerWidth;
             this.acceleration.x = -walkSpeed;
 
             if (this.velocity.x > 0) {
-                this.animator.trigger("switchDirection");
+                this.animator.play("switchDirection");
                 this.velocity.x -= slowDownForce;
             } else {
-                this.animator.trigger("startRunning");
+                this.animator.play("startRunning");
             }
         } else {
             this.acceleration.x = 0;
@@ -52,7 +52,7 @@ public class DefaultTopDownPlayerController extends BasePlayerController {
             }
 
             if (this.velocity.x == 0) {
-                this.animator.trigger("stopRunning");
+                this.animator.play("stopRunning");
             }
         }
 
@@ -89,9 +89,9 @@ public class DefaultTopDownPlayerController extends BasePlayerController {
         this.rb.setAngularVelocity(0);
 
         if (!isGrounded) {
-            animator.trigger("jump");
+            animator.play("jump");
         } else {
-            animator.trigger("stopJumping");
+            animator.play("stopJumping");
         }
     }
 

@@ -102,11 +102,6 @@ public class Main {
 
 
             }
-
-            @Override
-            public void imgui() {
-
-            }
         });
         ----------------------------------------------------------------------------------------------------------------
         Game.changeScene(new SceneBuilder() {
@@ -182,11 +177,6 @@ public class Main {
                 ResourcePool.addSound("assets/sounds/kick.ogg", false);
                 ResourcePool.addSound("assets/sounds/invincible.ogg", false);
             }
-
-            @Override
-            public void imgui() {
-
-            }
         });
 
          */
@@ -248,11 +238,6 @@ public class Main {
                 ResourcePool.addSound("assets/sounds/stomp.ogg", false);
                 ResourcePool.addSound("assets/sounds/kick.ogg", false);
                 ResourcePool.addSound("assets/sounds/invincible.ogg", false);
-            }
-
-            @Override
-            public void imgui() {
-
             }
         });
         game.run();

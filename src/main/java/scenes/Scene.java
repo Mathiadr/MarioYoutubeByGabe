@@ -261,10 +261,6 @@ public class Scene {
         return this.camera;
     }
 
-    public void imgui() {
-        this.sceneBuilder.imgui();
-    }
-
     public GameObject createGameObject(String name) {
         GameObject go = new GameObject(name);
         go.addComponent(new Transform());

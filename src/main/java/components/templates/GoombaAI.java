@@ -104,7 +104,7 @@ public class GoombaAI extends Component {
         this.rb.setVelocity(new Vector2f());
         this.rb.setAngularVelocity(0.0f);
         this.rb.setGravityScale(0.0f);
-        this.animator.trigger("squashMe");
+        this.animator.play("squashMe");
         this.rb.setIsSensor();
         if (playSound) {
             ResourcePool.getSound("assets/sounds/bump.ogg").play();

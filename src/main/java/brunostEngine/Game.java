@@ -31,7 +31,7 @@ public class Game implements Observer {
     private long glfwWindow;
     private ImGuiLayer imguiLayer;
     private Framebuffer framebuffer;
-    private PickingTexture pickingTexture;
+    private PixelToGameObjectReader pixelToGameObjectReader;
     private boolean runtimePlaying = true;
 
     private static Game game = null;
@@ -56,7 +56,6 @@ public class Game implements Observer {
         }
 
         currentSceneBuilder = sceneBuilder;
-        //getImguiLayer().getPropertiesWindow().setActiveGameObject(null);
         currentScene = new Scene(sceneBuilder);
         currentScene.load();
         currentScene.init();
@@ -161,7 +160,7 @@ public class Game implements Observer {
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
         this.framebuffer = new Framebuffer(Game.getWidth(), Game.getHeight());
-        this.pickingTexture = new PickingTexture(Game.getWidth(), Game.getHeight());
+        this.pixelToGameObjectReader = new PixelToGameObjectReader(Game.getWidth(), Game.getHeight());
         glViewport(0, 0, Game.getWidth(), Game.getHeight());
 
         this.imguiLayer = new ImGuiLayer(glfwWindow);
@@ -182,7 +181,7 @@ public class Game implements Observer {
 
             // Render pass 1. Render to picking texture
             glDisable(GL_BLEND);
-            pickingTexture.enableWriting();
+            pixelToGameObjectReader.enableWriting();
 
             glViewport(0, 0, Game.getWidth(), Game.getHeight());
             glClearColor(0, 0, 0, 0);
@@ -191,7 +190,7 @@ public class Game implements Observer {
             Renderer.bindShader(pickingShader);
             currentScene.render();
 
-            pickingTexture.disableWriting();
+            pixelToGameObjectReader.disableWriting();
             glEnable(GL_BLEND);
 
             // Render pass 2. Render actual game
@@ -262,8 +261,8 @@ public class Game implements Observer {
         Game.currentSceneBuilder = currentSceneBuilder;
     }
 
-    public static PickingTexture getPickingTexture() {
-        return get().pickingTexture;
+    public static PixelToGameObjectReader getPixelToGameObjectReader() {
+        return get().pixelToGameObjectReader;
     }
 
     @Override

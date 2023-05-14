@@ -15,7 +15,6 @@ import physics2d.Physics2D;
 import physics2d.components.CylinderCollider;
 import physics2d.components.Rigidbody2D;
 import physics2d.enums.BodyType;
-import scenes.LevelEditorSceneBuilder;
 import scenes.LevelSceneBuilder;
 import util.ResourcePool;
 
@@ -76,13 +75,13 @@ public class MarioController extends Component {
             if (!onGround) {
                 gameObject.transform.scale.x = -0.25f;
                 gameObject.transform.position.y -= dt;
-                animator.trigger("stopRunning");
-                animator.trigger("stopJumping");
+                animator.play("stopRunning");
+                animator.play("stopJumping");
             } else {
                 if (this.walkTime > 0) {
                     gameObject.transform.scale.x = 0.25f;
                     gameObject.transform.position.x += dt;
-                    animator.trigger("startRunning");
+                    animator.play("startRunning");
                 }
                 if (!ResourcePool.getSound("assets/sounds/stage_clear.ogg").isPlaying()) {
                     ResourcePool.getSound("assets/sounds/stage_clear.ogg").play();
@@ -91,7 +90,6 @@ public class MarioController extends Component {
                 walkTime -= dt;
 
                 if (timeToCastle <= 0) {
-                    Game.changeScene(new LevelEditorSceneBuilder());
                 }
             }
 
@@ -139,20 +137,20 @@ public class MarioController extends Component {
             this.acceleration.x = walkSpeed;
 
             if (this.velocity.x < 0) {
-                this.animator.trigger("switchDirection");
+                this.animator.play("switchDirection");
                 this.velocity.x += slowDownForce;
             } else {
-                this.animator.trigger("startRunning");
+                this.animator.play("startRunning");
             }
         } else if (KeyListener.isKeyPressed(GLFW_KEY_LEFT) || KeyListener.isKeyPressed(GLFW_KEY_A)) {
             this.gameObject.transform.scale.x = playerWidth;
             this.acceleration.x = -walkSpeed;
 
             if (this.velocity.x > 0) {
-                this.animator.trigger("switchDirection");
+                this.animator.play("switchDirection");
                 this.velocity.x -= slowDownForce;
             } else {
-                this.animator.trigger("startRunning");
+                this.animator.play("startRunning");
             }
         } else {
             this.acceleration.x = 0;
@@ -163,7 +161,7 @@ public class MarioController extends Component {
             }
 
             if (this.velocity.x == 0) {
-                this.animator.trigger("stopRunning");
+                this.animator.play("stopRunning");
             }
         }
 
@@ -216,9 +214,9 @@ public class MarioController extends Component {
         this.rb.setAngularVelocity(0);
 
         if (!onGround) {
-            animator.trigger("jump");
+            animator.play("jump");
         } else {
-            animator.trigger("stopJumping");
+            animator.play("stopJumping");
         }
     }
 
@@ -249,7 +247,7 @@ public class MarioController extends Component {
             ResourcePool.getSound("assets/sounds/powerup.ogg").play();
         }
 
-        animator.trigger("powerup");
+        animator.play("powerup");
     }
 
     public void playWinAnimation(GameObject flagpole) {
@@ -299,7 +297,7 @@ public class MarioController extends Component {
     }
 
     public void die() {
-        this.animator.trigger("die");
+        this.animator.play("die");
         if (this.playerState == MarioController.PlayerState.Small) {
             this.velocity.set(0, 0);
             this.acceleration.set(0, 0);

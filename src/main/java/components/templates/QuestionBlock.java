@@ -31,7 +31,7 @@ public class QuestionBlock extends Block {
 
         Animator animator = gameObject.getComponent(Animator.class);
         if (animator != null) {
-            animator.trigger("setInactive");
+            animator.play("setInactive");
             this.setInactive();
         }
     }

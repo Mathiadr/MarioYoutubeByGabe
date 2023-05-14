@@ -85,9 +85,4 @@ public class LevelSceneBuilder extends SceneBuilder {
             }
         }
     }
-
-    @Override
-    public void imgui() {
-
-    }
 }

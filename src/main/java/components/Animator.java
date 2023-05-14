@@ -66,7 +66,7 @@ public class Animator extends Component {
         this.states.add(state);
     }
 
-    public void trigger(String trigger) {
+    public void play(String trigger) {
         for (StateTrigger state : stateTransfers.keySet()) {
             if (state.state.equals(currentState.title) && state.trigger.equals(trigger)) {
                 if (stateTransfers.get(state) != null) {

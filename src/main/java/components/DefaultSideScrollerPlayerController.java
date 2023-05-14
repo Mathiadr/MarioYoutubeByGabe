@@ -28,20 +28,20 @@ public class DefaultSideScrollerPlayerController extends BasePlayerController {
             this.acceleration.x = walkSpeed;
 
             if (this.velocity.x < 0) {
-                this.animator.trigger("switchDirection");
+                this.animator.play("switchDirection");
                 this.velocity.x += slowDownForce;
             } else {
-                this.animator.trigger("startRunning");
+                this.animator.play("startRunning");
             }
         } else if (KeyListener.isKeyPressed(GLFW_KEY_LEFT) || KeyListener.isKeyPressed(GLFW_KEY_A)) {
             this.gameObject.transform.scale.x = playerWidth;
             this.acceleration.x = -walkSpeed;
 
             if (this.velocity.x > 0) {
-                this.animator.trigger("switchDirection");
+                this.animator.play("switchDirection");
                 this.velocity.x -= slowDownForce;
             } else {
-                this.animator.trigger("startRunning");
+                this.animator.play("startRunning");
             }
         } else {
             this.acceleration.x = 0;
@@ -52,7 +52,7 @@ public class DefaultSideScrollerPlayerController extends BasePlayerController {
             }
 
             if (this.velocity.y == 0 && this.velocity.x == 0) {
-                this.animator.trigger("stopRunning");
+                this.animator.play("stopRunning");
             }
         }
 
@@ -63,7 +63,7 @@ public class DefaultSideScrollerPlayerController extends BasePlayerController {
             if (this.velocity.y < 0) {
                 this.velocity.y += slowDownForce;
             } else {
-                this.animator.trigger("startRunning");
+                this.animator.play("startRunning");
             }
         }else if (KeyListener.isKeyPressed(GLFW_KEY_DOWN) || KeyListener.isKeyPressed(GLFW_KEY_S)) {
             this.acceleration.y = -walkSpeed;
@@ -71,7 +71,7 @@ public class DefaultSideScrollerPlayerController extends BasePlayerController {
             if (this.velocity.y > 0) {
                 this.velocity.y -= slowDownForce;
             } else {
-                this.animator.trigger("startRunning");
+                this.animator.play("startRunning");
             }
         } else {
             this.acceleration.y = 0;
@@ -82,7 +82,7 @@ public class DefaultSideScrollerPlayerController extends BasePlayerController {
             }
 
             if (this.velocity.y == 0 && this.velocity.x == 0) {
-                this.animator.trigger("stopRunning");
+                this.animator.play("stopRunning");
             }
         }
 

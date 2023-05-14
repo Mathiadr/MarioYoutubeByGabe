@@ -49,7 +49,7 @@ public class Tilemap{
         if (!tilesFromScene.isEmpty()){
             System.out.println("Loading tiles from file...");
             for (GameObject tile : tilesFromScene){
-                if (tile.getComponent(NonPickable.class) == null) {
+                if (tile.getComponent(NonInteractable.class) == null) {
                     replaceTile(tile.transform.position.x, tile.transform.position.y, tile);
                     tile.destroy();
                 } else tilemapBackground = tile;
@@ -67,7 +67,7 @@ public class Tilemap{
 
     public void setTilemapBackground(Sprite sprite){
         tilemapBackground = AssetBuilder.generateSpriteObject(sprite, 0.25f * column, 0.25f * row);
-        tilemapBackground.addComponent(new NonPickable());
+        tilemapBackground.addComponent(new NonInteractable());
         tilemapBackground.addComponent(new Tile());
         tilemapBackground.transform.zIndex = -10;
         tilemapBackground.transform.position.x = 0.125f;
@@ -153,7 +153,7 @@ public class Tilemap{
                         replacement.removeComponent(Tile.class);
                     replacement.addComponent(tiles[i][j].getComponent(Tile.class));
                     replacement.transform.position = position;
-                    if (tiles[i][j].getComponent(NonPickable.class) == null)
+                    if (tiles[i][j].getComponent(NonInteractable.class) == null)
                         tiles[i][j].destroy();
                     tiles[i][j] = replacement;
                     if (replacement.getComponent(Animator.class) != null) {

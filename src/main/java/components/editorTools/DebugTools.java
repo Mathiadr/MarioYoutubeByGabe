@@ -3,14 +3,14 @@ package components.editorTools;
 import brunostEngine.*;
 import components.*;
 import org.joml.Vector2f;
-import renderer.PickingTexture;
+import renderer.PixelToGameObjectReader;
 import util.Settings;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 public class DebugTools extends Component {
-    public PickingTexture pickingTexture = Game.getPickingTexture();
+    public PixelToGameObjectReader pixelToGameObjectReader = Game.getPixelToGameObjectReader();
     public GameObject gameObjectToPlace = null;
     private float debounceTime = 0.2f;
     private float debounce = debounceTime;
@@ -54,9 +54,9 @@ public class DebugTools extends Component {
         int x = (int) MouseListener.getScreenX();
         int y = (int) MouseListener.getScreenY();
         Vector2f worldPos = getWorldPositionAtClick();
-        int gameObjectId = pickingTexture.readPixel(x, y);
+        int gameObjectId = pixelToGameObjectReader.readPixel(x, y);
         GameObject pickedObj = Game.getScene().getGameObject(gameObjectId);
-        if (pickedObj != null && pickedObj.getComponent(NonPickable.class) == null && debounce < 0) {
+        if (pickedObj != null && pickedObj.getComponent(NonInteractable.class) == null && debounce < 0) {
             if (pickedObj.getComponent(Tile.class) != null) {
                 Tilemap.get().replaceTile(worldPos.x, worldPos.y, gameObjectToPlace);
             } else {
@@ -76,9 +76,9 @@ public class DebugTools extends Component {
         int x = (int) MouseListener.getScreenX();
         int y = (int) MouseListener.getScreenY();
         Vector2f worldPos = getWorldPositionAtClick();
-        int gameObjectId = pickingTexture.readPixel(x, y);
+        int gameObjectId = pixelToGameObjectReader.readPixel(x, y);
         GameObject pickedObj = Game.getScene().getGameObject(gameObjectId);
-        if (pickedObj != null && pickedObj.getComponent(NonPickable.class) == null && debounce < 0) {
+        if (pickedObj != null && pickedObj.getComponent(NonInteractable.class) == null && debounce < 0) {
             if (pickedObj.getComponent(Tile.class) != null){
                 Tilemap.get().destroyTileAtPos(worldPos.x, worldPos.y);
             }
