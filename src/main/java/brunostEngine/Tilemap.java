@@ -6,6 +6,12 @@ import scenes.Scene;
 
 import java.util.ArrayList;
 
+/**
+ * A tilemap is a way to partition the world or an area into grids, which can then be used to fill with GameObjects.
+ * This allows for easier placement and interaction without relying on specifying XY-Coordinates.
+ * This class is a single instance class / singleton, and to create it you must use the static "generateTilemap" method.
+ * Any scene using a tilemap must generate a tilemap in the init() method of the SceneBuilder for it to load back properly.
+ */
 public class Tilemap{
     private static Tilemap tilemap = null;
     public int column;
@@ -60,7 +66,7 @@ public class Tilemap{
     }
 
     public void setTilemapBackground(Sprite sprite){
-        tilemapBackground = Prefabs.generateSpriteObject(sprite, 0.25f * column, 0.25f * row);
+        tilemapBackground = AssetBuilder.generateSpriteObject(sprite, 0.25f * column, 0.25f * row);
         tilemapBackground.addComponent(new NonPickable());
         tilemapBackground.addComponent(new Tile());
         tilemapBackground.transform.zIndex = -10;

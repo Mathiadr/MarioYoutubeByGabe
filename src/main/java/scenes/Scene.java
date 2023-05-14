@@ -27,6 +27,7 @@ public class Scene {
     private Camera camera;
     private boolean isRunning;
     private List<GameObject> gameObjects;
+    private List<GameObject> disabledGameObjects;
     private List<GameObject> pendingObjects;
     private Physics2D physics2D;
 
@@ -232,7 +233,8 @@ public class Scene {
 
         for (int i=0; i < gameObjects.size(); i++) {
             GameObject go = gameObjects.get(i);
-            go.onUpdate(dt);
+            if (go.isEnabled())
+                go.onUpdate(dt);
 
             if (go.isDead()) {
                 gameObjects.remove(i);

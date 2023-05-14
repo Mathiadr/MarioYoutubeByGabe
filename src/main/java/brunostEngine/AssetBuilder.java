@@ -3,14 +3,15 @@ package brunostEngine;
 import components.*;
 import components.templates.*;
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 import physics2d.components.Box2DCollider;
 import physics2d.components.CircleCollider;
-import physics2d.components.PillboxCollider;
+import physics2d.components.CylinderCollider;
 import physics2d.components.Rigidbody2D;
 import physics2d.enums.BodyType;
 import util.ResourcePool;
 
-public class Prefabs {
+public class AssetBuilder {
 
     public static GameObject generateSpriteObject(Sprite sprite, float sizeX, float sizeY) {
         GameObject block = Game.getScene().createGameObject("Sprite_Object_Gen");
@@ -23,12 +24,34 @@ public class Prefabs {
         return block;
     }
 
+    public static GameObject generatePlayableBlock() {
+        GameObject playableBlock = generateSpriteObject(new Sprite(), 0.25f, 0.25f);
+        playableBlock.getComponent(SpriteRenderer.class).setColor(new Vector4f(255f, 255f, 255f, 1f));
+
+        CylinderCollider pb = new CylinderCollider();
+        pb.width = 0.21f;
+        pb.height = 0.25f;
+        playableBlock.addComponent(pb);
+
+        Rigidbody2D rb = new Rigidbody2D();
+        rb.setBodyType(BodyType.Dynamic);
+        rb.setContinuousCollision(false);
+        rb.setFixedRotation(true);
+        rb.setMass(25.0f);
+        rb.setGravityScale(0.0f);
+        playableBlock.addComponent(rb);
+
+        playableBlock.addComponent(new PlayerBlockController());
+
+        playableBlock.transform.zIndex = 10;
+
+        return playableBlock;
+    }
+
     public static GameObject generateRatgirl() {
         Spritesheet playerSprites = ResourcePool.getSpritesheet("assets/images/RatGirlSpritesheet.png");
-        Spritesheet bigPlayerSprites = ResourcePool.getSpritesheet("assets/images/RatGirlSpritesheet.png");
         GameObject ratgirl = generateSpriteObject(playerSprites.getSprite(0), 0.25f, 0.25f);
 
-        // Little mario animations
         Animation run = new Animation();
         run.title = "Run";
         float defaultFrameTime = 0.1f;
@@ -56,32 +79,6 @@ public class Prefabs {
         jump.addFrame(playerSprites.getSprite(5), 0.1f);
         jump.setLoop(false);
 
-        // Big mario animations
-        Animation bigRun = new Animation();
-        bigRun.title = "BigRun";
-        run.addFrame(playerSprites.getSprite(2), defaultFrameTime);
-        run.addFrame(playerSprites.getSprite(3), defaultFrameTime);
-        run.addFrame(playerSprites.getSprite(4), defaultFrameTime);
-        run.addFrame(playerSprites.getSprite(5), defaultFrameTime);
-        run.addFrame(playerSprites.getSprite(6), defaultFrameTime);
-        run.addFrame(playerSprites.getSprite(7), defaultFrameTime);
-        bigRun.setLoop(true);
-
-        Animation bigSwitchDirection = new Animation();
-        bigSwitchDirection.title = "Big Switch Direction";
-        bigSwitchDirection.addFrame(bigPlayerSprites.getSprite(2), 0.1f);
-        bigSwitchDirection.setLoop(false);
-
-        Animation bigIdle = new Animation();
-        bigIdle.title = "BigIdle";
-        bigIdle.addFrame(bigPlayerSprites.getSprite(0), 0.1f);
-        bigIdle.setLoop(false);
-
-        Animation bigJump = new Animation();
-        bigJump.title = "BigJump";
-        bigJump.addFrame(bigPlayerSprites.getSprite(6), 0.1f);
-        bigJump.setLoop(false);
-
 
         Animation die = new Animation();
         die.title = "Die";
@@ -95,11 +92,6 @@ public class Prefabs {
         animator.addState(jump);
         animator.addState(die);
 
-        animator.addState(bigRun);
-        animator.addState(bigIdle);
-        animator.addState(bigSwitchDirection);
-        animator.addState(bigJump);
-
         animator.setDefaultState(idle.title);
         animator.addState(run.title, switchDirection.title, "switchDirection");
         animator.addState(run.title, idle.title, "stopRunning");
@@ -111,37 +103,13 @@ public class Prefabs {
         animator.addState(idle.title, jump.title, "jump");
         animator.addState(jump.title, idle.title, "stopJumping");
 
-        animator.addState(bigRun.title, bigSwitchDirection.title, "switchDirection");
-        animator.addState(bigRun.title, bigIdle.title, "stopRunning");
-        animator.addState(bigRun.title, bigJump.title, "jump");
-        animator.addState(bigSwitchDirection.title, bigIdle.title, "stopRunning");
-        animator.addState(bigSwitchDirection.title, bigRun.title, "startRunning");
-        animator.addState(bigSwitchDirection.title, bigJump.title, "jump");
-        animator.addState(bigIdle.title, bigRun.title, "startRunning");
-        animator.addState(bigIdle.title, bigJump.title, "jump");
-        animator.addState(bigJump.title, bigIdle.title, "stopJumping");
-
-        animator.addState(run.title, bigRun.title, "powerup");
-        animator.addState(idle.title, bigIdle.title, "powerup");
-        animator.addState(switchDirection.title, bigSwitchDirection.title, "powerup");
-        animator.addState(jump.title, bigJump.title, "powerup");
-
-        animator.addState(bigRun.title, run.title, "damage");
-        animator.addState(bigIdle.title, idle.title, "damage");
-        animator.addState(bigSwitchDirection.title, switchDirection.title, "damage");
-        animator.addState(bigJump.title, jump.title, "damage");
-
         animator.addState(run.title, die.title, "die");
         animator.addState(switchDirection.title, die.title, "die");
         animator.addState(idle.title, die.title, "die");
         animator.addState(jump.title, die.title, "die");
-        animator.addState(bigRun.title, run.title, "die");
-        animator.addState(bigSwitchDirection.title, switchDirection.title, "die");
-        animator.addState(bigIdle.title, idle.title, "die");
-        animator.addState(bigJump.title, jump.title, "die");
         ratgirl.addComponent(animator);
 
-        PillboxCollider pb = new PillboxCollider();
+        CylinderCollider pb = new CylinderCollider();
         pb.width = 0.21f;
         pb.height = 0.25f;
         ratgirl.addComponent(pb);
@@ -278,7 +246,7 @@ public class Prefabs {
         animator.addState(bigJump.title, jump.title, "die");
         ratgirl.addComponent(animator);
 
-        PillboxCollider pb = new PillboxCollider();
+        CylinderCollider pb = new CylinderCollider();
         pb.width = 0.21f;
         pb.height = 0.25f;
         ratgirl.addComponent(pb);
@@ -466,7 +434,7 @@ public class Prefabs {
         animator.addState(fireJump.title, bigJump.title, "die");
         mario.addComponent(animator);
 
-        PillboxCollider pb = new PillboxCollider();
+        CylinderCollider pb = new CylinderCollider();
         pb.width = 0.21f;
         pb.height = 0.25f;
         mario.addComponent(pb);
@@ -515,7 +483,7 @@ public class Prefabs {
         Box2DCollider b2d = new Box2DCollider();
         b2d.setHalfSize(new Vector2f(0.25f, 0.25f));
         questionBlock.addComponent(b2d);
-        questionBlock.addComponent(new Ground());
+        questionBlock.addComponent(new Collideable());
 
         return questionBlock;
     }
@@ -758,7 +726,7 @@ public class Prefabs {
         b2d.setHalfSize(new Vector2f(0.5f, 0.5f));
         pipe.addComponent(b2d);
         pipe.addComponent(new Pipe(direction));
-        pipe.addComponent(new Ground());
+        pipe.addComponent(new Collideable());
 
         return pipe;
     }

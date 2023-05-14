@@ -8,6 +8,8 @@ import physics2d.components.Rigidbody2D;
 
 public abstract class BasePlayerController extends Component{
 
+    public Vector2f terminalVelocity = new Vector2f(2.1f, 3.1f);
+
     public float walkSpeed = 1.9f;
     public float jumpBoost = 1.0f;
     public float jumpImpulse = 2.0f;
@@ -37,7 +39,7 @@ public abstract class BasePlayerController extends Component{
 
     @Override
     public void beginCollision(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
-        if (collidingObject.getComponent(Ground.class) != null) {
+        if (collidingObject.getComponent(Collideable.class) != null) {
             if (Math.abs(contactNormal.x) > 0.8f) {
                 this.velocity.x = 0;
             } else if (contactNormal.y > 0.8f) {

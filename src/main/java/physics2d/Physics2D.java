@@ -1,6 +1,6 @@
 package physics2d;
 
-import components.Ground;
+import components.Collideable;
 import brunostEngine.GameObject;
 import brunostEngine.Transform;
 import brunostEngine.Game;
@@ -11,7 +11,7 @@ import org.jbox2d.dynamics.*;
 import org.joml.Vector2f;
 import physics2d.components.Box2DCollider;
 import physics2d.components.CircleCollider;
-import physics2d.components.PillboxCollider;
+import physics2d.components.CylinderCollider;
 import physics2d.components.Rigidbody2D;
 
 public class Physics2D {
@@ -24,7 +24,7 @@ public class Physics2D {
     private int positionIterations = 3;
 
     public Physics2D() {
-        world.setContactListener(new JadeContactListener());
+        world.setContactListener(new ContactListener());
     }
 
     public Vector2f getGravity() {
@@ -59,7 +59,7 @@ public class Physics2D {
 
             CircleCollider circleCollider;
             Box2DCollider boxCollider;
-            PillboxCollider pillboxCollider;
+            CylinderCollider cylinderCollider;
 
             if ((circleCollider = go.getComponent(CircleCollider.class)) != null) {
                 addCircleCollider(rb, circleCollider);
@@ -69,8 +69,8 @@ public class Physics2D {
                 addBox2DCollider(rb, boxCollider);
             }
 
-            if ((pillboxCollider = go.getComponent(PillboxCollider.class)) != null) {
-                addPillboxCollider(rb, pillboxCollider);
+            if ((cylinderCollider = go.getComponent(CylinderCollider.class)) != null) {
+                addPillboxCollider(rb, cylinderCollider);
             }
         }
     }
@@ -141,7 +141,7 @@ public class Physics2D {
         body.resetMassData();
     }
 
-    public void resetPillboxCollider(Rigidbody2D rb, PillboxCollider pb) {
+    public void resetPillboxCollider(Rigidbody2D rb, CylinderCollider pb) {
         Body body = rb.getRawBody();
         if (body == null) return;
 
@@ -154,7 +154,7 @@ public class Physics2D {
         body.resetMassData();
     }
 
-    public void addPillboxCollider(Rigidbody2D rb, PillboxCollider pb) {
+    public void addPillboxCollider(Rigidbody2D rb, CylinderCollider pb) {
         Body body = rb.getRawBody();
         assert body != null : "Raw body must not be null";
 
@@ -233,7 +233,7 @@ public class Physics2D {
         Vector2f raycast2End = new Vector2f(raycastEnd).add(innerPlayerWidth, 0.0f);
         RaycastInfo info2 = Game.getPhysics().raycast(gameObject, raycast2Begin, raycast2End);
 
-        return (info.hit && info.hitObject != null && info.hitObject.getComponent(Ground.class) != null) ||
-                (info2.hit && info2.hitObject != null && info2.hitObject.getComponent(Ground.class) != null);
+        return (info.hit && info.hitObject != null && info.hitObject.getComponent(Collideable.class) != null) ||
+                (info2.hit && info2.hitObject != null && info2.hitObject.getComponent(Collideable.class) != null);
     }
 }

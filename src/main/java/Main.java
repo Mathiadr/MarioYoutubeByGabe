@@ -1,7 +1,7 @@
 import brunostEngine.*;
-import brunostEngine.Character;
 import components.*;
 import components.cameras.FollowTargetCamera;
+import components.cameras.TestCamera;
 import components.editorTools.DebugTools;
 import components.editorTools.GridLines;
 import org.joml.Vector2f;
@@ -108,7 +108,7 @@ public class Main {
 
             }
         });
-        */
+        ----------------------------------------------------------------------------------------------------------------
         Game.changeScene(new SceneBuilder() {
             @Override
             public String assignTitleToScene() {
@@ -123,32 +123,32 @@ public class Main {
                 levelEditorStuff.setNoSerialize();
                 levelEditorStuff.addComponent(new DebugTools());
                 levelEditorStuff.addComponent(new KeyControls());
-                levelEditorStuff.addComponent(new GridLines());
+                //levelEditorStuff.addComponent(new GridLines());
                 levelEditorStuff.addComponent(new FollowTargetCamera(scene.camera()));
                 scene.addGameObjectToScene(levelEditorStuff);
 
                 if (true) {
                     ArrayList<GameObject> gameObjects = new ArrayList<>();
-                    GameObject ratgirl = Prefabs.generateRatgirlRPG();
+                    GameObject ratgirl = AssetBuilder.generateRatgirlRPG();
                     ratgirl.transform.position = new Vector2f(2, 10);
                     gameObjects.add(ratgirl);
                     scene.addGameObjectToScene(ratgirl);
 
-                    GameObject block = Prefabs.generateQuestionBlock();
+                    GameObject block = AssetBuilder.generateQuestionBlock();
                     block.transform.position.x = 0f;
                     block.transform.position.y = 0f;
                     gameObjects.add(block);
                     scene.addGameObjectToScene(block);
 
                     Spritesheet tileSprites = ResourcePool.getSpritesheet("assets/images/defaultTiles.png");
-                    GameObject tile = Prefabs.generateSpriteObject(tileSprites.getSprite(3), 0.25f, 0.25f);
+                    GameObject tile = AssetBuilder.generateSpriteObject(tileSprites.getSprite(3), 0.25f, 0.25f);
                     tile.addComponent(new NonPickable());
 
                     tilemap.fill(tile);
                     tilemap.addTilemapToScene();
 
                 }
-                levelEditorStuff.getComponent(DebugTools.class).gameObjectToPlace = Prefabs.generateQuestionBlock();
+                levelEditorStuff.getComponent(DebugTools.class).gameObjectToPlace = AssetBuilder.generateQuestionBlock();
             }
 
             @Override
@@ -188,30 +188,71 @@ public class Main {
 
             }
         });
-        GameObject character = Character.createSimpleCharacter(new CharacterBuilder() {
+
+         */
+
+        Game.changeScene(new SceneBuilder() {
             @Override
-            public String getName() {
-                return null;
+            public String assignTitleToScene() {
+                return "PongTest";
             }
 
             @Override
-            public Spritesheet getSpritesheet(float width, float height) {
-                return null;
+            public void init(Scene scene) {
+                Tilemap tilemap = Tilemap.generateTilemap(60, 60);
+                GameObject levelEditorStuff = scene.createGameObject("LevelEditor");
+
+                levelEditorStuff.setNoSerialize();
+                levelEditorStuff.addComponent(new DebugTools());
+                levelEditorStuff.addComponent(new KeyControls());
+                levelEditorStuff.addComponent(new GridLines());
+                levelEditorStuff.addComponent(new FollowTargetCamera(scene.camera()));
+                scene.addGameObjectToScene(levelEditorStuff);
+
+                GameObject playerBlock = scene.createGameObject("playerBlock");
+                //playerBlock.addComponent(new TestCamera(scene.camera()));
+                playerBlock.transform.position = new Vector2f(2f, 5f);
+                scene.addGameObjectToScene(playerBlock);
+                tilemap.addTilemapToScene();
+
+                levelEditorStuff.getComponent(DebugTools.class).gameObjectToPlace = AssetBuilder.generateQuestionBlock();
             }
 
             @Override
-            public ArrayList<Animation> getAnimations() {
-                return null;
+            public void loadResources(Scene scene) {
+                ResourcePool.getShader("assets/shaders/default.glsl");
+
+                ResourcePool.addSpritesheet("assets/images/items.png",
+                        new Spritesheet(ResourcePool.getTexture("assets/images/items.png"),
+                                16, 16, 43, 0));
+                ResourcePool.addSpritesheet("assets/images/RatGirlSpritesheet.png",
+                        new Spritesheet(ResourcePool.getTexture("assets/images/RatGirlSpritesheet.png"),
+                                70, 75, 8, 0));
+                ResourcePool.addSpritesheet("assets/images/defaultTiles.png",
+                        new Spritesheet(ResourcePool.getTexture("assets/images/defaultTiles.png"),
+                                64, 64, 4, 1));
+
+
+                ResourcePool.addSound("assets/sounds/main-theme-overworld.ogg", true);
+                ResourcePool.addSound("assets/sounds/flagpole.ogg", false);
+                ResourcePool.addSound("assets/sounds/break_block.ogg", false);
+                ResourcePool.addSound("assets/sounds/bump.ogg", false);
+                ResourcePool.addSound("assets/sounds/coin.ogg", false);
+                ResourcePool.addSound("assets/sounds/gameover.ogg", false);
+                ResourcePool.addSound("assets/sounds/jump-small.ogg", false);
+                ResourcePool.addSound("assets/sounds/mario_die.ogg", false);
+                ResourcePool.addSound("assets/sounds/pipe.ogg", false);
+                ResourcePool.addSound("assets/sounds/powerup.ogg", false);
+                ResourcePool.addSound("assets/sounds/powerup_appears.ogg", false);
+                ResourcePool.addSound("assets/sounds/stage_clear.ogg", false);
+                ResourcePool.addSound("assets/sounds/stomp.ogg", false);
+                ResourcePool.addSound("assets/sounds/kick.ogg", false);
+                ResourcePool.addSound("assets/sounds/invincible.ogg", false);
             }
 
             @Override
-            public boolean gravityEnabled() {
-                return false;
-            }
+            public void imgui() {
 
-            @Override
-            public BasePlayerController getPlayerController() {
-                return null;
             }
         });
         game.run();

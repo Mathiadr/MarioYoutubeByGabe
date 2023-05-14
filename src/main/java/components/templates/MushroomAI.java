@@ -1,8 +1,8 @@
 package components.templates;
 
+import components.Collideable;
 import components.Component;
 import components.DefaultTopDownPlayerController;
-import components.Ground;
 import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
@@ -41,7 +41,7 @@ public class MushroomAI extends Component {
                 this.gameObject.destroy();
                 hitPlayer = true;
             }
-        } else if (obj.getComponent(Ground.class) == null) {
+        } else if (obj.getComponent(Collideable.class) == null) {
             contact.setEnabled(false);
             return;
         }

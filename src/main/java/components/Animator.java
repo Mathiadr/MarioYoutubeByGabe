@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Holds and plays animation to the assigned GameObject.
+ */
 public class Animator extends Component {
     private class StateTrigger {
         public String state;

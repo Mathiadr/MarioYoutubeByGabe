@@ -1,18 +1,18 @@
 package components.templates;
 
 import components.Animator;
+import components.Collideable;
 import components.Component;
-import components.Ground;
 import components.SpriteRenderer;
 import brunostEngine.GameObject;
 import brunostEngine.KeyListener;
-import brunostEngine.Prefabs;
+import brunostEngine.AssetBuilder;
 import brunostEngine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import physics2d.Physics2D;
-import physics2d.components.PillboxCollider;
+import physics2d.components.CylinderCollider;
 import physics2d.components.Rigidbody2D;
 import physics2d.enums.BodyType;
 import scenes.LevelEditorSceneBuilder;
@@ -173,7 +173,7 @@ public class MarioController extends Component {
                     .add(this.gameObject.transform.scale.x > 0
                             ? new Vector2f(0.26f, 0)
                             : new Vector2f(-0.26f, 0));
-            GameObject fireball = Prefabs.generateFireball(position);
+            GameObject fireball = AssetBuilder.generateFireball(position);
             fireball.getComponent(Fireball.class).goingRight =
                     this.gameObject.transform.scale.x > 0;
             Game.getScene().addGameObjectToScene(fireball);
@@ -238,7 +238,7 @@ public class MarioController extends Component {
             playerState = MarioController.PlayerState.Big;
             ResourcePool.getSound("assets/sounds/powerup.ogg").play();
             gameObject.transform.scale.y = 0.42f;
-            PillboxCollider pb = gameObject.getComponent(PillboxCollider.class);
+            CylinderCollider pb = gameObject.getComponent(CylinderCollider.class);
             if (pb != null) {
                 jumpBoost *= bigJumpBoostFactor;
                 walkSpeed *= bigJumpBoostFactor;
@@ -270,7 +270,7 @@ public class MarioController extends Component {
     public void beginCollision(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
         if (isDead) return;
 
-        if (collidingObject.getComponent(Ground.class) != null) {
+        if (collidingObject.getComponent(Collideable.class) != null) {
             if (Math.abs(contactNormal.x) > 0.8f) {
                 this.velocity.x = 0;
             } else if (contactNormal.y > 0.8f) {
@@ -316,7 +316,7 @@ public class MarioController extends Component {
         } else if (this.playerState == MarioController.PlayerState.Big) {
             this.playerState = MarioController.PlayerState.Small;
             gameObject.transform.scale.y = 0.25f;
-            PillboxCollider pb = gameObject.getComponent(PillboxCollider.class);
+            CylinderCollider pb = gameObject.getComponent(CylinderCollider.class);
             if (pb != null) {
                 jumpBoost /= bigJumpBoostFactor;
                 walkSpeed /= bigJumpBoostFactor;

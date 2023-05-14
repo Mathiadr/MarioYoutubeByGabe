@@ -147,14 +147,14 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
 
                     ImGui.pushID(i);
                     if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                        GameObject object = Prefabs.generateSpriteObject(sprite, 0.25f, 0.25f);
+                        GameObject object = AssetBuilder.generateSpriteObject(sprite, 0.25f, 0.25f);
                         Rigidbody2D rb = new Rigidbody2D();
                         rb.setBodyType(BodyType.Static);
                         object.addComponent(rb);
                         Box2DCollider b2d = new Box2DCollider();
                         b2d.setHalfSize(new Vector2f(0.25f, 0.25f));
                         object.addComponent(b2d);
-                        object.addComponent(new Ground());
+                        object.addComponent(new Collideable());
                         if (i == 12) {
                             object.addComponent(new BreakableBrick());
                         }
@@ -195,7 +195,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
 
                     ImGui.pushID(i);
                     if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                        GameObject object = Prefabs.generateSpriteObject(sprite, 0.25f, 0.25f);
+                        GameObject object = AssetBuilder.generateSpriteObject(sprite, 0.25f, 0.25f);
                         levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                     }
                     ImGui.popID();
@@ -223,7 +223,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
 
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generateMario();
+                    GameObject object = AssetBuilder.generateMario();
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -236,7 +236,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
 
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generateRatgirl();
+                    GameObject object = AssetBuilder.generateRatgirl();
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -248,7 +248,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generateQuestionBlock();
+                    GameObject object = AssetBuilder.generateQuestionBlock();
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -259,7 +259,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generateCoin();
+                    GameObject object = AssetBuilder.generateCoin();
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -270,7 +270,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generateGoomba();
+                    GameObject object = AssetBuilder.generateGoomba();
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -282,7 +282,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generateTurtle();
+                    GameObject object = AssetBuilder.generateTurtle();
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -293,7 +293,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generateFlagtop();
+                    GameObject object = AssetBuilder.generateFlagtop();
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -304,7 +304,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generateFlagPole();
+                    GameObject object = AssetBuilder.generateFlagPole();
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -316,7 +316,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generatePipe(Direction.Down);
+                    GameObject object = AssetBuilder.generatePipe(Direction.Down);
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -327,7 +327,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generatePipe(Direction.Up);
+                    GameObject object = AssetBuilder.generatePipe(Direction.Up);
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -338,7 +338,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generatePipe(Direction.Right);
+                    GameObject object = AssetBuilder.generatePipe(Direction.Right);
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();
@@ -349,7 +349,7 @@ public class LevelEditorSceneBuilder extends SceneBuilder {
                 texCoords = sprite.getTexCoords();
                 ImGui.pushID(uid++);
                 if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                    GameObject object = Prefabs.generatePipe(Direction.Left);
+                    GameObject object = AssetBuilder.generatePipe(Direction.Left);
                     levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                 }
                 ImGui.popID();

@@ -4,7 +4,7 @@ import components.Component;
 import brunostEngine.Game;
 import org.joml.Vector2f;
 
-public class PillboxCollider extends Component {
+public class CylinderCollider extends Component {
     private transient CircleCollider bottomCircle = new CircleCollider();
     private transient Box2DCollider box = new Box2DCollider();
     private transient boolean resetFixtureNextFrame = false;

@@ -20,6 +20,7 @@ public class GameObject {
     public transient Transform transform;
     private boolean doSerialization = true;
     private boolean isDead = false;
+    private boolean isEnabled = true;
 
     public GameObject(String name) {
         this.name = name;
@@ -113,6 +114,10 @@ public class GameObject {
 
         return obj;
     }
+
+    public void enable(){this.isEnabled = true;}
+    public void disable(){this.isEnabled = false;}
+    public boolean isEnabled(){return this.isEnabled;}
 
     public boolean isDead() {
         return this.isDead;

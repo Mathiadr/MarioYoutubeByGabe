@@ -3,7 +3,7 @@ package components.templates;
 import components.Animator;
 import components.DefaultTopDownPlayerController;
 import brunostEngine.GameObject;
-import brunostEngine.Prefabs;
+import brunostEngine.AssetBuilder;
 import brunostEngine.Game;
 
 public class QuestionBlock extends Block {
@@ -44,21 +44,21 @@ public class QuestionBlock extends Block {
     }
 
     private void doCoin(DefaultTopDownPlayerController defaultTopDownPlayerController) {
-        GameObject coin = Prefabs.generateBlockCoin();
+        GameObject coin = AssetBuilder.generateBlockCoin();
         coin.transform.position.set(this.gameObject.transform.position);
         coin.transform.position.y += 0.25f;
         Game.getScene().addGameObjectToScene(coin);
     }
 
     private void spawnMushroom() {
-        GameObject mushroom = Prefabs.generateMushroom();
+        GameObject mushroom = AssetBuilder.generateMushroom();
         mushroom.transform.position.set(gameObject.transform.position);
         mushroom.transform.position.y += 0.25f;
         Game.getScene().addGameObjectToScene(mushroom);
     }
 
     private void spawnFlower() {
-        GameObject flower = Prefabs.generateFlower();
+        GameObject flower = AssetBuilder.generateFlower();
         flower.transform.position.set(gameObject.transform.position);
         flower.transform.position.y += 0.25f;
         Game.getScene().addGameObjectToScene(flower);
