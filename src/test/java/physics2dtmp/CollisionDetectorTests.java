@@ -6,7 +6,7 @@ import physics2dtmp.primitives.Box2D;
 import physics2dtmp.primitives.Circle;
 import physics2dtmp.rigidbody.IntersectionDetector2D;
 import physics2dtmp.rigidbody.Rigidbody2D;
-import renderer.Line2D;
+import renderer.LineDrawer;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -19,7 +19,7 @@ public class CollisionDetectorTests {
     // ============================================================================================
     @Test
     public void pointOnLine2DShouldReturnTrueTest() {
-        Line2D line = new Line2D(new Vector2f(0, 0), new Vector2f(12, 4));
+        LineDrawer line = new LineDrawer(new Vector2f(0, 0), new Vector2f(12, 4));
         Vector2f point = new Vector2f(0, 0);
 
         assertTrue(IntersectionDetector2D.pointOnLine(point, line));
@@ -27,7 +27,7 @@ public class CollisionDetectorTests {
 
     @Test
     public void pointOnLine2DShouldReturnTrueTestTwo() {
-        Line2D line = new Line2D(new Vector2f(0, 0), new Vector2f(12, 4));
+        LineDrawer line = new LineDrawer(new Vector2f(0, 0), new Vector2f(12, 4));
         Vector2f point = new Vector2f(12, 4);
 
         assertTrue(IntersectionDetector2D.pointOnLine(point, line));
@@ -35,7 +35,7 @@ public class CollisionDetectorTests {
 
     @Test
     public void pointOnVerticalLineShouldReturnTrue() {
-        Line2D line = new Line2D(new Vector2f(0, 0), new Vector2f(0, 10));
+        LineDrawer line = new LineDrawer(new Vector2f(0, 0), new Vector2f(0, 10));
         Vector2f point = new Vector2f(0, 5);
 
         boolean result = IntersectionDetector2D.pointOnLine(point, line);
@@ -44,7 +44,7 @@ public class CollisionDetectorTests {
 
     @Test
     public void pointOnLineShouldReturnTrueTestOne() {
-        Line2D line = new Line2D(new Vector2f(0, 0), new Vector2f(12, 4));
+        LineDrawer line = new LineDrawer(new Vector2f(0, 0), new Vector2f(12, 4));
         Vector2f point = new Vector2f(0, 0);
 
         assertTrue(IntersectionDetector2D.pointOnLine(point, line));
@@ -52,7 +52,7 @@ public class CollisionDetectorTests {
 
     @Test
     public void pointOnLineShouldReturnTrueTestTwo() {
-        Line2D line = new Line2D(new Vector2f(0, 0), new Vector2f(12, 4));
+        LineDrawer line = new LineDrawer(new Vector2f(0, 0), new Vector2f(12, 4));
         Vector2f point = new Vector2f(6, 2);
 
         assertTrue(IntersectionDetector2D.pointOnLine(point, line));
@@ -60,7 +60,7 @@ public class CollisionDetectorTests {
 
     @Test
     public void pointOnLineShouldReturnFalseTestOne() {
-        Line2D line = new Line2D(new Vector2f(0, 0), new Vector2f(12, 4));
+        LineDrawer line = new LineDrawer(new Vector2f(0, 0), new Vector2f(12, 4));
         Vector2f point = new Vector2f(4, 2);
 
         assertFalse(IntersectionDetector2D.pointOnLine(point, line));
@@ -68,7 +68,7 @@ public class CollisionDetectorTests {
 
     @Test
     public void pointOnLineShouldReturnTrueTestThree() {
-        Line2D line = new Line2D(new Vector2f(10, 10), new Vector2f(22, 14));
+        LineDrawer line = new LineDrawer(new Vector2f(10, 10), new Vector2f(22, 14));
         Vector2f point = new Vector2f(10, 10);
 
         assertTrue(IntersectionDetector2D.pointOnLine(point, line));
@@ -76,7 +76,7 @@ public class CollisionDetectorTests {
 
     @Test
     public void pointOnLineShouldReturnTrueTestFour() {
-        Line2D line = new Line2D(new Vector2f(10, 10), new Vector2f(22, 14));
+        LineDrawer line = new LineDrawer(new Vector2f(10, 10), new Vector2f(22, 14));
         Vector2f point = new Vector2f(16, 12);
 
         assertTrue(IntersectionDetector2D.pointOnLine(point, line));
@@ -84,7 +84,7 @@ public class CollisionDetectorTests {
 
     @Test
     public void pointOnLineShouldReturnFalseTestTwo() {
-        Line2D line = new Line2D(new Vector2f(10, 10), new Vector2f(22, 14));
+        LineDrawer line = new LineDrawer(new Vector2f(10, 10), new Vector2f(22, 14));
         Vector2f point = new Vector2f(14, 12);
 
         assertFalse(IntersectionDetector2D.pointOnLine(point, line));

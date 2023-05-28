@@ -1,7 +1,6 @@
-package util;
+package brunostEngine;
 
 import components.Spritesheet;
-import brunostEngine.Sound;
 import renderer.Shader;
 import renderer.Texture;
 

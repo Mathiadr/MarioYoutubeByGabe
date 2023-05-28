@@ -1,10 +1,15 @@
 package components;
 
-import util.ResourcePool;
+import brunostEngine.ResourcePool;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Animation class holds all necessary {@link Frame}s of an animation that is meant to be played by
+ * a GameObject's {@link Animator}.
+ *
+ */
 public class Animation {
 
     public String title;

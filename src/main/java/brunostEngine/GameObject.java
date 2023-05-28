@@ -5,12 +5,15 @@ import com.google.gson.GsonBuilder;
 import components.Component;
 import components.ComponentDeserializer;
 import components.SpriteRenderer;
-import imgui.ImGui;
-import util.ResourcePool;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represent any object meant to be present within a scene, whether visible or in the background.
+ * This class allows for flexibility through its use of the {@link components.Component} class.
+ *
+ */
 public class GameObject {
     private static int ID_COUNTER = 0;
     private int uid = -1;
@@ -66,22 +69,9 @@ public class GameObject {
         }
     }
 
-    public void editorUpdate(float dt) {
-        for (int i=0; i < components.size(); i++) {
-            components.get(i).editorUpdate(dt);
-        }
-    }
-
     public void onStart() {
         for (int i=0; i < components.size(); i++) {
             components.get(i).onStart();
-        }
-    }
-
-    public void imgui() {
-        for (Component c : components) {
-            if (ImGui.collapsingHeader(c.getClass().getSimpleName()))
-                c.imgui();
         }
     }
 

@@ -1,5 +1,6 @@
 package brunostEngine;
 
+import game_window.ImGuiLayer;
 import observers.EventSystem;
 import observers.Observer;
 import observers.events.Event;
@@ -11,11 +12,11 @@ import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
-import physics2d.Physics2D;
+import physics2d.PhysicsHandler;
 import renderer.*;
 import scenes.Scene;
 import scenes.SceneBuilder;
-import util.ResourcePool;
+import util.PixelToGameObjectReader;
 
 import java.awt.*;
 
@@ -25,6 +26,13 @@ import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+/**
+ * The Game class holds the most important and low-level functionality, ensuring everything starts correctly.
+ * This is where the very application Window is created and run from.
+ * This class contains two important Methods and Properties, such as follows:
+ * Changing the current Scene to another Scene, and The property that allows reading which
+ * GameObject belongs to a given pixel.
+ */
 public class Game implements Observer {
     private int width, height;
     private String title;
@@ -70,7 +78,7 @@ public class Game implements Observer {
         return Game.game;
     }
 
-    public static Physics2D getPhysics() { return currentScene.getPhysics(); }
+    public static PhysicsHandler getPhysics() { return currentScene.getPhysics(); }
 
     public static Scene getScene() {
         return currentScene;
@@ -205,8 +213,6 @@ public class Game implements Observer {
                 Renderer.bindShader(defaultShader);
                 if (runtimePlaying) {
                     currentScene.onUpdate(dt);
-                } else {
-                    currentScene.editorUpdate(dt);
                 }
                 currentScene.render();
                 DebugDraw.draw();

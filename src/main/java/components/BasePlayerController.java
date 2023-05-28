@@ -3,8 +3,8 @@ package components;
 import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import physics2d.Physics2D;
-import physics2d.components.Rigidbody2D;
+import physics2d.PhysicsHandler;
+import physics2d.components.Rigidbody;
 
 public abstract class BasePlayerController extends Component{
 
@@ -23,14 +23,14 @@ public abstract class BasePlayerController extends Component{
     protected transient Vector2f velocity = new Vector2f();
 
     protected transient SpriteRenderer spr;
-    protected transient Rigidbody2D rb;
+    protected transient Rigidbody rb;
     protected transient Animator animator;
 
 
     @Override
     public void onStart() {
         this.spr = gameObject.getComponent(SpriteRenderer.class);
-        this.rb = gameObject.getComponent(Rigidbody2D.class);
+        this.rb = gameObject.getComponent(Rigidbody.class);
         this.animator = gameObject.getComponent(Animator.class);
     }
 
@@ -53,7 +53,7 @@ public abstract class BasePlayerController extends Component{
     public void checkIfPlayerIsGrounded() {
         float innerPlayerWidth = this.playerWidth * 0.6f;
         float yVal = -0.14f;
-        isGrounded = Physics2D.checkOnGround(this.gameObject, innerPlayerWidth, yVal);
+        isGrounded = PhysicsHandler.checkOnGround(this.gameObject, innerPlayerWidth, yVal);
     }
 
     public void setPosition(Vector2f newPos) {

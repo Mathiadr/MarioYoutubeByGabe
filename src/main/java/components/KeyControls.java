@@ -23,9 +23,4 @@ public class KeyControls extends Component {
             Game.getScene().save();
         }
     }
-
-    @Override
-    public void editorUpdate(float dt) {
-
-    }
 }

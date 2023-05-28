@@ -1,10 +1,11 @@
-package renderer;
+package util;
 
 import org.joml.Vector2i;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+
 
 public class PixelToGameObjectReader {
     private int pickingTextureId;
@@ -13,7 +14,7 @@ public class PixelToGameObjectReader {
 
     public PixelToGameObjectReader(int width, int height) {
         if (!init(width, height)) {
-            assert false : "Error initializing picking texture";
+            assert false : "Error initializing reader";
         }
     }
 

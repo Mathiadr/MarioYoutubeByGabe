@@ -1,4 +1,4 @@
-package components.editorTools;
+package components.debug_tools;
 
 public class DebugGameObjectPlacer {
 }

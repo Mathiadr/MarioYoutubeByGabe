@@ -26,16 +26,6 @@ public class CircleCollider extends Component {
     }
 
     @Override
-    public void editorUpdate(float dt) {
-        Vector2f center = new Vector2f(this.gameObject.transform.position).add(this.offset);
-        DebugDraw.addCircle(center, this.radius);
-
-        if (resetFixtureNextFrame) {
-            resetFixture();
-        }
-    }
-
-    @Override
     public void onUpdate(float dt) {
         if (resetFixtureNextFrame) {
             resetFixture();
@@ -50,7 +40,7 @@ public class CircleCollider extends Component {
         resetFixtureNextFrame = false;
 
         if (gameObject != null) {
-            Rigidbody2D rb = gameObject.getComponent(Rigidbody2D.class);
+            Rigidbody rb = gameObject.getComponent(Rigidbody.class);
             if (rb != null) {
                 Game.getPhysics().resetCircleCollider(rb, this);
             }

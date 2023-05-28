@@ -9,6 +9,10 @@ import java.util.Arrays;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
+/**
+ * MouseListener allows for the application to listen to which mouse buttons are being pressed at any given moment,
+ * can return them through its methods.
+ */
 public class MouseListener {
     private static MouseListener instance;
     private double scrollX, scrollY;

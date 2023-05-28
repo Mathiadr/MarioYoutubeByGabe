@@ -8,6 +8,10 @@ import static org.lwjgl.stb.STBVorbis.stb_vorbis_decode_filename;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.libc.LibCStdlib.free;
 
+/**
+ * The Sound class represents any playable track.
+ *
+ */
 public class Sound {
     private int bufferId;
     private int sourceId;

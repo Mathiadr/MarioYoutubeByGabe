@@ -9,7 +9,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class DefaultTopDownPlayerController extends BasePlayerController {
 
 
-    public Vector2f terminalVelocity = new Vector2f(2.1f, 3.1f);
+    public Vector2f terminalVelocity = new Vector2f(1f, 1f);
 
     public transient boolean gravityEnabled = true;
     private transient float groundDebounce = 0.0f;
@@ -51,34 +51,39 @@ public class DefaultTopDownPlayerController extends BasePlayerController {
                 this.velocity.x = Math.min(0, this.velocity.x + slowDownForce);
             }
 
-            if (this.velocity.x == 0) {
+            if (this.velocity.y == 0 && this.velocity.x == 0) {
                 this.animator.play("stopRunning");
             }
         }
 
-        checkIfPlayerIsGrounded();
-        if (KeyListener.isKeyPressed(GLFW_KEY_SPACE) && (jumpTime > 0 || isGrounded || groundDebounce > 0)) {
-            if ((isGrounded || groundDebounce > 0) && jumpTime == 0) {
-                jumpTime = 60;
-                this.velocity.y = jumpImpulse;
-            } else if (jumpTime > 0) {
-                jumpTime--;
-                this.velocity.y = ((jumpTime / 2.2f) * jumpBoost);
+
+        if (KeyListener.isKeyPressed(GLFW_KEY_UP) || KeyListener.isKeyPressed(GLFW_KEY_W)) {
+            this.acceleration.y = walkSpeed;
+
+            if (this.velocity.y < 0) {
+                this.velocity.y += slowDownForce;
             } else {
-                this.velocity.y = 0;
+                this.animator.play("startRunning");
             }
-            groundDebounce = 0;
-        } else if (!isGrounded) {
-            if (this.jumpTime > 0) {
-                this.velocity.y *= 0.35f;
-                this.jumpTime = 0;
+        }else if (KeyListener.isKeyPressed(GLFW_KEY_DOWN) || KeyListener.isKeyPressed(GLFW_KEY_S)) {
+            this.acceleration.y = -walkSpeed;
+
+            if (this.velocity.y > 0) {
+                this.velocity.y -= slowDownForce;
+            } else {
+                this.animator.play("startRunning");
             }
-            groundDebounce -= dt;
-            this.acceleration.y = Game.getPhysics().getGravity().y * 0.7f;
         } else {
-            this.velocity.y = 0;
             this.acceleration.y = 0;
-            groundDebounce = groundDebounceTime;
+            if (this.velocity.y > 0) {
+                this.velocity.y = Math.max(0, this.velocity.y - slowDownForce);
+            } else if (this.velocity.y < 0) {
+                this.velocity.y = Math.min(0, this.velocity.y + slowDownForce);
+            }
+
+            if (this.velocity.y == 0 && this.velocity.x == 0) {
+                this.animator.play("stopRunning");
+            }
         }
 
         this.velocity.x += this.acceleration.x * dt;
@@ -86,13 +91,6 @@ public class DefaultTopDownPlayerController extends BasePlayerController {
         this.velocity.x = Math.max(Math.min(this.velocity.x, this.terminalVelocity.x), -this.terminalVelocity.x);
         this.velocity.y = Math.max(Math.min(this.velocity.y, this.terminalVelocity.y), -this.terminalVelocity.y);
         this.rb.setVelocity(this.velocity);
-        this.rb.setAngularVelocity(0);
-
-        if (!isGrounded) {
-            animator.play("jump");
-        } else {
-            animator.play("stopJumping");
-        }
     }
 
     public boolean isDead() {

@@ -5,10 +5,11 @@ import components.Animator;
 import components.Component;
 import components.Spritesheet;
 import physics2d.components.CylinderCollider;
-import physics2d.components.Rigidbody2D;
+import physics2d.components.Rigidbody;
 import physics2d.enums.BodyType;
 
 import java.util.ArrayList;
+
 
 public class Character extends Component {
 
@@ -34,15 +35,15 @@ public class Character extends Component {
         cylinderCollider.height = 0.25f;
         character.addComponent(cylinderCollider);
 
-        Rigidbody2D rigidbody2D = new Rigidbody2D();
-        rigidbody2D.setBodyType(BodyType.Dynamic);
-        rigidbody2D.setContinuousCollision(false);
-        rigidbody2D.setFixedRotation(true);
-        rigidbody2D.setMass(25.0f);
-        rigidbody2D.setGravityScale(1.0f);
+        Rigidbody rigidbody = new Rigidbody();
+        rigidbody.setBodyType(BodyType.Dynamic);
+        rigidbody.setContinuousCollision(false);
+        rigidbody.setFixedRotation(true);
+        rigidbody.setMass(25.0f);
+        rigidbody.setGravityScale(1.0f);
         if (!characterBuilder.gravityEnabled())
-            rigidbody2D.setGravityScale(0.0f);
-        character.addComponent(rigidbody2D);
+            rigidbody.setGravityScale(0.0f);
+        character.addComponent(rigidbody);
 
         character.addComponent(characterBuilder.getPlayerController());
 

@@ -11,12 +11,12 @@ import brunostEngine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-import physics2d.Physics2D;
+import physics2d.PhysicsHandler;
 import physics2d.components.CylinderCollider;
-import physics2d.components.Rigidbody2D;
+import physics2d.components.Rigidbody;
 import physics2d.enums.BodyType;
 import scenes.LevelSceneBuilder;
-import util.ResourcePool;
+import brunostEngine.ResourcePool;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
@@ -39,7 +39,7 @@ public class MarioController extends Component {
     public transient boolean onGround = false;
     private transient float groundDebounce = 0.0f;
     private transient float groundDebounceTime = 0.1f;
-    private transient Rigidbody2D rb;
+    private transient Rigidbody rb;
     private transient Animator animator;
     private transient float bigJumpBoostFactor = 1.05f;
     private transient float playerWidth = 0.25f;
@@ -64,7 +64,7 @@ public class MarioController extends Component {
     @Override
     public void onStart() {
         this.spr = gameObject.getComponent(SpriteRenderer.class);
-        this.rb = gameObject.getComponent(Rigidbody2D.class);
+        this.rb = gameObject.getComponent(Rigidbody.class);
         this.animator = gameObject.getComponent(Animator.class);
     }
 
@@ -223,7 +223,7 @@ public class MarioController extends Component {
     public void checkOnGround() {
         float innerPlayerWidth = this.playerWidth * 0.6f;
         float yVal = playerState == MarioController.PlayerState.Small ? -0.14f : -0.24f;
-        onGround = Physics2D.checkOnGround(this.gameObject, innerPlayerWidth, yVal);
+        onGround = PhysicsHandler.checkOnGround(this.gameObject, innerPlayerWidth, yVal);
     }
 
     public void setPosition(Vector2f newPos) {

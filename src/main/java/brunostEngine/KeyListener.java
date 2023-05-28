@@ -5,6 +5,10 @@ import java.util.Arrays;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
+/**
+ * KeyListener allows for the application to listen to which keys are being pressed at any given moment,
+ * can return them through its methods.
+ */
 public class KeyListener {
     private static KeyListener instance;
     private boolean keyPressed[] = new boolean[350];

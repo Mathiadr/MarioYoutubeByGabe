@@ -6,7 +6,7 @@ import org.joml.Vector2f;
 
 public class CylinderCollider extends Component {
     private transient CircleCollider bottomCircle = new CircleCollider();
-    private transient Box2DCollider box = new Box2DCollider();
+    private transient BoxCollider box = new BoxCollider();
     private transient boolean resetFixtureNextFrame = false;
 
     public float width = 0.1f;
@@ -18,17 +18,6 @@ public class CylinderCollider extends Component {
         this.bottomCircle.gameObject = this.gameObject;
         this.box.gameObject = this.gameObject;
         recalculateColliders();
-    }
-
-    @Override
-    public void editorUpdate(float dt) {
-        bottomCircle.editorUpdate(dt);
-        box.editorUpdate(dt);
-        recalculateColliders();
-
-        if (resetFixtureNextFrame) {
-            resetFixture();
-        }
     }
 
     @Override
@@ -58,7 +47,7 @@ public class CylinderCollider extends Component {
         resetFixtureNextFrame = false;
 
         if (gameObject != null) {
-            Rigidbody2D rb = gameObject.getComponent(Rigidbody2D.class);
+            Rigidbody rb = gameObject.getComponent(Rigidbody.class);
             if (rb != null) {
                 Game.getPhysics().resetPillboxCollider(rb, this);
             }
@@ -78,7 +67,7 @@ public class CylinderCollider extends Component {
         return bottomCircle;
     }
 
-    public Box2DCollider getBox() {
+    public BoxCollider getBox() {
         return box;
     }
 }

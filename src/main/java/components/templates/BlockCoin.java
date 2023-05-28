@@ -2,7 +2,7 @@ package components.templates;
 
 import components.Component;
 import org.joml.Vector2f;
-import util.ResourcePool;
+import brunostEngine.ResourcePool;
 
 public class BlockCoin extends Component {
     private Vector2f topY;

@@ -1,14 +1,14 @@
 package components.templates;
 
 import components.Component;
-import components.DefaultTopDownPlayerController;
+import components.DefaultSideScrollerPlayerController;
 import brunostEngine.Direction;
 import brunostEngine.GameObject;
 import brunostEngine.KeyListener;
 import brunostEngine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import util.ResourcePool;
+import brunostEngine.ResourcePool;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -18,7 +18,7 @@ public class Pipe extends Component {
     private boolean isEntrance = false;
     private transient GameObject connectingPipe = null;
     private transient float entranceVectorTolerance = 0.6f;
-    private transient DefaultTopDownPlayerController collidingPlayer = null;
+    private transient DefaultSideScrollerPlayerController collidingPlayer = null;
 
     public Pipe(Direction direction) {
         this.direction = direction;
@@ -120,16 +120,16 @@ public class Pipe extends Component {
 
     @Override
     public void beginCollision(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
-        DefaultTopDownPlayerController defaultTopDownPlayerController = collidingObject.getComponent(DefaultTopDownPlayerController.class);
-        if (defaultTopDownPlayerController != null) {
-            collidingPlayer = defaultTopDownPlayerController;
+        DefaultSideScrollerPlayerController defaultSideScrollerPlayerController = collidingObject.getComponent(DefaultSideScrollerPlayerController.class);
+        if (defaultSideScrollerPlayerController != null) {
+            collidingPlayer = defaultSideScrollerPlayerController;
         }
     }
 
     @Override
     public void endCollision(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
-        DefaultTopDownPlayerController defaultTopDownPlayerController = collidingObject.getComponent(DefaultTopDownPlayerController.class);
-        if (defaultTopDownPlayerController != null) {
+        DefaultSideScrollerPlayerController defaultSideScrollerPlayerController = collidingObject.getComponent(DefaultSideScrollerPlayerController.class);
+        if (defaultSideScrollerPlayerController != null) {
             collidingPlayer = null;
         }
     }

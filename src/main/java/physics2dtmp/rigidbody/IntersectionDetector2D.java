@@ -2,14 +2,14 @@ package physics2dtmp.rigidbody;
 
 import org.joml.Vector2f;
 import physics2dtmp.primitives.*;
-import renderer.Line2D;
+import renderer.LineDrawer;
 import util.JMath;
 
 public class IntersectionDetector2D {
     // ========================================================
     // Point vs. Primitive Tests
     // ========================================================
-    public static boolean pointOnLine(Vector2f point, Line2D line) {
+    public static boolean pointOnLine(Vector2f point, LineDrawer line) {
         float dy = line.getEnd().y - line.getStart().y;
         float dx = line.getEnd().x - line.getStart().x;
         if (dx == 0f) {
@@ -54,7 +54,7 @@ public class IntersectionDetector2D {
     // ========================================================
     // Line vs. Primitive Tests
     // ========================================================
-    public static boolean lineAndCircle(Line2D line, Circle circle) {
+    public static boolean lineAndCircle(LineDrawer line, Circle circle) {
         if (pointInCircle(line.getStart(), circle) || pointInCircle(line.getEnd(), circle)) {
             return true;
         }
@@ -77,7 +77,7 @@ public class IntersectionDetector2D {
         return pointInCircle(closestPoint, circle);
     }
 
-    public static boolean lineAndAABB(Line2D line, AABB box) {
+    public static boolean lineAndAABB(LineDrawer line, AABB box) {
         if (pointInAABB(line.getStart(), box) || pointInAABB(line.getEnd(), box)) {
             return true;
         }
@@ -102,7 +102,7 @@ public class IntersectionDetector2D {
         return t > 0f && t * t < line.lengthSquared();
     }
 
-    public static boolean lineAndBox2D(Line2D line, Box2D box) {
+    public static boolean lineAndBox2D(LineDrawer line, Box2D box) {
         float theta = -box.getRigidbody().getRotation();
         Vector2f center = box.getRigidbody().getPosition();
         Vector2f localStart = new Vector2f(line.getStart());
@@ -110,7 +110,7 @@ public class IntersectionDetector2D {
         JMath.rotate(localStart, theta, center);
         JMath.rotate(localEnd, theta, center);
 
-        Line2D localLine = new Line2D(localStart, localEnd);
+        LineDrawer localLine = new LineDrawer(localStart, localEnd);
         AABB aabb = new AABB(box.getLocalMin(), box.getLocalMax());
 
         return lineAndAABB(localLine, aabb);
@@ -248,7 +248,7 @@ public class IntersectionDetector2D {
     // =============================================================================
     // Circle vs. Primitive tests
     // =============================================================================
-    public static boolean circleAndLine(Circle circle, Line2D line) {
+    public static boolean circleAndLine(Circle circle, LineDrawer line) {
         return lineAndCircle(line, circle);
     }
 

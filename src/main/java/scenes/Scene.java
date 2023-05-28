@@ -8,9 +8,9 @@ import components.ComponentDeserializer;
 import brunostEngine.*;
 import components.SpriteRenderer;
 import org.joml.Vector2f;
-import physics2d.Physics2D;
+import physics2d.PhysicsHandler;
 import renderer.Renderer;
-import util.ResourcePool;
+import brunostEngine.ResourcePool;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,6 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The Scene class is an essential part of the framework, as it represents the in-game world and
+ * contains every {@link GameObject} meant to be presented to the player or perform actions at any given point.
+ * <br>A Scene can also be seen as the "Level" or "Stage" that a player is meant to go through, but this class also contains
+ * important functionality allowing for the in-game world to function.
+ *
+ * <br><br>This class is not meant to be client-created. See the {@link SceneBuilder} class for implementing your own Scene.
+ *
+ */
 public class Scene {
     private String fileName;
     private Renderer renderer;
@@ -29,7 +38,7 @@ public class Scene {
     private List<GameObject> gameObjects;
     private List<GameObject> disabledGameObjects;
     private List<GameObject> pendingObjects;
-    private Physics2D physics2D;
+    private PhysicsHandler physicsHandler;
 
     private SceneBuilder sceneBuilder;
 
@@ -37,7 +46,7 @@ public class Scene {
 
     public Scene(SceneBuilder sceneBuilder) {
         this.sceneBuilder = sceneBuilder;
-        this.physics2D = new Physics2D();
+        this.physicsHandler = new PhysicsHandler();
         this.renderer = new Renderer();
         this.gameObjects = new ArrayList<>();
         this.pendingObjects = new ArrayList<>();
@@ -45,8 +54,8 @@ public class Scene {
         this.fileName = this.sceneBuilder.assignTitleToScene();
     }
 
-    public Physics2D getPhysics() {
-        return this.physics2D;
+    public PhysicsHandler getPhysics() {
+        return this.physicsHandler;
     }
 
     public void init() {
@@ -75,7 +84,7 @@ public class Scene {
             GameObject go = gameObjects.get(i);
             go.onStart();
             this.renderer.add(go);
-            this.physics2D.add(go);
+            this.physicsHandler.add(go);
         }
         isRunning = true;
     }
@@ -196,30 +205,6 @@ public class Scene {
         return result.orElse(null);
     }
 
-    public void editorUpdate(float dt) {
-        this.camera.adjustProjection();
-
-        for (int i=0; i < gameObjects.size(); i++) {
-            GameObject go = gameObjects.get(i);
-            go.editorUpdate(dt);
-
-            if (go.isDead()) {
-                gameObjects.remove(i);
-                this.renderer.destroyGameObject(go);
-                this.physics2D.destroyGameObject(go);
-                i--;
-            }
-        }
-
-        for (GameObject go : pendingObjects) {
-            gameObjects.add(go);
-            go.onStart();
-            this.renderer.add(go);
-            this.physics2D.add(go);
-        }
-        pendingObjects.clear();
-    }
-
     public GameObject getGameObject(String gameObjectName) {
         Optional<GameObject> result = this.gameObjects.stream()
                 .filter(gameObject -> gameObject.name.equals(gameObjectName))
@@ -229,7 +214,7 @@ public class Scene {
 
     public void onUpdate(float dt) {
         this.camera.adjustProjection();
-        this.physics2D.update(dt);
+        this.physicsHandler.onUpdate(dt);
 
         for (int i=0; i < gameObjects.size(); i++) {
             GameObject go = gameObjects.get(i);
@@ -239,7 +224,7 @@ public class Scene {
             if (go.isDead()) {
                 gameObjects.remove(i);
                 this.renderer.destroyGameObject(go);
-                this.physics2D.destroyGameObject(go);
+                this.physicsHandler.destroyGameObject(go);
                 i--;
             }
         }
@@ -248,7 +233,7 @@ public class Scene {
             gameObjects.add(go);
             go.onStart();
             this.renderer.add(go);
-            this.physics2D.add(go);
+            this.physicsHandler.add(go);
         }
         pendingObjects.clear();
     }

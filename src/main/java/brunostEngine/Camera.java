@@ -5,6 +5,10 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+/**
+ * The Camera class implements the most important parts of the Player's point of view in-game.
+ * However, this class is not meant to be used by itself.
+ */
 public class Camera {
     private Matrix4f projectionMatrix, viewMatrix, inverseProjection, inverseView;
     public Vector2f position;

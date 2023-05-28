@@ -4,13 +4,16 @@ import components.*;
 import components.templates.*;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-import physics2d.components.Box2DCollider;
+import physics2d.components.BoxCollider;
 import physics2d.components.CircleCollider;
 import physics2d.components.CylinderCollider;
-import physics2d.components.Rigidbody2D;
+import physics2d.components.Rigidbody;
 import physics2d.enums.BodyType;
-import util.ResourcePool;
 
+/**
+ * The AssetBuilder class is meant to provide a method for easier generation of GameObjects.
+ *
+ */
 public class AssetBuilder {
 
     public static GameObject generateSpriteObject(Sprite sprite, float sizeX, float sizeY) {
@@ -33,7 +36,7 @@ public class AssetBuilder {
         pb.height = 0.25f;
         playableBlock.addComponent(pb);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setContinuousCollision(false);
         rb.setFixedRotation(true);
@@ -114,14 +117,14 @@ public class AssetBuilder {
         pb.height = 0.25f;
         ratgirl.addComponent(pb);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setContinuousCollision(false);
         rb.setFixedRotation(true);
         rb.setMass(25.0f);
         ratgirl.addComponent(rb);
 
-        ratgirl.addComponent(new DefaultTopDownPlayerController());
+        ratgirl.addComponent(new DefaultSideScrollerPlayerController());
 
         ratgirl.transform.zIndex = 10;
 
@@ -251,7 +254,7 @@ public class AssetBuilder {
         pb.height = 0.25f;
         ratgirl.addComponent(pb);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setContinuousCollision(false);
         rb.setFixedRotation(true);
@@ -259,7 +262,7 @@ public class AssetBuilder {
         rb.setGravityScale(0.0f);
         ratgirl.addComponent(rb);
 
-        ratgirl.addComponent(new DefaultSideScrollerPlayerController());
+        ratgirl.addComponent(new DefaultTopDownPlayerController());
 
         ratgirl.transform.zIndex = 10;
 
@@ -439,14 +442,14 @@ public class AssetBuilder {
         pb.height = 0.25f;
         mario.addComponent(pb);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setContinuousCollision(false);
         rb.setFixedRotation(true);
         rb.setMass(25.0f);
         mario.addComponent(rb);
 
-        mario.addComponent(new DefaultTopDownPlayerController());
+        mario.addComponent(new DefaultSideScrollerPlayerController());
 
         mario.transform.zIndex = 10;
         return mario;
@@ -477,10 +480,10 @@ public class AssetBuilder {
         questionBlock.addComponent(animator);
         questionBlock.addComponent(new QuestionBlock());
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Static);
         questionBlock.addComponent(rb);
-        Box2DCollider b2d = new Box2DCollider();
+        BoxCollider b2d = new BoxCollider();
         b2d.setHalfSize(new Vector2f(0.25f, 0.25f));
         questionBlock.addComponent(b2d);
         questionBlock.addComponent(new Collideable());
@@ -532,7 +535,7 @@ public class AssetBuilder {
         CircleCollider circleCollider = new CircleCollider();
         circleCollider.setRadius(0.12f);
         coin.addComponent(circleCollider);
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Static);
         coin.addComponent(rb);
 
@@ -562,7 +565,7 @@ public class AssetBuilder {
         animator.addState(walk.title, squashed.title, "squashMe");
         goomba.addComponent(animator);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setMass(0.1f);
         rb.setFixedRotation(true);
@@ -599,7 +602,7 @@ public class AssetBuilder {
         animator.addState(walk.title, squashed.title, "squashMe");
         turtle.addComponent(animator);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setMass(0.1f);
         rb.setFixedRotation(true);
@@ -619,7 +622,7 @@ public class AssetBuilder {
         GameObject fireball = generateSpriteObject(items.getSprite(32), 0.18f, 0.18f);
         fireball.transform.position = position;
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setFixedRotation(true);
         rb.setContinuousCollision(false);
@@ -637,13 +640,13 @@ public class AssetBuilder {
         Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject flagtop = generateSpriteObject(items.getSprite(6), 0.25f, 0.25f);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setFixedRotation(true);
         rb.setContinuousCollision(false);
         flagtop.addComponent(rb);
 
-        Box2DCollider boxCollider = new Box2DCollider();
+        BoxCollider boxCollider = new BoxCollider();
         boxCollider.setHalfSize(new Vector2f(0.1f, 0.25f));
         boxCollider.setOffset(new Vector2f(-0.075f, 0.0f));
         flagtop.addComponent(boxCollider);
@@ -656,13 +659,13 @@ public class AssetBuilder {
         Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject flagtop = generateSpriteObject(items.getSprite(33), 0.25f, 0.25f);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setFixedRotation(true);
         rb.setContinuousCollision(false);
         flagtop.addComponent(rb);
 
-        Box2DCollider boxCollider = new Box2DCollider();
+        BoxCollider boxCollider = new BoxCollider();
         boxCollider.setHalfSize(new Vector2f(0.1f, 0.25f));
         boxCollider.setOffset(new Vector2f(-0.075f, 0.0f));
         flagtop.addComponent(boxCollider);
@@ -675,7 +678,7 @@ public class AssetBuilder {
         Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject mushroom = generateSpriteObject(items.getSprite(10), 0.25f, 0.25f);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Dynamic);
         rb.setFixedRotation(true);
         rb.setContinuousCollision(false);
@@ -693,7 +696,7 @@ public class AssetBuilder {
         Spritesheet items = ResourcePool.getSpritesheet("assets/images/items.png");
         GameObject flower = generateSpriteObject(items.getSprite(20), 0.25f, 0.25f);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Static);
         rb.setFixedRotation(true);
         rb.setContinuousCollision(false);
@@ -716,13 +719,13 @@ public class AssetBuilder {
         assert index != -1 : "Invalid pipe direction.";
         GameObject pipe = generateSpriteObject(pipes.getSprite(index), 0.5f, 0.5f);
 
-        Rigidbody2D rb = new Rigidbody2D();
+        Rigidbody rb = new Rigidbody();
         rb.setBodyType(BodyType.Static);
         rb.setFixedRotation(true);
         rb.setContinuousCollision(false);
         pipe.addComponent(rb);
 
-        Box2DCollider b2d = new Box2DCollider();
+        BoxCollider b2d = new BoxCollider();
         b2d.setHalfSize(new Vector2f(0.5f, 0.5f));
         pipe.addComponent(b2d);
         pipe.addComponent(new Pipe(direction));

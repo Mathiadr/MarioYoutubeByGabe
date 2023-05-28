@@ -3,7 +3,7 @@ package scenes;
 import components.*;
 import components.cameras.GameCamera;
 import brunostEngine.*;
-import util.ResourcePool;
+import brunostEngine.ResourcePool;
 
 public class LevelSceneBuilder extends SceneBuilder {
     public LevelSceneBuilder() {

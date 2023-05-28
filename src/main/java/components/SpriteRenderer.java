@@ -1,12 +1,15 @@
 package components;
 
-import editor.JImGui;
 import brunostEngine.Transform;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import renderer.Texture;
-import util.ResourcePool;
+import brunostEngine.ResourcePool;
 
+/**
+ * The SpriteRenderer allows for the rendering of a given {@link Sprite} to the Scene.
+ *
+ */
 public class SpriteRenderer extends Component {
 
     private Vector4f color = new Vector4f(1, 1, 1, 1);
@@ -28,21 +31,6 @@ public class SpriteRenderer extends Component {
         if (!this.lastTransform.equals(this.gameObject.transform)) {
             this.gameObject.transform.copy(this.lastTransform);
             isDirty = true;
-        }
-    }
-
-    @Override
-    public void editorUpdate(float dt) {
-        if (!this.lastTransform.equals(this.gameObject.transform)) {
-            this.gameObject.transform.copy(this.lastTransform);
-            isDirty = true;
-        }
-    }
-
-    @Override
-    public void imgui() {
-        if (JImGui.colorPicker4("Color Pickier", this.color)) {
-            this.isDirty = true;
         }
     }
 

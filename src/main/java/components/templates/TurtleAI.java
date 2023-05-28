@@ -7,13 +7,13 @@ import brunostEngine.GameObject;
 import brunostEngine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import physics2d.Physics2D;
-import physics2d.components.Rigidbody2D;
-import util.ResourcePool;
+import physics2d.PhysicsHandler;
+import physics2d.components.Rigidbody;
+import brunostEngine.ResourcePool;
 
 public class TurtleAI extends Component {
     private transient boolean goingRight = false;
-    private transient Rigidbody2D rb;
+    private transient Rigidbody rb;
     private transient float walkSpeed = 0.6f;
     private transient Vector2f velocity = new Vector2f();
     private transient Vector2f acceleration = new Vector2f();
@@ -27,7 +27,7 @@ public class TurtleAI extends Component {
     @Override
     public void onStart() {
         this.animator = this.gameObject.getComponent(Animator.class);
-        this.rb = gameObject.getComponent(Rigidbody2D.class);
+        this.rb = gameObject.getComponent(Rigidbody.class);
         this.acceleration.y = Game.getPhysics().getGravity().y * 0.7f;
     }
 
@@ -75,7 +75,7 @@ public class TurtleAI extends Component {
     public void checkOnGround() {
         float innerPlayerWidth = 0.25f * 0.7f;
         float yVal = -0.2f;
-        onGround = Physics2D.checkOnGround(this.gameObject, innerPlayerWidth, yVal);
+        onGround = PhysicsHandler.checkOnGround(this.gameObject, innerPlayerWidth, yVal);
     }
 
     public void stomp() {

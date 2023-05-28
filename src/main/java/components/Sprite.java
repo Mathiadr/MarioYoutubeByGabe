@@ -3,6 +3,13 @@ package components;
 import org.joml.Vector2f;
 import renderer.Texture;
 
+/**
+ * The Sprite class represents the visible image in a Scene.
+ * For it to be rendered within a scene, however,
+ * the parent {@link brunostEngine.GameObject} requires a {@link SpriteRenderer}
+ * to be assigned to it, with the Sprite in it.
+ *
+ */
 public class Sprite {
 
     private float width, height;

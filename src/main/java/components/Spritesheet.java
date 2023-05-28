@@ -6,6 +6,10 @@ import renderer.Texture;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Spritesheet class represents a list of {@link Sprite} objects.
+ *
+ */
 public class Spritesheet {
 
     private Texture texture;

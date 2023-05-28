@@ -1,11 +1,11 @@
 package components.templates;
 
 import components.Component;
-import components.DefaultTopDownPlayerController;
+import components.DefaultSideScrollerPlayerController;
 import brunostEngine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import util.ResourcePool;
+import brunostEngine.ResourcePool;
 
 public abstract class Block extends Component {
     private transient boolean bopGoingUp = true;
@@ -45,15 +45,15 @@ public abstract class Block extends Component {
 
     @Override
     public void beginCollision(GameObject obj, Contact contact, Vector2f contactNormal) {
-        DefaultTopDownPlayerController defaultTopDownPlayerController = obj.getComponent(DefaultTopDownPlayerController.class);
-        if (active && defaultTopDownPlayerController != null && contactNormal.y < -0.8f) {
+        DefaultSideScrollerPlayerController defaultSideScrollerPlayerController = obj.getComponent(DefaultSideScrollerPlayerController.class);
+        if (active && defaultSideScrollerPlayerController != null && contactNormal.y < -0.8f) {
             doBopAnimation = true;
             ResourcePool.getSound("assets/sounds/bump.ogg").play();
-            playerHit(defaultTopDownPlayerController);
+            playerHit(defaultSideScrollerPlayerController);
         }
     }
 
     public void setInactive() { this.active = false; }
 
-    abstract void playerHit(DefaultTopDownPlayerController defaultTopDownPlayerController);
+    abstract void playerHit(DefaultSideScrollerPlayerController defaultSideScrollerPlayerController);
 }

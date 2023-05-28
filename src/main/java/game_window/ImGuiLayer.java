@@ -1,6 +1,8 @@
-package brunostEngine;
+package game_window;
 
-import editor.GameViewWindow;
+import brunostEngine.Game;
+import brunostEngine.KeyListener;
+import brunostEngine.MouseListener;
 import imgui.*;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
