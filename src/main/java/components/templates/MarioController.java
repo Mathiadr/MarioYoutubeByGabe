@@ -11,10 +11,10 @@ import brunostEngine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-import physics2d.PhysicsHandler;
-import physics2d.components.CylinderCollider;
-import physics2d.components.Rigidbody;
-import physics2d.enums.BodyType;
+import physics.PhysicsHandler;
+import physics.components.CylinderCollider;
+import physics.components.Rigidbody;
+import physics.enums.BodyType;
 import scenes.LevelSceneBuilder;
 import brunostEngine.ResourcePool;
 

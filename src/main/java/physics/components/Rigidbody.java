@@ -1,11 +1,11 @@
-package physics2d.components;
+package physics.components;
 
 import components.Component;
 import brunostEngine.Game;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.joml.Vector2f;
-import physics2d.enums.BodyType;
+import physics.enums.BodyType;
 
 public class Rigidbody extends Component {
     private Vector2f velocity = new Vector2f();

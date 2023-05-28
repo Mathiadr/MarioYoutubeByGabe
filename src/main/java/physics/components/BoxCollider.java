@@ -1,8 +1,7 @@
-package physics2d.components;
+package physics.components;
 
 import components.Component;
 import org.joml.Vector2f;
-import renderer.DebugDraw;
 
 public class BoxCollider extends Component {
     private Vector2f halfSize = new Vector2f(1);

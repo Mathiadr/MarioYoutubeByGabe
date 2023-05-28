@@ -1,4 +1,4 @@
-package physics2d;
+package physics;
 
 import components.Component;
 import brunostEngine.GameObject;

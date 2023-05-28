@@ -8,7 +8,7 @@ import components.ComponentDeserializer;
 import brunostEngine.*;
 import components.SpriteRenderer;
 import org.joml.Vector2f;
-import physics2d.PhysicsHandler;
+import physics.PhysicsHandler;
 import renderer.Renderer;
 import brunostEngine.ResourcePool;
 

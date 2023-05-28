@@ -12,7 +12,7 @@ import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
-import physics2d.PhysicsHandler;
+import physics.PhysicsHandler;
 import renderer.*;
 import scenes.Scene;
 import scenes.SceneBuilder;

@@ -1,4 +1,4 @@
-package physics2d;
+package physics;
 
 import brunostEngine.GameObject;
 import org.jbox2d.callbacks.RayCastCallback;

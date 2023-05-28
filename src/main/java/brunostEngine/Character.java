@@ -4,9 +4,9 @@ import components.Animation;
 import components.Animator;
 import components.Component;
 import components.Spritesheet;
-import physics2d.components.CylinderCollider;
-import physics2d.components.Rigidbody;
-import physics2d.enums.BodyType;
+import physics.components.CylinderCollider;
+import physics.components.Rigidbody;
+import physics.enums.BodyType;
 
 import java.util.ArrayList;
 

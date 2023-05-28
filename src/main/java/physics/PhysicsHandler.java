@@ -1,4 +1,4 @@
-package physics2d;
+package physics;
 
 import components.Collideable;
 import brunostEngine.GameObject;
@@ -9,10 +9,10 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.joml.Vector2f;
-import physics2d.components.BoxCollider;
-import physics2d.components.CircleCollider;
-import physics2d.components.CylinderCollider;
-import physics2d.components.Rigidbody;
+import physics.components.BoxCollider;
+import physics.components.CircleCollider;
+import physics.components.CylinderCollider;
+import physics.components.Rigidbody;
 
 public class PhysicsHandler {
     private Vec2 gravity = new Vec2(0, -10.0f);

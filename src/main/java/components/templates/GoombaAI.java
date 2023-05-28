@@ -8,8 +8,8 @@ import brunostEngine.GameObject;
 import brunostEngine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import physics2d.PhysicsHandler;
-import physics2d.components.Rigidbody;
+import physics.PhysicsHandler;
+import physics.components.Rigidbody;
 import brunostEngine.ResourcePool;
 
 public class GoombaAI extends Component {
