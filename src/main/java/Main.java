@@ -1,11 +1,10 @@
-import brunostengine.*;
-import components.*;
-import components.cameras.FollowTargetCamera;
-import components.debug_tools.DebugTools;
+import no.brunostengine.*;
+import no.brunostengine.components.*;
+import no.brunostengine.components.cameras.FollowTargetCamera;
+import no.brunostengine.components.debug_tools.DebugTools;
 import org.joml.Vector2f;
-import scenes.Scene;
-import scenes.SceneBuilder;
-import brunostengine.ResourcePool;
+import no.brunostengine.scenes.Scene;
+import no.brunostengine.scenes.SceneBuilder;
 
 import java.util.ArrayList;
 
