@@ -11,6 +11,7 @@ import no.brunostengine.observers.events.Event;
 import org.joml.Vector4f;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
@@ -44,6 +45,7 @@ public class Game implements Observer {
     private Framebuffer framebuffer;
     private PixelToGameObjectReader pixelToGameObjectReader;
     private boolean runtimePlaying = true;
+    private boolean fullscreen = false;
 
     private static Game game = null;
 
@@ -116,15 +118,19 @@ public class Game implements Observer {
             throw new IllegalStateException("Unable to initialize GLFW.");
         }
         System.out.println("Running LWJGL " + Version.getVersion() + "");
-
+        long monitor = glfwGetPrimaryMonitor();
         // Configure GLFW
         glfwDefaultWindowHints();
+        GLFWVidMode vidMode = glfwGetVideoMode(monitor);
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+        glfwWindowHint(GLFW_REFRESH_RATE, 60);
+        glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+        glfwWindowHint(GLFW_SAMPLES, 4);
 
         // Create the window
-        glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
+        glfwWindow = glfwCreateWindow(this.width, this.height, this.title, monitor, NULL);
         if (glfwWindow == NULL) {
             throw new IllegalStateException("Failed to create the GLFW window.");
         }
@@ -138,8 +144,13 @@ public class Game implements Observer {
             Game.setHeight(newHeight);
         });
 
+        glfwSetWindowMonitor(glfwWindow, monitor, 0, 0, width, height, 60);
+
+
+
         // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
+
         // Enable v-sync
         glfwSwapInterval(1);
 
@@ -175,6 +186,7 @@ public class Game implements Observer {
         this.pixelToGameObjectReader = new PixelToGameObjectReader(Game.getWidth(), Game.getHeight());
         glViewport(0, 0, Game.getWidth(), Game.getHeight());
 
+
         this.imguiLayer = new ImGuiLayer(glfwWindow);
         this.imguiLayer.initImGui();
     }
@@ -195,10 +207,6 @@ public class Game implements Observer {
             // Render pass 1. Render to picking texture
             glDisable(GL_BLEND);
             pixelToGameObjectReader.enableWriting();
-
-            glViewport(0, 0, Game.getWidth(), Game.getHeight());
-            glClearColor(0, 0, 0, 0);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             Renderer.bindShader(pickingShader);
             currentScene.render();
@@ -234,6 +242,7 @@ public class Game implements Observer {
             dt = endTime - beginTime;
             beginTime = endTime;
         }
+
     }
 
     public static int getWidth() {
@@ -284,8 +293,7 @@ public class Game implements Observer {
                 Game.changeScene(currentSceneBuilder);
                 break;
             case GameEngineStopPlay:
-                this.runtimePlaying = false;
-                Game.changeScene(currentSceneBuilder);
+                glfwSetWindowShouldClose(glfwWindow, true);
                 break;
             case LoadLevel:
                 Game.changeScene(currentSceneBuilder);

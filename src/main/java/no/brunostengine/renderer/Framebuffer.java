@@ -1,5 +1,8 @@
 package no.brunostengine.renderer;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+
 import static org.lwjgl.opengl.GL30.*;
 
 public class Framebuffer {
@@ -25,6 +28,10 @@ public class Framebuffer {
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
             assert false : "Error: Framebuffer is not complete";
         }
+        
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboID);
+        GL20.glDrawBuffers(GL_COLOR_ATTACHMENT0);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
