@@ -1,7 +1,9 @@
 package game_window;
 
 import imgui.ImGui;
+import imgui.ImGuiViewport;
 import imgui.ImVec2;
+import imgui.flag.ImGuiStyleVar;
 import imgui.flag.ImGuiWindowFlags;
 import brunostEngine.MouseListener;
 import brunostEngine.Game;
@@ -13,8 +15,19 @@ public class GameViewWindow {
     private boolean windowIsHovered;
 
     public void imgui() {
+        ImGuiViewport mainViewport = ImGui.getMainViewport();
+
+        ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
+        ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY());
+        ImGui.setNextWindowViewport(mainViewport.getID());
+        ImGui.setNextWindowPos(0.0f, 0.0f);
+        ImGui.setNextWindowSize(Game.getWidth(), Game.getHeight());
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
+        ImGui.popStyleVar(2);
         ImGui.begin("Game Viewport", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse
-                        | ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDecoration);
+                | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove |
+                ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus);
 
 
         ImGui.setCursorPos(ImGui.getCursorPosX(), ImGui.getCursorPosY());

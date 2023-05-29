@@ -48,9 +48,9 @@ public class ImGuiLayer {
         // Initialize ImGuiIO config
         final ImGuiIO io = ImGui.getIO();
 
-        io.setIniFilename("imgui.ini"); // We don't want to save .ini file
-        io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
-        //io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
+        io.setIniFilename("layoutConfig.ini"); // We don't want to save .ini file
+        //io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
+        io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
         io.setBackendPlatformName("imgui_java_impl_glfw");
 
         // ------------------------------------------------------------
@@ -189,48 +189,20 @@ public class ImGuiLayer {
         glViewport(0, 0, Game.getWidth(), Game.getHeight());
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT);
-
-        // After Dear ImGui prepared a draw data, we use it in the LWJGL3 renderer.
-        // At that moment ImGui will be rendered to the current OpenGL context.
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
-
         long backupWindowPtr = glfwGetCurrentContext();
         ImGui.updatePlatformWindows();
         ImGui.renderPlatformWindowsDefault();
         glfwMakeContextCurrent(backupWindowPtr);
     }
 
-    // If you want to clean a room after yourself - do it by yourself
     private void destroyImGui() {
         imGuiGl3.dispose();
         ImGui.destroyContext();
     }
 
     private void setupDockspace() {
-        int windowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoDecoration;
 
-        ImGuiViewport mainViewport = ImGui.getMainViewport();
-        ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
-        ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY());
-        ImGui.setNextWindowViewport(mainViewport.getID());
-        ImGui.setNextWindowPos(0.0f, 0.0f);
-        ImGui.setNextWindowSize(Game.getWidth(), Game.getHeight());
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
-        windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse |
-                ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove |
-                ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
-
-        ImGui.begin("Dockspace Demo", new ImBoolean(true), windowFlags);
-        ImGui.popStyleVar(2);
-
-        // Dockspace
-        ImGui.dockSpace(ImGui.getID("Dockspace"));
-
-
-        //menuBar.imgui();
-
-        ImGui.end();
     }
 }

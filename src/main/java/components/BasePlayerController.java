@@ -8,7 +8,7 @@ import physics.components.Rigidbody;
 
 public abstract class BasePlayerController extends Component{
 
-    public Vector2f terminalVelocity = new Vector2f(2.1f, 3.1f);
+    public Vector2f maxVelocity = new Vector2f(1f, 1f);
 
     public float walkSpeed = 1.9f;
     public float jumpBoost = 1.0f;

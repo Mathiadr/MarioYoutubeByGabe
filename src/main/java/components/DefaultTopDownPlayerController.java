@@ -2,14 +2,10 @@ package components;
 
 import brunostEngine.KeyListener;
 import brunostEngine.Game;
-import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class DefaultTopDownPlayerController extends BasePlayerController {
-
-
-    public Vector2f terminalVelocity = new Vector2f(1f, 1f);
 
     public transient boolean gravityEnabled = true;
     private transient float groundDebounce = 0.0f;
@@ -88,8 +84,8 @@ public class DefaultTopDownPlayerController extends BasePlayerController {
 
         this.velocity.x += this.acceleration.x * dt;
         this.velocity.y += this.acceleration.y * dt;
-        this.velocity.x = Math.max(Math.min(this.velocity.x, this.terminalVelocity.x), -this.terminalVelocity.x);
-        this.velocity.y = Math.max(Math.min(this.velocity.y, this.terminalVelocity.y), -this.terminalVelocity.y);
+        this.velocity.x = Math.max(Math.min(this.velocity.x, this.maxVelocity.x), -this.maxVelocity.x);
+        this.velocity.y = Math.max(Math.min(this.velocity.y, this.maxVelocity.y), -this.maxVelocity.y);
         this.rb.setVelocity(this.velocity);
     }
 
