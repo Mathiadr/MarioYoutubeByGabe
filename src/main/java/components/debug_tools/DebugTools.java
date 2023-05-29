@@ -1,6 +1,6 @@
 package components.debug_tools;
 
-import brunostEngine.*;
+import brunostengine.*;
 import components.*;
 import org.joml.Vector2f;
 import util.PixelToGameObjectReader;

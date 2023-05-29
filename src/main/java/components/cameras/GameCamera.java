@@ -2,9 +2,9 @@ package components.cameras;
 
 import components.Component;
 import components.DefaultSideScrollerPlayerController;
-import brunostEngine.Camera;
-import brunostEngine.GameObject;
-import brunostEngine.Game;
+import brunostengine.Camera;
+import brunostengine.GameObject;
+import brunostengine.Game;
 import org.joml.Vector4f;
 
 public class GameCamera extends Component {

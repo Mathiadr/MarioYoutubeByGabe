@@ -3,11 +3,11 @@ package components.templates;
 import components.Collideable;
 import components.Component;
 import components.DefaultSideScrollerPlayerController;
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics.components.Rigidbody;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 public class MushroomAI extends Component {
     private transient boolean goingRight = true;

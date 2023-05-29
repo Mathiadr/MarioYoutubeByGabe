@@ -2,11 +2,11 @@ package components.templates;
 
 import components.Component;
 import components.DefaultSideScrollerPlayerController;
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics.components.Rigidbody;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 public class Flower extends Component {
     private transient Rigidbody rb;
@@ -19,7 +19,7 @@ public class Flower extends Component {
     }
 
     @Override
-    public void beginCollision(GameObject obj, Contact contact, Vector2f contactNormal) {
+    public void onCollisionEnter(GameObject obj, Contact contact, Vector2f contactNormal) {
         DefaultSideScrollerPlayerController defaultSideScrollerPlayerController = obj.getComponent(DefaultSideScrollerPlayerController.class);
         if (defaultSideScrollerPlayerController != null) {
             this.gameObject.destroy();

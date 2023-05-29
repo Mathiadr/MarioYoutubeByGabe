@@ -1,6 +1,6 @@
 package observers;
 
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 import observers.events.Event;
 
 public interface Observer {

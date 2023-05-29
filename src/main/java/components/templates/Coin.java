@@ -1,10 +1,10 @@
 package components.templates;
 
 import components.Component;
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 public class Coin extends Component {
     private Vector2f topY;

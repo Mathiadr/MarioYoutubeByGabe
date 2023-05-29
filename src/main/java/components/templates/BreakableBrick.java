@@ -1,7 +1,7 @@
 package components.templates;
 
 import components.DefaultSideScrollerPlayerController;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 public class BreakableBrick extends Block {
 

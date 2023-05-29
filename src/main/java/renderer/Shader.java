@@ -2,11 +2,12 @@ package renderer;
 
 import org.joml.*;
 import org.lwjgl.BufferUtils;
+import util.ResourceReader;
 
-import javax.print.DocFlavor;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
@@ -25,7 +26,11 @@ public class Shader {
     public Shader(String filepath) {
         this.filepath = filepath;
         try {
-            String source = new String(Files.readAllBytes(Paths.get(filepath)));
+            String source;
+            if(Files.exists(Path.of(filepath)))
+                source = new String(Files.readAllBytes(Paths.get(filepath)));
+            else
+                source = new String(ResourceReader.GetInputStreamFromResource(filepath).readAllBytes());
             String[] splitString = source.split("(#type)( )+([a-zA-Z]+)");
 
             // Find the first pattern after #type 'pattern'

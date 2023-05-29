@@ -2,9 +2,9 @@ package components.templates;
 
 import components.Animator;
 import components.DefaultSideScrollerPlayerController;
-import brunostEngine.GameObject;
-import brunostEngine.AssetBuilder;
-import brunostEngine.Game;
+import brunostengine.GameObject;
+import brunostengine.AssetBuilder;
+import brunostengine.Game;
 
 public class QuestionBlock extends Block {
     private enum BlockType {

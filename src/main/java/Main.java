@@ -1,11 +1,11 @@
-import brunostEngine.*;
+import brunostengine.*;
 import components.*;
 import components.cameras.FollowTargetCamera;
 import components.debug_tools.DebugTools;
 import org.joml.Vector2f;
 import scenes.Scene;
 import scenes.SceneBuilder;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 import java.util.ArrayList;
 
@@ -148,7 +148,6 @@ public class Main {
 
             @Override
             public void loadResources(Scene scene) {
-                ResourcePool.getShader("assets/shaders/default.glsl");
 
                 ResourcePool.addSpritesheet("assets/images/items.png",
                         new Spritesheet(ResourcePool.getTexture("assets/images/items.png"),
@@ -159,23 +158,6 @@ public class Main {
                 ResourcePool.addSpritesheet("assets/images/defaultTiles.png",
                         new Spritesheet(ResourcePool.getTexture("assets/images/defaultTiles.png"),
                                 64, 64, 4, 1));
-
-
-                ResourcePool.addSound("assets/sounds/main-theme-overworld.ogg", true);
-                ResourcePool.addSound("assets/sounds/flagpole.ogg", false);
-                ResourcePool.addSound("assets/sounds/break_block.ogg", false);
-                ResourcePool.addSound("assets/sounds/bump.ogg", false);
-                ResourcePool.addSound("assets/sounds/coin.ogg", false);
-                ResourcePool.addSound("assets/sounds/gameover.ogg", false);
-                ResourcePool.addSound("assets/sounds/jump-small.ogg", false);
-                ResourcePool.addSound("assets/sounds/mario_die.ogg", false);
-                ResourcePool.addSound("assets/sounds/pipe.ogg", false);
-                ResourcePool.addSound("assets/sounds/powerup.ogg", false);
-                ResourcePool.addSound("assets/sounds/powerup_appears.ogg", false);
-                ResourcePool.addSound("assets/sounds/stage_clear.ogg", false);
-                ResourcePool.addSound("assets/sounds/stomp.ogg", false);
-                ResourcePool.addSound("assets/sounds/kick.ogg", false);
-                ResourcePool.addSound("assets/sounds/invincible.ogg", false);
             }
         });
         game.run();

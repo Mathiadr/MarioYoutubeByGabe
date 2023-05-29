@@ -3,14 +3,14 @@ package components.templates;
 import components.Component;
 import components.DefaultSideScrollerPlayerController;
 import components.Animator;
-import brunostEngine.Camera;
-import brunostEngine.GameObject;
-import brunostEngine.Game;
+import brunostengine.Camera;
+import brunostengine.GameObject;
+import brunostengine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics.PhysicsHandler;
 import physics.components.Rigidbody;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 public class GoombaAI extends Component {
 

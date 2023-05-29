@@ -4,19 +4,19 @@ import components.Animator;
 import components.Collideable;
 import components.Component;
 import components.SpriteRenderer;
-import brunostEngine.GameObject;
-import brunostEngine.KeyListener;
-import brunostEngine.AssetBuilder;
-import brunostEngine.Game;
+import brunostengine.GameObject;
+import brunostengine.KeyListener;
+import brunostengine.AssetBuilder;
+import brunostengine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import physics.PhysicsHandler;
-import physics.components.CylinderCollider;
+import physics.components.CapsuleCollider;
 import physics.components.Rigidbody;
 import physics.enums.BodyType;
 import scenes.LevelSceneBuilder;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
@@ -236,7 +236,7 @@ public class MarioController extends Component {
             playerState = MarioController.PlayerState.Big;
             ResourcePool.getSound("assets/sounds/powerup.ogg").play();
             gameObject.transform.scale.y = 0.42f;
-            CylinderCollider pb = gameObject.getComponent(CylinderCollider.class);
+            CapsuleCollider pb = gameObject.getComponent(CapsuleCollider.class);
             if (pb != null) {
                 jumpBoost *= bigJumpBoostFactor;
                 walkSpeed *= bigJumpBoostFactor;
@@ -265,7 +265,7 @@ public class MarioController extends Component {
     }
 
     @Override
-    public void beginCollision(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
+    public void onCollisionEnter(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
         if (isDead) return;
 
         if (collidingObject.getComponent(Collideable.class) != null) {
@@ -314,7 +314,7 @@ public class MarioController extends Component {
         } else if (this.playerState == MarioController.PlayerState.Big) {
             this.playerState = MarioController.PlayerState.Small;
             gameObject.transform.scale.y = 0.25f;
-            CylinderCollider pb = gameObject.getComponent(CylinderCollider.class);
+            CapsuleCollider pb = gameObject.getComponent(CapsuleCollider.class);
             if (pb != null) {
                 jumpBoost /= bigJumpBoostFactor;
                 walkSpeed /= bigJumpBoostFactor;

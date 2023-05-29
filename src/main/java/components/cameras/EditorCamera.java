@@ -1,9 +1,9 @@
 package components.cameras;
 
 import components.Component;
-import brunostEngine.Camera;
-import brunostEngine.KeyListener;
-import brunostEngine.MouseListener;
+import brunostengine.Camera;
+import brunostengine.KeyListener;
+import brunostengine.MouseListener;
 import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_DECIMAL;

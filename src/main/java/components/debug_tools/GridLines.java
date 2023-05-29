@@ -1,8 +1,8 @@
 package components.debug_tools;
 
 import components.Component;
-import brunostEngine.Camera;
-import brunostEngine.Game;
+import brunostengine.Camera;
+import brunostengine.Game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import renderer.DebugDraw;

@@ -2,13 +2,13 @@ package components.templates;
 
 import components.Component;
 import components.DefaultSideScrollerPlayerController;
-import brunostEngine.Direction;
-import brunostEngine.GameObject;
-import brunostEngine.KeyListener;
-import brunostEngine.Game;
+import brunostengine.Direction;
+import brunostengine.GameObject;
+import brunostengine.KeyListener;
+import brunostengine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -119,7 +119,7 @@ public class Pipe extends Component {
     }
 
     @Override
-    public void beginCollision(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
+    public void onCollisionEnter(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
         DefaultSideScrollerPlayerController defaultSideScrollerPlayerController = collidingObject.getComponent(DefaultSideScrollerPlayerController.class);
         if (defaultSideScrollerPlayerController != null) {
             collidingPlayer = defaultSideScrollerPlayerController;

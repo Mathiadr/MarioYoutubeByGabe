@@ -1,10 +1,10 @@
 package renderer;
 
-import brunostEngine.Camera;
-import brunostEngine.Game;
+import brunostengine.Camera;
+import brunostengine.Game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 import util.JMath;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 public class DebugDraw {
     private static int MAX_LINES = 5000;
 
-    private static List<LineDrawer> lines = new ArrayList<>();
+    private static List<Line> lines = new ArrayList<>();
     // 6 floats per vertex, 2 vertices per line
     private static float[] vertexArray = new float[MAX_LINES * 6 * 2];
     private static Shader shader = ResourcePool.getShader("assets/shaders/debugLine2D.glsl");
@@ -68,7 +68,7 @@ public class DebugDraw {
         if (lines.size() <= 0) return;
 
         int index = 0;
-        for (LineDrawer line : lines) {
+        for (Line line : lines) {
             for (int i=0; i < 2; i++) {
                 Vector2f position = i == 0 ? line.getFrom() : line.getTo();
                 Vector3f color = line.getColor();
@@ -135,7 +135,7 @@ public class DebugDraw {
         if (lines.size() >= MAX_LINES || !lineInView) {
             return;
         }
-        DebugDraw.lines.add(new LineDrawer(from, to, color, lifetime));
+        DebugDraw.lines.add(new Line(from, to, color, lifetime));
     }
 
     // ==================================================

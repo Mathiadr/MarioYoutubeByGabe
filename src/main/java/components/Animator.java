@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Holds and plays {@link Animation} to the assigned {@link brunostEngine.GameObject}.
+ * Holds and plays {@link Animation} to the assigned {@link brunostengine.GameObject}.
  */
 public class Animator extends Component {
     private class StateTrigger {

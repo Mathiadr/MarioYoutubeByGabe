@@ -1,6 +1,6 @@
 package components;
 
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 import java.util.ArrayList;
 import java.util.List;

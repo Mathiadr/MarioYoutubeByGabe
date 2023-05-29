@@ -2,8 +2,8 @@ package scenes;
 
 import components.*;
 import components.cameras.GameCamera;
-import brunostEngine.*;
-import brunostEngine.ResourcePool;
+import brunostengine.*;
+import brunostengine.ResourcePool;
 
 public class LevelSceneBuilder extends SceneBuilder {
     public LevelSceneBuilder() {

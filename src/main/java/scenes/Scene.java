@@ -5,12 +5,12 @@ import com.google.gson.GsonBuilder;
 import components.Animator;
 import components.Component;
 import components.ComponentDeserializer;
-import brunostEngine.*;
+import brunostengine.*;
 import components.SpriteRenderer;
 import org.joml.Vector2f;
 import physics.PhysicsHandler;
 import renderer.Renderer;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -84,7 +84,7 @@ public class Scene {
             GameObject go = gameObjects.get(i);
             go.onStart();
             this.renderer.add(go);
-            this.physicsHandler.add(go);
+            this.physicsHandler.addGameObject(go);
         }
         isRunning = true;
     }
@@ -233,7 +233,7 @@ public class Scene {
             gameObjects.add(go);
             go.onStart();
             this.renderer.add(go);
-            this.physicsHandler.add(go);
+            this.physicsHandler.addGameObject(go);
         }
         pendingObjects.clear();
     }

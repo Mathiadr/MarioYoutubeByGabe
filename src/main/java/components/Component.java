@@ -1,11 +1,11 @@
 package components;
 
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 
 /**
- * The Component class is the most essential part of a {@link brunostEngine.GameObject}.
+ * The Component class is the most essential part of a {@link brunostengine.GameObject}.
  * This class fulfills the design principle of Entity-Component Design.
  * TODO: check if correct
  */
@@ -23,7 +23,7 @@ public abstract class Component {
 
     }
 
-    public void beginCollision(GameObject collidingObject, Contact contact, Vector2f hitNormal) {
+    public void onCollisionEnter(GameObject collidingObject, Contact contact, Vector2f hitNormal) {
 
     }
 

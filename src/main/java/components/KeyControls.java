@@ -1,12 +1,7 @@
 package components;
 
-import brunostEngine.GameObject;
-import brunostEngine.KeyListener;
-import brunostEngine.Game;
-import util.Settings;
-
-import java.util.ArrayList;
-import java.util.List;
+import brunostengine.KeyListener;
+import brunostengine.Game;
 
 import static org.lwjgl.glfw.GLFW.*;
 

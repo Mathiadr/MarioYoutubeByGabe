@@ -1,7 +1,7 @@
 package components.templates;
 
-import brunostEngine.Game;
-import brunostEngine.KeyListener;
+import brunostengine.Game;
+import brunostengine.KeyListener;
 import components.BasePlayerController;
 
 import static org.lwjgl.glfw.GLFW.*;

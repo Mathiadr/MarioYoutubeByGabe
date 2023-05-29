@@ -1,7 +1,7 @@
 package physics;
 
 import components.Component;
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.collision.WorldManifold;
@@ -19,11 +19,11 @@ public class ContactListener implements org.jbox2d.callbacks.ContactListener {
         Vector2f bNormal = new Vector2f(aNormal).negate();
 
         for (Component c : objA.getAllComponents()) {
-            c.beginCollision(objB, contact, aNormal);
+            c.onCollisionEnter(objB, contact, aNormal);
         }
 
         for (Component c : objB.getAllComponents()) {
-            c.beginCollision(objA, contact, bNormal);
+            c.onCollisionEnter(objA, contact, bNormal);
         }
     }
 

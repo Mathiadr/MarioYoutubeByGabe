@@ -6,7 +6,7 @@ import renderer.Texture;
 /**
  * The Sprite class represents the visible image in a Scene.
  * For it to be rendered within a scene, however,
- * the parent {@link brunostEngine.GameObject} requires a {@link SpriteRenderer}
+ * the parent {@link brunostengine.GameObject} requires a {@link SpriteRenderer}
  * to be assigned to it, with the Sprite in it.
  *
  */

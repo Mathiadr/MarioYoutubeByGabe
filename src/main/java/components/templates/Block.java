@@ -2,10 +2,10 @@ package components.templates;
 
 import components.Component;
 import components.DefaultSideScrollerPlayerController;
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
-import brunostEngine.ResourcePool;
+import brunostengine.ResourcePool;
 
 public abstract class Block extends Component {
     private transient boolean bopGoingUp = true;
@@ -44,7 +44,7 @@ public abstract class Block extends Component {
     }
 
     @Override
-    public void beginCollision(GameObject obj, Contact contact, Vector2f contactNormal) {
+    public void onCollisionEnter(GameObject obj, Contact contact, Vector2f contactNormal) {
         DefaultSideScrollerPlayerController defaultSideScrollerPlayerController = obj.getComponent(DefaultSideScrollerPlayerController.class);
         if (active && defaultSideScrollerPlayerController != null && contactNormal.y < -0.8f) {
             doBopAnimation = true;

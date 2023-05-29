@@ -2,8 +2,8 @@ package components.templates;
 
 import components.Component;
 import components.DefaultSideScrollerPlayerController;
-import brunostEngine.GameObject;
-import brunostEngine.Game;
+import brunostengine.GameObject;
+import brunostengine.Game;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics.PhysicsHandler;
@@ -66,7 +66,7 @@ public class Fireball extends Component {
     }
 
     @Override
-    public void beginCollision(GameObject obj, Contact contact, Vector2f contactNormal) {
+    public void onCollisionEnter(GameObject obj, Contact contact, Vector2f contactNormal) {
         if (Math.abs(contactNormal.x) > 0.8f) {
             this.goingRight = contactNormal.x < 0;
         }

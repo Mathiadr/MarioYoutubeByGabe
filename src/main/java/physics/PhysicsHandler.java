@@ -1,17 +1,17 @@
 package physics;
 
 import components.Collideable;
-import brunostEngine.GameObject;
-import brunostEngine.Transform;
-import brunostEngine.Game;
+import brunostengine.GameObject;
+import brunostengine.Transform;
+import brunostengine.Game;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.joml.Vector2f;
 import physics.components.BoxCollider;
+import physics.components.CapsuleCollider;
 import physics.components.CircleCollider;
-import physics.components.CylinderCollider;
 import physics.components.Rigidbody;
 
 public class PhysicsHandler {
@@ -31,7 +31,7 @@ public class PhysicsHandler {
         return new Vector2f(world.getGravity().x, world.getGravity().y);
     }
 
-    public void add(GameObject go) {
+    public void addGameObject(GameObject go) {
         Rigidbody rb = go.getComponent(Rigidbody.class);
         if (rb != null && rb.getRawBody() == null) {
             Transform transform = go.transform;
@@ -59,7 +59,7 @@ public class PhysicsHandler {
 
             CircleCollider circleCollider;
             BoxCollider boxCollider;
-            CylinderCollider cylinderCollider;
+            CapsuleCollider capsuleCollider;
 
             if ((circleCollider = go.getComponent(CircleCollider.class)) != null) {
                 addCircleCollider(rb, circleCollider);
@@ -69,8 +69,8 @@ public class PhysicsHandler {
                 addBox2DCollider(rb, boxCollider);
             }
 
-            if ((cylinderCollider = go.getComponent(CylinderCollider.class)) != null) {
-                addPillboxCollider(rb, cylinderCollider);
+            if ((capsuleCollider = go.getComponent(CapsuleCollider.class)) != null) {
+                addCapsuleCollider(rb, capsuleCollider);
             }
         }
     }
@@ -141,7 +141,7 @@ public class PhysicsHandler {
         body.resetMassData();
     }
 
-    public void resetPillboxCollider(Rigidbody rb, CylinderCollider pb) {
+    public void resetCapsuleCollider(Rigidbody rb, CapsuleCollider pb) {
         Body body = rb.getRawBody();
         if (body == null) return;
 
@@ -150,11 +150,11 @@ public class PhysicsHandler {
             body.destroyFixture(body.getFixtureList());
         }
 
-        addPillboxCollider(rb, pb);
+        addCapsuleCollider(rb, pb);
         body.resetMassData();
     }
 
-    public void addPillboxCollider(Rigidbody rb, CylinderCollider pb) {
+    public void addCapsuleCollider(Rigidbody rb, CapsuleCollider pb) {
         Body body = rb.getRawBody();
         assert body != null : "Raw body must not be null";
 

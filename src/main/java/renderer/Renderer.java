@@ -1,7 +1,7 @@
 package renderer;
 
 import components.SpriteRenderer;
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 
 import java.util.ArrayList;
 import java.util.Collections;

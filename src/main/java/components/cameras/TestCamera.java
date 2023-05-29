@@ -1,8 +1,8 @@
 package components.cameras;
 
-import brunostEngine.Camera;
-import brunostEngine.Game;
-import brunostEngine.GameObject;
+import brunostengine.Camera;
+import brunostengine.Game;
+import brunostengine.GameObject;
 import components.BasePlayerController;
 import components.Component;
 import org.joml.Vector4f;

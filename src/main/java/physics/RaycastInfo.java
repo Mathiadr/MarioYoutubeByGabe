@@ -1,6 +1,6 @@
 package physics;
 
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;

@@ -1,8 +1,8 @@
 package renderer;
 
 import components.SpriteRenderer;
-import brunostEngine.GameObject;
-import brunostEngine.Game;
+import brunostengine.GameObject;
+import brunostengine.Game;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;

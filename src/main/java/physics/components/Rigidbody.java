@@ -1,7 +1,7 @@
 package physics.components;
 
 import components.Component;
-import brunostEngine.Game;
+import brunostengine.Game;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.joml.Vector2f;

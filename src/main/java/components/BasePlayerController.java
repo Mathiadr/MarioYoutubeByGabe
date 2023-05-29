@@ -1,6 +1,6 @@
 package components;
 
-import brunostEngine.GameObject;
+import brunostengine.GameObject;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 import physics.PhysicsHandler;
@@ -38,7 +38,7 @@ public abstract class BasePlayerController extends Component{
     public abstract void onUpdate(float deltaTime);
 
     @Override
-    public void beginCollision(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
+    public void onCollisionEnter(GameObject collidingObject, Contact contact, Vector2f contactNormal) {
         if (collidingObject.getComponent(Collideable.class) != null) {
             if (Math.abs(contactNormal.x) > 0.8f) {
                 this.velocity.x = 0;

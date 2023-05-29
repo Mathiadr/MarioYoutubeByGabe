@@ -1,7 +1,7 @@
 package physics.components;
 
 import components.Component;
-import brunostEngine.Game;
+import brunostengine.Game;
 import org.joml.Vector2f;
 
 public class CircleCollider extends Component {
