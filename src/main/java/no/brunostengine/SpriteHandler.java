@@ -19,7 +19,7 @@ public class SpriteHandler {
             String pathToFile = spritesheets.get(filename);
             return ResourcePool.getSpritesheet(pathToFile);
         } catch (NullPointerException e) {
-            System.err.println("Could not find sound file \"" + filename + "\"");
+            System.err.println("Could not find file \"" + filename + "\"");
             e.printStackTrace();
         }
         return null;

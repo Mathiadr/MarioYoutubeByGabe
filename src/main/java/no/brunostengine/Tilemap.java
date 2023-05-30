@@ -23,10 +23,11 @@ public class Tilemap{
     public GameObject tilemapBackground;
     public transient GameObject[][] tiles;
 
-    private Tilemap(int column, int row){
-        this.column = column;
+    private Tilemap(int row, int column){
+
         this.row = row;
-        this.tiles = new GameObject[column][row];
+        this.column = column;
+        this.tiles = new GameObject[row][column];
         float offsetX = 0.125f;
         float offsetY = 0.125f;
         for (int i = 0; i < tiles.length; i++){
@@ -34,8 +35,8 @@ public class Tilemap{
                 GameObject newTile = Game.getScene().createGameObject("Tile("+i+", "+j+")");
                 Tile tile = new Tile();
                 tile.parentTilemap = this;
-                tile.column = i;
-                tile.row = j;
+                tile.row = i;
+                tile.column = j;
                 newTile.addComponent(tile);
                 newTile.transform.position.x = offsetX;
                 newTile.transform.position.y = offsetY;
@@ -256,12 +257,12 @@ public class Tilemap{
     private boolean checkIfTileIsValid(GameObject tile){
         if (tile.getComponent(Tile.class) == null) {
             throw new IllegalArgumentException("Tile "
-                + tile.name + "is missing a Tile component.");
+                + tile.name + " is missing a Tile component.");
         }
         if (tile.getComponent(Rigidbody.class) != null
                 && tile.getComponent(Rigidbody.class).getBodyType() != BodyType.Static){
             throw new IllegalArgumentException("Tile "
-                    + tile.name + "cannot have a non-static BodyType");
+                    + tile.name + " cannot have a non-static BodyType");
         }
         return true;
     }
