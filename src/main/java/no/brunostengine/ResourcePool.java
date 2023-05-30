@@ -21,10 +21,7 @@ public class ResourcePool {
         try {
             //Path path = Paths.get(resourceName);
             //String filename = Path.of(resourceName).getFileName().toString();
-            System.out.println(resourceName);
             File tempFile = new File(resourceName);
-            System.out.println(tempFile);
-            System.out.println(tempFile.getAbsolutePath());
             InputStream is = ResourceReader.GetInputStreamFromResource(resourceName);
             try (FileOutputStream out = new FileOutputStream(tempFile, false)){
                 int read;
@@ -40,14 +37,14 @@ public class ResourcePool {
     }
 
     public static Shader getShader(String resourceName) {
-        System.out.println(resourceName);
         File file = new File(resourceName);
-        System.out.println(file.getAbsolutePath());
+        System.out.println("Loading shader file " + file.getName());
         if (ResourcePool.shaders.containsKey(file.getAbsolutePath())) {
             return ResourcePool.shaders.get(file.getAbsolutePath());
         } else {
             Shader shader = new Shader(resourceName);
             shader.compile();
+            System.out.println("Shader finished compiling.");
             ResourcePool.shaders.put(file.getAbsolutePath(), shader);
             return shader;
         }

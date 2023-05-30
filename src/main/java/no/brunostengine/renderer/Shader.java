@@ -29,7 +29,7 @@ public class Shader {
             if(Files.exists(Path.of(filepath)))
                 source = new String(Files.readAllBytes(Paths.get(filepath)));
             else
-                source = new String(ResourceReader.GetInputStreamFromResource(filepath).readAllBytes());
+                source = new String(ResourceReader.GetInputStreamFromResource("/"+filepath).readAllBytes());
             String[] splitString = source.split("(#type)( )+([a-zA-Z]+)");
 
             // Find the first pattern after #type 'pattern'
