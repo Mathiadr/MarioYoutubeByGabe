@@ -1,11 +1,12 @@
 package no.brunostengine;
 
 
+import jdk.jshell.spi.ExecutionControl;
 import no.brunostengine.components.Animator;
 import no.brunostengine.components.NonInteractable;
-import no.brunostengine.components.Sprite;
+import no.brunostengine.physics.components.Rigidbody;
+import no.brunostengine.physics.enums.BodyType;
 import org.joml.Vector2f;
-import no.brunostengine.scenes.Scene;
 
 import java.util.ArrayList;
 
@@ -93,6 +94,7 @@ public class Tilemap{
     }
 
     public void fill(GameObject gameObject){
+        checkIfTileIsValid(gameObject);
         for (int i = 0; i < get().tiles.length; i++){
             for (int j = 0; j < get().tiles[i].length; j++){
                 Vector2f position = get().tiles[i][j].transform.position;
@@ -108,7 +110,42 @@ public class Tilemap{
         }
     }
 
+    public void fillRow(int row, GameObject gameObject){
+        checkIfTileIsValid(gameObject);
+        if (row > this.row || row < 0)
+            throw new IllegalArgumentException("Row argument cannot be less than 0 or larger than maximum row");
+        for (int j = 0; j < get().tiles[row].length; j++){
+            Vector2f position = get().tiles[row][j].transform.position;
+            if (gameObject.getComponent(Tile.class) != null)
+                gameObject.removeComponent(Tile.class);
+            gameObject.addComponent(tiles[row][j].getComponent(Tile.class));
+            tiles[row][j] = gameObject.copy();
+            tiles[row][j].transform.position = position;
+            if (tiles[row][j].getComponent(Animator.class) != null) {
+                tiles[row][j].getComponent(Animator.class).refreshTextures();
+            }
+        }
+    }
+
+    public void fillColumn(int column, GameObject gameObject){
+        checkIfTileIsValid(gameObject);
+        if (column > this.column || column < 0)
+            throw new IllegalArgumentException("Row argument cannot be less than 0 or larger than maximum row");
+        for (int i = 0; i < get().tiles[i].length; i++){
+            Vector2f position = get().tiles[i][column].transform.position;
+            if (gameObject.getComponent(Tile.class) != null)
+                gameObject.removeComponent(Tile.class);
+            gameObject.addComponent(tiles[i][column].getComponent(Tile.class));
+            tiles[i][column] = gameObject.copy();
+            tiles[i][column].transform.position = position;
+            if (tiles[i][column].getComponent(Animator.class) != null) {
+                tiles[i][column].getComponent(Animator.class).refreshTextures();
+            }
+        }
+    }
+
     public void fillBorder(GameObject gameObject){
+        checkIfTileIsValid(gameObject);
         System.out.println("Commencing filling Tilemap borders...");
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
@@ -127,8 +164,8 @@ public class Tilemap{
         System.out.println("Finished filling Tilemap borders");
     }
 
-    public void fillRandom(){
-
+    private void fillRandom() throws ExecutionControl.NotImplementedException {
+        throw new ExecutionControl.NotImplementedException("Method not yet implemented");
     }
 
     public GameObject getTileAtPosition(float x, float y){
@@ -145,15 +182,21 @@ public class Tilemap{
         return null;
     }
 
+    public GameObject getTileAtPosition(int i, int j){
+        if (!(i < row && j < column))
+            throw new IllegalArgumentException("Specified position ("
+                    + i + "," + j + ") cannot be larger than the tilemap's maximum row("+row+") or column("+column+")");
+        else return tiles[i][j];
+    }
+
     public void replaceTile(float x, float y, GameObject tile){
         Vector2f position = new Vector2f(x, y);
         for (int i = 0; i < tiles.length; i++){
             for (int j = 0; j < tiles[i].length; j++){
                 if (tiles[i][j].transform.position.x == position.x && tiles[i][j].transform.position.y == position.y ){
-                    // is "return Window.getScene().getGameObject("Tile("+i+", "+j+")");" a more optimal way??
                     GameObject replacement = tile.copy();
-                    if (replacement.getComponent(Tile.class) != null)
-                        replacement.removeComponent(Tile.class);
+                    checkIfTileIsValid(replacement);
+                    replacement.removeComponent(Tile.class);
                     replacement.addComponent(tiles[i][j].getComponent(Tile.class));
                     replacement.transform.position = position;
                     if (tiles[i][j].getComponent(NonInteractable.class) == null)
@@ -168,23 +211,58 @@ public class Tilemap{
         }
     }
 
-    public void destroyTileAtPos(float x, float y){
-        Vector2f position = new Vector2f(x, y);
-        for (int i = 0; i < tiles.length; i++){
-            for (int j = 0; j < tiles[i].length; j++){
-                if (tiles[i][j].transform.position.x == position.x && tiles[i][j].transform.position.y == position.y ){
-                    // is "return Window.getScene().getGameObject("Tile("+i+", "+j+")");" a more optimal way??
-                    GameObject replacement = Game.getScene().createGameObject("Tile("+i+", "+j+")");
-                    replacement.addComponent(tiles[i][j].getComponent(Tile.class));
-                    replacement.transform.position = position;
-                    tiles[i][j].destroy();
-                    tiles[i][j] = replacement;
-                    Game.getScene().addGameObjectToScene(tiles[i][j]);
-                    System.out.println("Removed " + tiles[i][j].name);
-                    return;
-                }
-            }
+    public void replaceTile(int i, int j, GameObject tile){
+        checkIfTileIsValid(tile);
+        GameObject replacement = tile.copy();
+        GameObject tileToReplace = getTileAtPosition(i, j);
+        replacement.removeComponent(Tile.class);
+        replacement.addComponent(tileToReplace.getComponent(Tile.class));
+        replacement.transform.position = tile.transform.position;
+        tileToReplace.destroy();
+        tiles[i][j] = replacement;
+        if (replacement.getComponent(Animator.class) != null) {
+            replacement.getComponent(Animator.class).refreshTextures();
         }
-        System.err.println("Could not find tile in specified location("+x+", "+y+")");
+        Game.getScene().addGameObjectToScene(tiles[i][j]);
+    }
+
+    public void destroyTile(float x, float y){
+        Vector2f position = new Vector2f(x, y);
+        GameObject tileToDestroy = getTileAtPosition(x, y);
+        int i = tileToDestroy.getComponent(Tile.class).row;
+        int j = tileToDestroy.getComponent(Tile.class).column;
+        GameObject replacement = Game.getScene().createGameObject("Tile("+i+", "+j+")");
+        replacement.addComponent(tileToDestroy.getComponent(Tile.class));
+        replacement.transform.position = position;
+        tiles[i][j].destroy();
+        tiles[i][j] = replacement;
+        Game.getScene().addGameObjectToScene(tiles[i][j]);
+        System.out.println("Removed " + tiles[i][j].name);
+    }
+
+    public void destroyTile(int i, int j){
+        GameObject tileToDestroy = tiles[i][j];
+        GameObject replacement = Game.getScene().createGameObject("Tile("+i+", "+j+")");
+        replacement.addComponent(tileToDestroy.getComponent(Tile.class));
+        replacement.transform.position = tileToDestroy.transform.position;
+        tiles[i][j].destroy();
+        tiles[i][j] = replacement;
+        Game.getScene().addGameObjectToScene(tiles[i][j]);
+        System.out.println("Removed " + tiles[i][j].name);
+    }
+
+
+
+    private boolean checkIfTileIsValid(GameObject tile){
+        if (tile.getComponent(Tile.class) == null) {
+            throw new IllegalArgumentException("Tile "
+                + tile.name + "is missing a Tile component.");
+        }
+        if (tile.getComponent(Rigidbody.class) != null
+                && tile.getComponent(Rigidbody.class).getBodyType() != BodyType.Static){
+            throw new IllegalArgumentException("Tile "
+                    + tile.name + "cannot have a non-static BodyType");
+        }
+        return true;
     }
 }

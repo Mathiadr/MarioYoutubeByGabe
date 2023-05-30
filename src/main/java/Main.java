@@ -1,10 +1,10 @@
 import no.brunostengine.*;
 import no.brunostengine.components.*;
 import no.brunostengine.components.cameras.FollowTargetCamera;
-import no.brunostengine.components.debug_tools.DebugTools;
+import no.brunostengine.components.debuggingtools.DebugTools;
 import org.joml.Vector2f;
-import no.brunostengine.scenes.Scene;
-import no.brunostengine.scenes.SceneBuilder;
+import no.brunostengine.Scene;
+import no.brunostengine.SceneBuilder;
 
 import java.util.ArrayList;
 
@@ -122,27 +122,19 @@ public class Main {
                 scene.addGameObjectToScene(levelEditorStuff);
 
                 if (true) {
-                    ArrayList<GameObject> gameObjects = new ArrayList<>();
                     GameObject ratgirl = AssetBuilder.generateRatgirlRPG();
                     ratgirl.transform.position = new Vector2f(2, 10);
-                    gameObjects.add(ratgirl);
                     scene.addGameObjectToScene(ratgirl);
-
-                    GameObject block = AssetBuilder.generateQuestionBlock();
-                    block.transform.position.x = 0f;
-                    block.transform.position.y = 0f;
-                    gameObjects.add(block);
-                    scene.addGameObjectToScene(block);
 
                     Spritesheet tileSprites = ResourcePool.getSpritesheet("assets/images/defaultTiles.png");
                     GameObject tile = AssetBuilder.generateSpriteObject(tileSprites.getSprite(3), 0.25f, 0.25f);
                     tile.addComponent(new NonInteractable());
+                    tile.addComponent(new Tile());
 
                     tilemap.fill(tile);
                     tilemap.addTilemapToScene();
 
                 }
-                levelEditorStuff.getComponent(DebugTools.class).gameObjectToPlace = AssetBuilder.generateQuestionBlock();
             }
 
             @Override

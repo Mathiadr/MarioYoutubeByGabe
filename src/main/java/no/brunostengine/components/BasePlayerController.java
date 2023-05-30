@@ -14,6 +14,7 @@ public abstract class BasePlayerController extends Component{
     public float jumpBoost = 1.0f;
     public float jumpImpulse = 2.0f;
     public float slowDownForce = 0.05f;
+    public transient boolean gravityEnabled = true;
 
     public transient boolean isGrounded = false;
     protected transient boolean isDead = false;

@@ -1,4 +1,4 @@
-package no.brunostengine.scenes;
+package no.brunostengine;
 
 /**
  * The SceneBuilder class is necessary for proper initialization of a {@link Scene}.

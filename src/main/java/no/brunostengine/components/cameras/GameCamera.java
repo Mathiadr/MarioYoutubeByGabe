@@ -1,7 +1,7 @@
 package no.brunostengine.components.cameras;
 
 import no.brunostengine.components.Component;
-import no.brunostengine.components.DefaultSideScrollerPlayerController;
+import no.brunostengine.components.templates.SideScrollerPlayerController;
 import no.brunostengine.Camera;
 import no.brunostengine.GameObject;
 import no.brunostengine.Game;
@@ -21,7 +21,7 @@ public class GameCamera extends Component {
 
     @Override
     public void onStart() {
-        this.player = Game.getScene().getGameObjectWith(DefaultSideScrollerPlayerController.class);
+        this.player = Game.getScene().getGameObjectWith(SideScrollerPlayerController.class);
         this.gameCamera.clearColor.set(skyColor);
     }
 

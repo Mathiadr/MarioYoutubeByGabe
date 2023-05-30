@@ -1,18 +1,11 @@
-package no.brunostengine.viewport;
+package no.brunostengine;
 
-import no.brunostengine.Game;
-import no.brunostengine.KeyListener;
-import no.brunostengine.MouseListener;
 import imgui.*;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
 import imgui.flag.*;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
-import no.brunostengine.scenes.Scene;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import java.io.File;
 
@@ -21,7 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 
-public class ImGuiLayer {
+class ImGuiLayer {
 
     private long glfwWindow;
 

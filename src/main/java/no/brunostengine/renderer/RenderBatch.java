@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
-public class RenderBatch implements Comparable<RenderBatch> {
+class RenderBatch implements Comparable<RenderBatch> {
     // Vertex
     // ======
     // Pos               Color                         tex coords     tex id

@@ -1,4 +1,4 @@
-package no.brunostengine.components.debug_tools;
+package no.brunostengine.components.debuggingtools;
 
 import no.brunostengine.components.Component;
 import no.brunostengine.Camera;

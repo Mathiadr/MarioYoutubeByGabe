@@ -1,5 +1,6 @@
-package no.brunostengine.components;
+package no.brunostengine;
 
+import no.brunostengine.Sprite;
 import no.brunostengine.renderer.Texture;
 import org.joml.Vector2f;
 

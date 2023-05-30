@@ -4,7 +4,7 @@ import no.brunostengine.renderer.DebugDraw;
 import no.brunostengine.renderer.Framebuffer;
 import no.brunostengine.renderer.Renderer;
 import no.brunostengine.renderer.Shader;
-import no.brunostengine.viewport.ImGuiLayer;
+import no.brunostengine.util.PixelToGameObjectReader;
 import no.brunostengine.observers.EventSystem;
 import no.brunostengine.observers.Observer;
 import no.brunostengine.observers.events.Event;
@@ -18,9 +18,6 @@ import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
 import no.brunostengine.physics.PhysicsHandler;
-import no.brunostengine.scenes.Scene;
-import no.brunostengine.scenes.SceneBuilder;
-import no.brunostengine.util.PixelToGameObjectReader;
 
 import java.awt.*;
 

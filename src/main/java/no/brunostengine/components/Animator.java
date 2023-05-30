@@ -1,5 +1,6 @@
 package no.brunostengine.components;
 
+import no.brunostengine.Animation;
 import no.brunostengine.GameObject;
 
 import java.util.ArrayList;

@@ -2,7 +2,6 @@ package no.brunostengine.renderer;
 
 import org.joml.*;
 import org.lwjgl.BufferUtils;
-import no.brunostengine.util.ResourceReader;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;

@@ -5,8 +5,16 @@ import no.brunostengine.components.Component;
 import java.util.LinkedList;
 import java.util.Queue;
 
-// https://www.youtube.com/watch?v=fsDE_mO4RZM
-public class ObjectPool extends Component {
+/**
+ * Experimental class. Meant to implement the Design Principle of Object Pooling as a means of optimizing the object creation
+ * of Class in situations where they need to be created regularly and are short-lived. Not fully implemented yet,
+ * but instead of removing it for the production branch, we decided to show off the foundation of the work so far as
+ * documentation of proof.
+ * <br> <a href="https://www.youtube.com/watch?v=fsDE_mO4RZM">Based off of this tutorial</a>
+ * <br><b>Note: This class is package-private and will NOT be visible to the client.</b>
+ *
+ */
+class ObjectPool extends Component {
     private PoolableObject poolableObject;
     private int size;
     private Queue<PoolableObject> availableObjectsPool;

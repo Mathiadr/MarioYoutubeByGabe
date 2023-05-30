@@ -1,8 +1,8 @@
-package no.brunostengine.util;
+package no.brunostengine.renderer;
 
 import org.joml.Vector2f;
 
-public class JMath {
+class JMath {
 
     public static void rotate(Vector2f vec, float angleDeg, Vector2f origin) {
         float x = vec.x - origin.x;

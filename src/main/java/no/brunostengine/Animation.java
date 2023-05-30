@@ -1,6 +1,9 @@
-package no.brunostengine.components;
+package no.brunostengine;
 
+import no.brunostengine.Frame;
 import no.brunostengine.ResourcePool;
+import no.brunostengine.Sprite;
+import no.brunostengine.components.Animator;
 
 import java.util.ArrayList;
 import java.util.List;

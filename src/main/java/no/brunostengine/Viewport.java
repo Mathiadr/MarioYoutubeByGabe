@@ -1,4 +1,4 @@
-package no.brunostengine.viewport;
+package no.brunostengine;
 
 import imgui.ImGui;
 import imgui.ImGuiViewport;
@@ -9,9 +9,8 @@ import no.brunostengine.MouseListener;
 import no.brunostengine.Game;
 import org.joml.Vector2f;
 
-public class Viewport {
+class Viewport {
 
-    private boolean isPlaying = false;
     private boolean windowIsHovered;
 
     public void imgui() {

@@ -1,16 +1,18 @@
-package no.brunostengine.components;
+package no.brunostengine.components.templates;
 
 import no.brunostengine.KeyListener;
 import no.brunostengine.Game;
+import no.brunostengine.components.BasePlayerController;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class DefaultTopDownPlayerController extends BasePlayerController {
+public class TopDownPlayerController extends BasePlayerController {
 
-    public transient boolean gravityEnabled = true;
-    private transient float groundDebounce = 0.0f;
-    private transient float groundDebounceTime = 0.1f;
-    private transient int jumpTime = 0;
+    @Override
+    public void onStart() {
+        super.onStart();
+        gravityEnabled = false;
+    }
 
     @Override
     public void onUpdate(float dt) {
@@ -87,9 +89,5 @@ public class DefaultTopDownPlayerController extends BasePlayerController {
         this.velocity.x = Math.max(Math.min(this.velocity.x, this.maxVelocity.x), -this.maxVelocity.x);
         this.velocity.y = Math.max(Math.min(this.velocity.y, this.maxVelocity.y), -this.maxVelocity.y);
         this.rb.setVelocity(this.velocity);
-    }
-
-    public boolean isDead() {
-        return this.isDead;
     }
 }

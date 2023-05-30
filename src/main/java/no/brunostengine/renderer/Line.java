@@ -3,7 +3,7 @@ package no.brunostengine.renderer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public class Line {
+class Line {
     private Vector2f from;
     private Vector2f to;
     private Vector3f color;

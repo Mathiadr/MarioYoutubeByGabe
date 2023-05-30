@@ -1,4 +1,6 @@
-package no.brunostengine.components;
+package no.brunostengine;
+
+import no.brunostengine.Sprite;
 
 class Frame {
     public Sprite sprite;

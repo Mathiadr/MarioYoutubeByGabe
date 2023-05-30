@@ -1,16 +1,23 @@
-package no.brunostengine.components;
+package no.brunostengine.components.templates;
 
 import no.brunostengine.KeyListener;
 import no.brunostengine.Game;
+import no.brunostengine.components.BasePlayerController;
+import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class DefaultSideScrollerPlayerController extends BasePlayerController {
+public class SideScrollerPlayerController extends BasePlayerController {
 
-    public transient boolean gravityEnabled = true;
     private transient float groundDebounce = 0.0f;
     private transient float groundDebounceTime = 0.1f;
     private transient int jumpTime = 0;
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        maxVelocity = new Vector2f(1.7f, 2.1f);
+    }
 
     @Override
     public void onUpdate(float dt) {
@@ -89,9 +96,5 @@ public class DefaultSideScrollerPlayerController extends BasePlayerController {
         } else {
             animator.play("stopJumping");
         }
-    }
-
-    public boolean isDead() {
-        return this.isDead;
     }
 }

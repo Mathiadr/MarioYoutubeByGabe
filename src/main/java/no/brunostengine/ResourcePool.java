@@ -1,10 +1,12 @@
 package no.brunostengine;
 
-import no.brunostengine.components.Spritesheet;
+import no.brunostengine.renderer.ResourceReader;
 import no.brunostengine.renderer.Shader;
 import no.brunostengine.renderer.Texture;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,8 +17,32 @@ public class ResourcePool {
     private static Map<String, Spritesheet> spritesheets = new HashMap<>();
     private static Map<String, Sound> sounds = new HashMap<>();
 
+    public static Shader getInternalLibraryShaders(String resourceName){
+        try {
+            //Path path = Paths.get(resourceName);
+            //String filename = Path.of(resourceName).getFileName().toString();
+            System.out.println(resourceName);
+            File tempFile = new File(resourceName);
+            System.out.println(tempFile);
+            System.out.println(tempFile.getAbsolutePath());
+            InputStream is = ResourceReader.GetInputStreamFromResource(resourceName);
+            try (FileOutputStream out = new FileOutputStream(tempFile, false)){
+                int read;
+                byte[] bytes = new byte[8192];
+                while ((read = is.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+            }
+            return getShader(resourceName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Shader getShader(String resourceName) {
+        System.out.println(resourceName);
         File file = new File(resourceName);
+        System.out.println(file.getAbsolutePath());
         if (ResourcePool.shaders.containsKey(file.getAbsolutePath())) {
             return ResourcePool.shaders.get(file.getAbsolutePath());
         } else {

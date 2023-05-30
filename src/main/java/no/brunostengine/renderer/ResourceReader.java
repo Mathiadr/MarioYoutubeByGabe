@@ -1,4 +1,4 @@
-package no.brunostengine.util;
+package no.brunostengine.renderer;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +13,8 @@ public class ResourceReader {
     private ResourceReader(){}
 
     public static InputStream GetInputStreamFromResource(String filepath){
-        ClassLoader classLoader = get().getClass().getClassLoader();
+        ClassLoader classLoader = Shader.class.getClassLoader();
+        System.out.println("here: " + filepath);
 
         return classLoader.getResourceAsStream(filepath);
     }
