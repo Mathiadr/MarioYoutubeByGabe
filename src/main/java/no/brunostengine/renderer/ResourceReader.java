@@ -13,8 +13,7 @@ public class ResourceReader {
     private ResourceReader(){}
 
     public static InputStream GetInputStreamFromResource(String filepath){
-        ClassLoader classLoader = Shader.class.getClassLoader();
-        System.out.println("here: " + filepath);
+        ClassLoader classLoader = get().getClass().getClassLoader();
 
         return classLoader.getResourceAsStream(filepath);
     }

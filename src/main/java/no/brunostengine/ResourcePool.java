@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.JarFile;
 
 public class ResourcePool {
     private static Map<String, Shader> shaders = new HashMap<>();
@@ -17,28 +18,43 @@ public class ResourcePool {
     private static Map<String, Spritesheet> spritesheets = new HashMap<>();
     private static Map<String, Sound> sounds = new HashMap<>();
 
-    public static Shader getInternalLibraryShaders(String resourceName){
+    /**
+     * I know. <b>I know</b>. This is probably the most scuffed way to do this, but I've worked on this for WEEKS over
+     * entire days and nights trying to figure out how to make it work inside a .jar file, but unfortunately nothing worked.
+     *
+     */
+    static void createShaderIfDoesNotExist(File file, String filepath){
         try {
-            //Path path = Paths.get(resourceName);
-            //String filename = Path.of(resourceName).getFileName().toString();
-            File tempFile = new File(resourceName);
-            InputStream is = ResourceReader.GetInputStreamFromResource(resourceName);
-            try (FileOutputStream out = new FileOutputStream(tempFile, false)){
-                int read;
-                byte[] bytes = new byte[8192];
-                while ((read = is.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
+            if(file.createNewFile()){
+                System.out.println("Could not find shader file. Creating new shader file...");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+                String filename = file.getName();
+                if (filename.equals("default.glsl"))
+                    writer.write(ShaderLoader.defaultShader);
+                else if (filename.equals("debugLine2D.glsl"))
+                    writer.write(ShaderLoader.debugShader);
+                else if (filename.equals("pickingShader.glsl"))
+                    writer.write(ShaderLoader.pickingShader);
+                else {
+                    writer.close();
+                    try {
+                        file.deleteOnExit();
+                    } catch (SecurityException e) {
+                        System.err.println("Could not delete unneccessary file due to security manager denying access");
+                        e.printStackTrace();
+                    }
                 }
             }
-            return getShader(resourceName);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public static Shader getShader(String resourceName) {
         File file = new File(resourceName);
         System.out.println("Loading shader file " + file.getName());
+        createShaderIfDoesNotExist(file, resourceName);
         if (ResourcePool.shaders.containsKey(file.getAbsolutePath())) {
             return ResourcePool.shaders.get(file.getAbsolutePath());
         } else {
