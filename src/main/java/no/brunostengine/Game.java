@@ -8,6 +8,7 @@ import no.brunostengine.util.PixelToGameObjectReader;
 import no.brunostengine.observers.EventSystem;
 import no.brunostengine.observers.Observer;
 import no.brunostengine.observers.events.Event;
+import no.brunostengine.util.ResourcePool;
 import org.joml.Vector4f;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -42,7 +43,8 @@ public class Game implements Observer {
     private Framebuffer framebuffer;
     private PixelToGameObjectReader pixelToGameObjectReader;
     private boolean runtimePlaying = true;
-    private boolean fullscreen = false;
+    private boolean fullscreen = true;
+    private int tickRate = 60;
 
     private static Game game = null;
 
@@ -60,7 +62,7 @@ public class Game implements Observer {
         EventSystem.addObserver(this);
     }
  
-    public static void changeScene(SceneBuilder sceneBuilder) {
+    public static void playScene(SceneBuilder sceneBuilder) {
         if (currentScene != null) {
             currentScene.destroy();
         }
@@ -122,7 +124,7 @@ public class Game implements Observer {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-        glfwWindowHint(GLFW_REFRESH_RATE, 60);
+        glfwWindowHint(GLFW_REFRESH_RATE, tickRate);
         glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
         glfwWindowHint(GLFW_SAMPLES, 4);
 
@@ -140,9 +142,9 @@ public class Game implements Observer {
             Game.setWidth(newWidth);
             Game.setHeight(newHeight);
         });
-
-        glfwSetWindowMonitor(glfwWindow, monitor, 0, 0, width, height, 60);
-
+        if (fullscreen) {
+            glfwSetWindowMonitor(glfwWindow, monitor, 0, 0, width, height, tickRate);
+        }
 
 
         // Make the OpenGL context current
@@ -282,18 +284,30 @@ public class Game implements Observer {
         return get().pixelToGameObjectReader;
     }
 
+    public boolean isFullscreen() {
+        return fullscreen;
+    }
+
+    public void setFullscreen(boolean fullscreen) {
+        this.fullscreen = fullscreen;
+    }
+
+    public int getTickRate() {
+        return tickRate;
+    }
+
+    public void setTickRate(int tickRate) {
+        this.tickRate = tickRate;
+    }
+
     @Override
     public void onNotify(GameObject object, Event event) {
         switch (event.type) {
-            case GameEngineStartPlay:
-                this.runtimePlaying = true;
-                Game.changeScene(currentSceneBuilder);
-                break;
             case GameEngineStopPlay:
                 glfwSetWindowShouldClose(glfwWindow, true);
                 break;
             case LoadLevel:
-                Game.changeScene(currentSceneBuilder);
+                Game.playScene(currentSceneBuilder);
                 break;
             case SaveLevel:
                 currentScene.save();

@@ -1,10 +1,11 @@
-package no.brunostengine.components;
+package no.brunostengine;
 
 import com.google.gson.*;
+import no.brunostengine.components.Component;
 
 import java.lang.reflect.Type;
 
-public class ComponentDeserializer implements JsonSerializer<Component>,
+class ComponentDeserializer implements JsonSerializer<Component>,
         JsonDeserializer<Component> {
 
     @Override

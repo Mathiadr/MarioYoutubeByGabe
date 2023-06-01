@@ -1,5 +1,7 @@
 package no.brunostengine;
 
+import no.brunostengine.util.ResourcePool;
+
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashMap;

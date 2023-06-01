@@ -2,12 +2,8 @@ package no.brunostengine;
 
 
 import no.brunostengine.components.*;
-import no.brunostengine.components.templates.*;
-import org.joml.Vector2f;
-import org.joml.Vector4f;
-import no.brunostengine.physics.components.BoxCollider;
+import no.brunostengine.util.ResourcePool;
 import no.brunostengine.physics.components.CapsuleCollider;
-import no.brunostengine.physics.components.CircleCollider;
 import no.brunostengine.physics.components.Rigidbody;
 import no.brunostengine.physics.enums.BodyType;
 
@@ -29,9 +25,19 @@ public class AssetBuilder {
         return block;
     }
 
+    public static GameObject generateSpriteObject(Sprite sprite) {
+        return generateSpriteObject(sprite, DEFAULT_SIZE, DEFAULT_SIZE);
+    }
+
+    public static GameObject generateSpriteObject(String filename) {
+        Sprite sprite = SpriteHandler.getSprite(filename, 0);
+        return generateSpriteObject(sprite, DEFAULT_SIZE, DEFAULT_SIZE);
+    }
+
     public static GameObject generateRatgirl() {
         Spritesheet playerSprites = ResourcePool.getSpritesheet("assets/images/RatGirlSpritesheet.png");
         GameObject ratgirl = generateSpriteObject(playerSprites.getSprite(0), 0.25f, 0.25f);
+
 
         Animation run = new Animation();
         run.title = "Run";
@@ -114,7 +120,6 @@ public class AssetBuilder {
         Spritesheet bigPlayerSprites = ResourcePool.getSpritesheet("assets/images/RatGirlSpritesheet.png");
         GameObject ratgirl = generateSpriteObject(playerSprites.getSprite(0), 0.25f, 0.25f);
 
-        // Little mario animations
         Animation run = new Animation();
         run.title = "Run";
         float defaultFrameTime = 0.1f;

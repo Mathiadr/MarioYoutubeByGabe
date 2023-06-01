@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Experimental class. Meant to implement the Design Principle of Object Pooling as a means of optimizing the object creation
- * of Class in situations where they need to be created regularly and are short-lived. Not fully implemented yet,
+ * Experimental class. Meant to implement the design principle of Object Pooling as a means of optimizing instantiation
+ * in situations where they need to be created regularly and are short-lived. Not fully implemented yet due to time constraint,
  * but instead of removing it for the production branch, we decided to show off the foundation of the work so far as
  * documentation of proof.
  * <br> <a href="https://www.youtube.com/watch?v=fsDE_mO4RZM">Based off of this tutorial</a>

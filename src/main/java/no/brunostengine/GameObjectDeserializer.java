@@ -2,10 +2,11 @@ package no.brunostengine;
 
 import com.google.gson.*;
 import no.brunostengine.components.Component;
+import no.brunostengine.components.Transform;
 
 import java.lang.reflect.Type;
 
-public class GameObjectDeserializer implements JsonDeserializer<GameObject> {
+class GameObjectDeserializer implements JsonDeserializer<GameObject> {
     @Override
     public GameObject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();

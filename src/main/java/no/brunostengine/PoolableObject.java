@@ -3,7 +3,7 @@ package no.brunostengine;
 /**
  * Part of the experimental and unfinished implementation of object pooling system. See {@link ObjectPool} for more info.
  */
-public class PoolableObject extends GameObject {
+class PoolableObject extends GameObject {
     public ObjectPool objectPoolParent;
 
 

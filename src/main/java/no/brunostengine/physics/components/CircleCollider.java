@@ -19,6 +19,8 @@ public class CircleCollider extends Component {
 
     public void setOffset(Vector2f newOffset) { this.offset.set(newOffset); }
 
+    public void setOffset(float x, float y) { this.offset.set(new Vector2f(x, y)); }
+
     public void setRadius(float radius) {
         resetFixtureNextFrame = true;
         this.radius = radius;

@@ -1,6 +1,5 @@
 package no.brunostengine.renderer;
 
-import no.brunostengine.ResourcePool;
 import org.joml.*;
 import org.lwjgl.BufferUtils;
 
@@ -10,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
-import java.util.jar.JarFile;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;

@@ -1,11 +1,10 @@
 package no.brunostengine.components;
 
 import no.brunostengine.Sprite;
-import no.brunostengine.Transform;
 import no.brunostengine.renderer.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-import no.brunostengine.ResourcePool;
+import no.brunostengine.util.ResourcePool;
 
 /**
  * The SpriteRenderer allows for the rendering of a given {@link Sprite} to the Scene.

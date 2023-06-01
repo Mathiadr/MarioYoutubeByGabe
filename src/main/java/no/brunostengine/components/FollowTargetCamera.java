@@ -1,4 +1,4 @@
-package no.brunostengine.components.cameras;
+package no.brunostengine.components;
 
 import no.brunostengine.components.BasePlayerController;
 import no.brunostengine.components.Component;

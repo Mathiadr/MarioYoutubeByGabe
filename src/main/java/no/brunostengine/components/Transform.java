@@ -1,6 +1,6 @@
-package no.brunostengine;
+package no.brunostengine.components;
 
-import no.brunostengine.components.Component;
+import no.brunostengine.GameObject;
 import org.joml.Vector2f;
 
 /**
@@ -36,6 +36,7 @@ public class Transform extends Component {
         return new Transform(new Vector2f(this.position), new Vector2f(this.scale));
     }
 
+
     public void copy(Transform to) {
         to.position.set(this.position);
         to.scale.set(this.scale);
@@ -50,4 +51,9 @@ public class Transform extends Component {
         return t.position.equals(this.position) && t.scale.equals(this.scale) &&
                 t.rotation == this.rotation && t.zIndex == this.zIndex;
     }
+
+    public void setPosition(float x, float y){
+        position = new Vector2f(x, y);
+    }
+
 }

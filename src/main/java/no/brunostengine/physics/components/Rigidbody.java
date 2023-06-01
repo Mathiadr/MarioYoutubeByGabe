@@ -65,10 +65,19 @@ public class Rigidbody extends Component {
         }
     }
 
+    public void setVelocity(float x, float y) {
+        setVelocity(new Vector2f(x, y));
+    }
+
+
     public void setPosition(Vector2f newPos) {
         if (rawBody != null) {
             rawBody.setTransform(new Vec2(newPos.x, newPos.y), gameObject.transform.rotation);
         }
+    }
+
+    public void setPosition(float x, float y) {
+        setPosition(new Vector2f(x, y));
     }
 
     public void setAngularVelocity(float angularVelocity) {

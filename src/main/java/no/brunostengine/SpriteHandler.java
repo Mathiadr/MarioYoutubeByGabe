@@ -1,5 +1,7 @@
 package no.brunostengine;
 
+import no.brunostengine.util.ResourcePool;
+
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +27,9 @@ public class SpriteHandler {
         return null;
     }
 
-    public static Sprite getSprite(String filename, int sprite){
+    public static Sprite getSprite(String filename, int spriteIndex){
         try {
-            return getSpritesheet(filename).getSprite(sprite);
+            return getSpritesheet(filename).getSprite(spriteIndex);
         } catch (NullPointerException e){
             System.err.println("Could not find specified file " + filename);
             e.printStackTrace();

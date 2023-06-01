@@ -4,6 +4,7 @@ package no.brunostengine;
 import jdk.jshell.spi.ExecutionControl;
 import no.brunostengine.components.Animator;
 import no.brunostengine.components.NonInteractable;
+import no.brunostengine.components.Tile;
 import no.brunostengine.physics.components.Rigidbody;
 import no.brunostengine.physics.enums.BodyType;
 import org.joml.Vector2f;

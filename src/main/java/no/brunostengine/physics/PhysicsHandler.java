@@ -2,7 +2,7 @@ package no.brunostengine.physics;
 
 import no.brunostengine.components.Collideable;
 import no.brunostengine.GameObject;
-import no.brunostengine.Transform;
+import no.brunostengine.components.Transform;
 import no.brunostengine.Game;
 import no.brunostengine.physics.components.CapsuleCollider;
 import no.brunostengine.physics.components.CircleCollider;

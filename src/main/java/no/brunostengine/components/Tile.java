@@ -1,5 +1,6 @@
-package no.brunostengine;
+package no.brunostengine.components;
 
+import no.brunostengine.Tilemap;
 import no.brunostengine.components.Component;
 
 /**

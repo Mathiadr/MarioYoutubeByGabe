@@ -4,7 +4,7 @@ import no.brunostengine.Camera;
 import no.brunostengine.Game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import no.brunostengine.ResourcePool;
+import no.brunostengine.util.ResourcePool;
 
 import java.util.ArrayList;
 import java.util.List;

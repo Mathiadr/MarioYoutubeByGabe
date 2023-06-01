@@ -1,10 +1,11 @@
-package no.brunostengine.components.debuggingtools;
+package no.brunostengine.debuggingtools;
 
 
 import no.brunostengine.*;
 import no.brunostengine.components.Animator;
 import no.brunostengine.components.Component;
 import no.brunostengine.components.NonInteractable;
+import no.brunostengine.components.Tile;
 import no.brunostengine.util.PixelToGameObjectReader;
 import org.joml.Vector2f;
 import no.brunostengine.util.Settings;
@@ -16,7 +17,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
  * The DebugTools class holds basic and non-essential debugging tools to allow placement of GameObjects in real-time,
  * or print out the World position being accessed to the terminal.
  */
-public class DebugTools extends Component {
+public class GameObjectPlacementTool extends Component {
     public PixelToGameObjectReader pixelToGameObjectReader = Game.getPixelToGameObjectReader();
     public GameObject gameObjectToPlace = null;
     private float debounceTime = 0.2f;

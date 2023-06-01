@@ -1,4 +1,4 @@
-package no.brunostengine.components.templates;
+package no.brunostengine.components;
 
 import no.brunostengine.KeyListener;
 import no.brunostengine.Game;
@@ -22,7 +22,7 @@ public class SideScrollerPlayerController extends BasePlayerController {
     @Override
     public void onUpdate(float dt) {
         if (isDead) {
-            Game.changeScene(Game.getCurrentSceneBuilder());
+            Game.playScene(Game.getCurrentSceneBuilder());
             return;
         }
 

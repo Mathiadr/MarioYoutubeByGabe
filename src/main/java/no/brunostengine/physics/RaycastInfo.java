@@ -6,7 +6,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.joml.Vector2f;
 
-public class RaycastInfo implements RayCastCallback {
+class RaycastInfo implements RayCastCallback {
     public Fixture fixture;
     public Vector2f point;
     public Vector2f normal;
